@@ -1,7 +1,7 @@
 MunkiWebAdmin
 --------------
 
-This is an updated version of MunkiWebAdmin form Greg Neagle.
+This is an updated version of MunkiWebAdmin from Greg Neagle.
 See https://github.com/munki/munkiwebadmin
 
 This version is forked from Steve Kueng's version, in order
