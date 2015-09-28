@@ -7,10 +7,13 @@ Munki-Catalog-Admin enables the manipulation of Munki packages via the web. Spec
 2. Manifests: create/delete manifests, and manage the contents of manfifests.
 3. Catalogs: view the contents of catalogs.
 
-Munki-Catalog-Admin is an altered version of MunkiWebAdmin (v1) from Greg Neagle.
-See https://github.com/munki/munkiwebadmin
+Munki-Catalog-Admin is an altered version of MunkiWebAdmin (v1) from Greg Neagle: 
 
-This version was forked from Steve Kueng's fork of MunkiWebAdmin.
+* https://github.com/munki/munkiwebadmin
+
+This version was forked from Steve Kueng's fork of MunkiWebAdmin: 
+
+* https://github.com/SteveKueng/munkiwebadmin
 
 The function to manipulate pkginfo files utilises munkitools (specifically, the 
 `makecatalogs` command). This has been tested on an Ubuntu 14.04 VM, but you will 
@@ -27,7 +30,12 @@ such as reporting tools. For reporting tools, I recommend:
 * *MunkiReport-PHP:* https://github.com/munkireport/munkireport-php
 
 A Docker image for Munki-Catalog-Admin is available here: 
-https://github.com/grahampugh/docker-munki-catalog-admin
+
+* https://github.com/grahampugh/docker-munki-catalog-admin
+
+I've also made a Docker image for Steve Kueng's fork of MunkiWebAdmin, available here:
+
+* https://github.com/grahampugh/docker-munkiwebadmin
 
 To Do
 ----
