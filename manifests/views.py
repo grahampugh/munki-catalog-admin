@@ -105,10 +105,10 @@ def index(request, manifest_name=None):
         username = None
         manifest = None
         
-        manifest_list_josn = list()
+        manifest_list_json = list()
         for item in manifest_list:
-            manifest_list_josn.append(item['name'])
-        manifest_list_josn = json.dumps(manifest_list_josn)
+            manifest_list_json.append(item['name'])
+        manifest_list_json = json.dumps(manifest_list_json)
 
         if manifest_name:
             manifest = Manifest.read(manifest_name)
@@ -116,7 +116,7 @@ def index(request, manifest_name=None):
             manifest_name = manifest_name.replace(':', '/')
         c = RequestContext(request,     
             {'manifest_list': manifest_list,
-             'manifest_list_josn': manifest_list_josn,
+             'manifest_list_json': manifest_list_json,
              'section': section,
              'findtext': findtext,
              'available_sections': available_sections,

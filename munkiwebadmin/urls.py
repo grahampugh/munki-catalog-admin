@@ -18,16 +18,7 @@ urlpatterns = patterns('',
     url(r'^manifest/', include('manifests.urls')),
     url(r'^catalog/', include('catalogs.urls')),
     url(r'^pkgs/', include('pkgs.urls')),
-    url(r'^inventory/', include('inventory.urls')),
-    url(r'^licenses/', include('licenses.urls')),
-    url(r'^computer/', include('reports.urls')),
-    
-    # for compatibility with MunkiReport scripts    
-    url(r'^$', include('reports.urls')),
-    url(r'^lookup/', include('reports.urls')),
-    url(r'^update/', include('reports.urls')),
-    (r'', include('tokenapi.urls')),
-)
+    )
 # comment out the following if you are serving
 # static files a different way
 urlpatterns += staticfiles_urlpatterns()

@@ -272,5 +272,3 @@ function getManifestDetailFromDOMAndSave() {
     });
 }
 
-function sideSecific() {
-}

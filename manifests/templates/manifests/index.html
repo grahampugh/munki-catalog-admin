@@ -4,15 +4,10 @@
 {% block java_script %}
 {% load static %}
 <script type='text/javascript' src='{% get_static_prefix %}js/manifests.js'></script>
-{% if manifest_name %}
-<script>
-	function sideSecific() {getManifestDetail('{{manifest_name}}');}
-</script>
-{% endif %}
 {% endblock %}
 
-{% block data-source %}{{ manifest_list_josn }}{% endblock %}
-{% block data-source-mobile %}{{ manifest_list_josn }}{% endblock %}
+{% block data-source %}{{ manifest_list_json }}{% endblock %}
+{% block data-source-mobile %}{{ manifest_list_json }}{% endblock %}
 
 <!-- page title -->
 {% block page_title %}<a href="{% url 'manifests.views.index' %}" class="navbar-brand">Manifests</a>{% endblock %}

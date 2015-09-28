@@ -6,7 +6,7 @@ from django.conf import global_settings
 ##############################
 
 # APPNAME is user-visable web app name
-APPNAME = 'MunkiWebAdmin'
+APPNAME = 'Munki-Catalog-Admin'
 # MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
 MUNKI_REPO_DIR = '/Users/Shared/munkirepo'
 ICONS_DIR = 'icons'
@@ -21,35 +21,14 @@ MANIFEST_USERNAME_KEY = 'user'
 # set MANIFEST_USERNAME_IS_EDITABLE to allow edits to the displayed username
 MANIFEST_USERNAME_IS_EDITABLE = False
 
-# enable WARRANTY to show warranty information on the detail machine report
-WARRANTY_LOOKUP_ENABLED = True
-
 # managed updates visible in manifests
 MANAGED_UPDATES_ENABLED = False
-
-# display SSH-Button in detal view
-SSH_BUTTON_ENABLED = False
-
-# display VNC-Button in detal view
-VNC_BUTTON_ENABLED = False
 
 #if true all software packages are shown in autocompletion not only the one in included catalogs
 ALL_ITEMS = False
 
-#user serial_number or hostname for client manifest
-CLIENT_MANIFEST = 'serial_number'
-
 # enable MODEL_LOOKUP_ENABLED to show a human readable version of the machines model
 MODEL_LOOKUP_ENABLED = True
-
-# enable Business units
-BUSINESS_UNITS_ENABLED = False
-
-# if MunkiWebAdmin is behind a proxy, and WARRANTY_LOOKUP_ENABLED or
-# MODEL_LOOKUP_ENABLED are enabled, enter the details for the proxy server in
-# the format user:password@example.com:port (user:password@ and :port are 
-# optional), otherwise leave blank
-PROXY_ADDRESS = ""
 
 # needed for productive mode
 ALLOWED_HOSTS = ['*']
@@ -125,11 +104,11 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/Zurich'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'de-CH'
+LANGUAGE_CODE = 'en-US'
 
 # -----------------
 
@@ -214,12 +193,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'guardian',
     'tokenapi',
-    'reports',
     'catalogs',
     'manifests',
     'pkgs',
-    'inventory',
-    'licenses',
 )
 
 LOGGING = {
