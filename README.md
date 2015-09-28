@@ -29,11 +29,11 @@ such as reporting tools. For reporting tools, I recommend:
 * *Sal:* https://github.com/salopensource/sal
 * *MunkiReport-PHP:* https://github.com/munkireport/munkireport-php
 
-A Docker image for Munki-Catalog-Admin is available here: 
+A Docker container for Munki-Catalog-Admin is available here: 
 
 * https://github.com/grahampugh/docker-munki-catalog-admin
 
-I've also made a Docker image for Steve Kueng's fork of MunkiWebAdmin, available here:
+I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, available here:
 
 * https://github.com/grahampugh/docker-munkiwebadmin
 
