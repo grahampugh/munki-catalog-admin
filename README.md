@@ -17,11 +17,17 @@ The function to manipulate pkginfo files utilises munkitools (specifically, the
 need to ensure that your nginx user has write permissions to your munki repo. Use of group 
 permissions is recommended. 
 
+The code which enables movement of packages between catalogs is a derivation of code 
+from Munki-Trello by Graham Gilbert: https://github.com/grahamgilbert/munki-trello
+
 Some of the original functionality of MunkiWebAdmin has been removed from Munki-Catalog-Admin,
 such as reporting tools. For reporting tools, I recommend: 
 
 * *Sal:* https://github.com/salopensource/sal
 * *MunkiReport-PHP:* https://github.com/munkireport/munkireport-php
+
+A Docker image for Munki-Catalog-Admin is available here: 
+https://github.com/grahampugh/docker-munki-catalog-admin
 
 To Do
 ----
@@ -29,5 +35,7 @@ To Do
 Munki-Catalog-Admin is still a work in progress, so shouldn't be used in production. 
 *Note that package deletion is not yet functional.*
 and there are security aspects to consider. 
+
+
 
 Much documentation to do.
