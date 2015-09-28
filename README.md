@@ -3,9 +3,9 @@ Munki-Catalog-Admin
 
 Munki-Catalog-Admin enables the manipulation of Munki packages via the web. Specifically:
 
-  # Packages: manage your production workflow by adding packages to a specific catalog in bulk.
-  # Manifests: create/delete manifests, and manage the contents of manfifests.
-  # Catalogs: view the contents of catalogs.
+1. Packages: manage your production workflow by adding packages to a specific catalog in bulk.
+2. Manifests: create/delete manifests, and manage the contents of manfifests.
+3. Catalogs: view the contents of catalogs.
 
 Munki-Catalog-Admin is an altered version of MunkiWebAdmin (v1) from Greg Neagle.
 See https://github.com/munki/munkiwebadmin
