@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^catalog/', include('catalogs.urls')),
     url(r'^pkgs/', include('pkgs.urls')),
     url(r'^$', include('catalogs.urls')),
+    (r'', include('tokenapi.urls')),
     )
 # comment out the following if you are serving
 # static files a different way
