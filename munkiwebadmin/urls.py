@@ -18,12 +18,14 @@ urlpatterns = patterns('',
     url(r'^manifest/', include('manifests.urls')),
     url(r'^catalog/', include('catalogs.urls')),
     url(r'^pkgs/', include('pkgs.urls')),
+<<<<<<< HEAD
     url(r'^computer/', include('reports.urls')),
+=======
+    url(r'^computer/', include('catalogs.urls')),
+>>>>>>> rationalise
     
     # for compatibility with MunkiReport scripts    
-    url(r'^$', include('reports.urls')),
-    url(r'^lookup/', include('reports.urls')),
-    url(r'^update/', include('reports.urls')),
+    url(r'^$', include('catalogs.urls')),
     (r'', include('tokenapi.urls')),
     )
 # comment out the following if you are serving
