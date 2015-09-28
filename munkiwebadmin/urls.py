@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^manifest/', include('manifests.urls')),
     url(r'^catalog/', include('catalogs.urls')),
     url(r'^pkgs/', include('pkgs.urls')),
+    url(r'^$', include('catalogs.urls')),
     )
 # comment out the following if you are serving
 # static files a different way
