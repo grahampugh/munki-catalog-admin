@@ -4,7 +4,11 @@
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
 {% block navbar-default_extensions %}
-Confirm Add Package
+	{% if confirm_move %}
+<p>Confirm Move Packages</p>
+	{% else %}
+<p>Confirm Delete Packages</p>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +23,7 @@ Confirm Add Package
 	</div>
 	{% else %}
 	{# Drop-down list for deleting packages #}
-<form id='done' action='/pkgs/delete/' method='post'>
+<form id='done' action='/pkgs/deleted/' method='post'>
 	<div class='well form-horizontal'>
 		<input class='btn' type='submit' value='Confirm Delete' />
 	</div>

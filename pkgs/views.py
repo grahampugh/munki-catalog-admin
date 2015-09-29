@@ -72,7 +72,7 @@ def done(request):
         return HttpResponse("No form submitted.\n")
 
 @csrf_exempt
-def delete(request):
+def deleted(request):
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
         tuple(final_items_to_move)
