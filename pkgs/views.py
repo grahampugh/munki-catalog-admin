@@ -85,7 +85,7 @@ def deleted(request):
         context = {'user': request.user,
                    'final_items_to_move': final_items_to_move,
                    'deleted': 'Deleted'}
-        return render_to_response('pkgs/delete.html', context)
+        return render_to_response('pkgs/deleted.html', context)
     else:
         return HttpResponse("No form submitted.\n")
 
