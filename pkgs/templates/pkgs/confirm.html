@@ -42,7 +42,7 @@
 		</thead>
 		<tbody>
 	{% for package, version, orig_catalog in items_to_move %}
-		{% if (orig_catalog != dest_catalog) or confirm_delete  %}
+		{% if ( orig_catalog != dest_catalog ) or confirm_delete  %}
 			<tr>
 				<td class='item-name'>
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ dest_catalog }}' />
