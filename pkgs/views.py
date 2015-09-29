@@ -84,6 +84,7 @@ def deleted(request):
         Packages.makecatalogs()
         context = {'user': request.user,
                    'final_items_to_move': final_items_to_move,
+                   'deleted_packages': deleted_packages,
                    'deleted': 'Deleted'}
         return render_to_response('pkgs/deleted.html', context)
     else:
