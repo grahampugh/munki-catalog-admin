@@ -4,12 +4,11 @@
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Delete Packages</a>{% endblock %}
 
 {% block navbar-default_extensions %}
-<p>Catalog changes have been made.</p>
 {% endblock %}
 
 {% block content %}
 
-{% if done_delete %}
+{% if deleted_packages %}
 	<p>Makecatalogs has updated the catalogs. The following packages were deleted:</p>
 	<table class='pkglist table table-striped table-condensed'>
 		<tbody>
