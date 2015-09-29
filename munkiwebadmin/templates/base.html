@@ -81,18 +81,8 @@
 	                    <span class="icon-bar"></span>
 	                    <span class="icon-bar"></span>
 	                </button>
-<<<<<<< HEAD
-	                {% if perms.catalogs.can_view_catalogs %}
-	                <a class="navbar-brand" href="{% url 'catalogs.views.catalog_view' %}" style=" padding-right:0px;">
-	                <img src="{% get_static_prefix %}img/Munki.png" style="max-width:160px; max-height:40px; margin-top:-10px;">
-	                </a>
-	                {% else %}
-	                <img src="{% get_static_prefix %}img/Munki.png" style="max-width:160px; max-height:40px; margin-top:-10px;">
-                    {% endif %}
-=======
 	                <a class="navbar-brand" href="/catalog" style=" padding-right:0px;">
                     <img src="{% get_static_prefix %}img/Munki.png" style="max-width:160px; max-height:40px; margin-top:-10px;"></a>
->>>>>>> rationalise
 	                {% block page_title %}{% endblock %}
 		            <ul class="nav navbar-top-links navbar-left" style="padding-top:8px;">
 						<li style="padding-top:7px;">
@@ -130,10 +120,6 @@
                     	<li class="hidden-xs" style="padding-left:10px; padding-top: 10px; padding-bottom: 10px;">
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
-<<<<<<< HEAD
-                        {% if perms.catalogs.can_view_catalogs %}
-=======
->>>>>>> rationalise
                         <li {% if page == 'catalogs' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
@@ -143,10 +129,6 @@
                         <li {% if page == 'pkgs' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
-<<<<<<< HEAD
-                        {% endif %}
-=======
->>>>>>> rationalise
                     </ul>
 	            </div>
 	        </nav>
