@@ -88,7 +88,6 @@ class Packages(object):
     def delete_pkgs(self, pkg_name, pkg_version, pkg_catalog):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         done = False
-        run_makecatalogs = False
         deleted_packages = []
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
@@ -103,7 +102,6 @@ class Packages(object):
                     deleted_packages.append(pkg_to_delete)
                     os.delete(root,name)
                     os.delete(os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
-                    run_makecatalogs = True
                     done = True
                     break
             if done:

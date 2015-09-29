@@ -9,7 +9,7 @@
 
 {% block content %}
 
-{% if done and run_makecatalogs %}
+{% if done %}
 	<p>Makecatalogs has updated the catalogs. The following packages were deleted:</p>
 	<table class='pkglist table table-striped table-condensed'>
 		<tbody>
@@ -21,8 +21,6 @@
 		</tbody>
 	</table>
 
-{% else if done %}
-	<p><i>No Packages selected required moving.</i></p>
 {% else %}
 	<p><i>No Packages were selected.</i></p>
 {% endif %}
