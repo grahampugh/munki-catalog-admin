@@ -78,7 +78,7 @@ def deleted(request):
         tuple(final_items_to_delete)
         for n,pkg in enumerate(final_items_to_delete):
             pkg = pkg.split('___')
-            final_items_to_move[n] = pkg
+            final_items_to_delete[n] = pkg
         for pkg_name, pkg_version in final_items_to_delete:
             Packages.delete_pkgs(pkg_name, pkg_version)
         Packages.makecatalogs()
