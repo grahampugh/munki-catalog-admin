@@ -75,9 +75,11 @@ def done(request):
 def deleted(request):
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
+        tuple(final_items_to_delete)
         deleted_packages = []
         for n,pkg in enumerate(final_items_to_delete):
             pkg = pkg.split('___')
+            final_items_to_delete[] = pkg
         for pkg_name, pkg_version, pkg_location in final_items_to_delete:
             Packages.delete_pkgs(pkg_name, pkg_version)
             deleted_packages.append(pkg_location)
