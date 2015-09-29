@@ -1,13 +1,13 @@
-Munki-Catalog-Admin
+Munki-Do
 --------------
 
-Munki-Catalog-Admin enables the manipulation of Munki packages via the web. Specifically:
+Munki-Do enables the manipulation of Munki packages via the web. Specifically:
 
 1. Packages: manage your production workflow by adding packages to a specific catalog in bulk.
 2. Manifests: create/delete manifests, and manage the contents of manfifests.
 3. Catalogs: view the contents of catalogs.
 
-Munki-Catalog-Admin is an altered version of MunkiWebAdmin (v1) from Greg Neagle: 
+Munki-Do is an altered version of MunkiWebAdmin (v1) from Greg Neagle: 
 
 * https://github.com/munki/munkiwebadmin
 
@@ -23,13 +23,13 @@ permissions is recommended.
 The code which enables movement of packages between catalogs is a derivation of code 
 from Munki-Trello by Graham Gilbert: https://github.com/grahamgilbert/munki-trello
 
-Some of the original functionality of MunkiWebAdmin has been removed from Munki-Catalog-Admin,
+Some of the original functionality of MunkiWebAdmin has been removed from Munki-Do,
 such as reporting tools. For reporting tools, I recommend: 
 
 * *Sal:* https://github.com/salopensource/sal
 * *MunkiReport-PHP:* https://github.com/munkireport/munkireport-php
 
-A Docker container for Munki-Catalog-Admin is available here: 
+A Docker container for Munki-Do is available here: 
 
 * https://github.com/grahampugh/docker-munki-catalog-admin
 
@@ -40,10 +40,6 @@ I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, avail
 To Do
 ----
 
-Munki-Catalog-Admin is still a work in progress, so shouldn't be used in production. 
-*Note that package deletion is not yet functional.*
-and there are security aspects to consider. 
+Munki-Do is still a work in progress, so shouldn't be used in production. 
 
-
-
-Much documentation to do.
+There is much documentation to do, and security of each function is not yet granularised.
