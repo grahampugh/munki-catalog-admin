@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 <!-- page title -->
-{% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Delete Packages</a>{% endblock %}
+{% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
 {% block navbar-default_extensions %}
+<span style="margin-left:45px; margin-top:30px;">Packages Deleted</span>
 {% endblock %}
 
 {% block content %}
