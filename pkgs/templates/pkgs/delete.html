@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+<!-- page title -->
+{% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Delete Packages</a>{% endblock %}
+
+{% block navbar-default_extensions %}
+<p>Catalog changes have been made.</p>
+{% endblock %}
+
+{% block content %}
+
+{% if done and run_makecatalogs %}
+	<p>Makecatalogs has updated the catalogs. The following packages were deleted:</p>
+	<table class='pkglist table table-striped table-condensed'>
+		<tbody>
+	{% for package in deleted_packages %}
+			<tr>
+				<td>{{ package }}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+
+{% else if done %}
+	<p><i>No Packages selected required moving.</i></p>
+{% else %}
+	<p><i>No Packages were selected.</i></p>
+{% endif %}
+{% endblock content %}

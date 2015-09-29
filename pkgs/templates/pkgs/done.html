@@ -9,9 +9,11 @@ Catalog changes have been made
 
 {% block content %}
 
-{% if done %}
+{% if done and run_makecatalogs %}
 	<p><i>Makecatalogs has updated the catalogs.</i></p>
+{% else if done %}
+	<p><i>No Packages selected required moving.</i></p>
 {% else %}
-	<p><i>No Packages to move.</i></p>
+	<p><i>No Packages were selected.</i></p>
 {% endif %}
 {% endblock content %}

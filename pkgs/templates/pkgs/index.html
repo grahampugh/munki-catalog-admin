@@ -39,20 +39,22 @@
 			<tr>
 				<th>Name</th>
 				<th>Version</th>
-				<th>Catalog</th>
+				<th>Catalog(s)</th>
+				<th>Package location</th>
 				<th class='td-right'>Check to select</th>
 			</tr>
 		</thead>
 		<tbody>
 	{% for pkg in all_catalog_items %}
 			<tr>
-				<td class='item-name'>{{ pkg.name }}</td>
-				<td class='version'>{{ pkg.version }}</td>
-				<td class='catalog'>
+				<td>{{ pkg.name }}</td>
+				<td>{{ pkg.version }}</td>
+				<td>
 		{% for catalog in pkg.catalogs %}
 					{{ catalog }} <br />
 		{% endfor %}
 				</td>
+				<td>{{ pkg.installer_item_location }}</td>
 				<td class='td-right'>
 		{% for catalog in pkg.catalogs %}
 					<input type='checkbox' name='items_to_move[]' value='{{ pkg.name }}___{{ pkg.version }}___{{ catalog }}' /><br />

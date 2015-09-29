@@ -11,12 +11,19 @@ Confirm Add Package
 
 {% if items_to_move %}
 
+	{% if confirm_move %}
 	{# Drop-down list for moving to a catalog #}
 <form id='done' action='/pkgs/done/' method='post'>
 	<div class='well form-horizontal'>
 		<input class='btn' type='submit' value='Confirm Move' />
 	</div>
-
+	{% else %}
+	{# Drop-down list for deleting packages #}
+<form id='done' action='/pkgs/delete/' method='post'>
+	<div class='well form-horizontal'>
+		<input class='btn' type='submit' value='Confirm Delete' />
+	</div>
+	{% endif %}
 	<p/>
 	<table class='pkglist table table-striped table-condensed'>
 		<thead>
@@ -24,7 +31,9 @@ Confirm Add Package
 				<th>Name</th>
 				<th>Version</th>
 				<th>Origin Catalog</th>
+	{% if confirm_move %}
 				<th>Destination Catalog</th>
+	{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -36,7 +45,9 @@ Confirm Add Package
 				{{ package }}</td>
 				<td class='version'>{{ version }}</td>
 				<td class='orig_catalog'>{{ orig_catalog }}</td>
+	{% if confirm_move %}
 				<td class='dest_catalog'>{{ dest_catalog }}</td>
+	{% endif %}
 			</tr>
 		{% endif %}
 	{% endfor %}
@@ -44,6 +55,6 @@ Confirm Add Package
 	</table>
 </form>
 {% else %}
-	<p><i>No Packages to move.</i></p>
+	<p><i>No Packages selected.</i></p>
 {% endif %}
 {% endblock content %}

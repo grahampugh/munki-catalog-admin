@@ -38,13 +38,17 @@ def confirm(request):
     if request.method == 'POST': # If the form has been submitted...
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
+        confirm_move = request.POST.getlist('move')
+        confirm_delete = request.POST.getlist('delete')
         tuple(items_to_move)
         for n,pkg in enumerate(items_to_move):
             pkg = pkg.split('___')
             items_to_move[n] = pkg
         c = {'user': request.user,
              'dest_catalog': dest_catalog,
-             'items_to_move': items_to_move}
+             'items_to_move': items_to_move,
+             'confirm_move': confirm_move,
+             'confirm_delete': confirm_delete}
         return render_to_response('pkgs/confirm.html', c)
     else:
         return HttpResponse("No form submitted.\n")
@@ -66,3 +70,22 @@ def done(request):
         return render_to_response('pkgs/done.html', context)
     else:
         return HttpResponse("No form submitted.\n")
+
+@csrf_exempt
+def delete(request):
+    if request.method == 'POST': # If the form has been submitted...
+        final_items_to_move = request.POST.getlist('final_items_to_move[]')
+        tuple(final_items_to_move)
+        for n,pkg in enumerate(final_items_to_move):
+            pkg = pkg.split('___')
+            final_items_to_move[n] = pkg
+        for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
+            Packages.delete_pkgs(pkg_name, pkg_version, pkg_catalog)
+        Packages.makecatalogs()
+        context = {'user': request.user,
+                   'final_items_to_move': final_items_to_move,
+                   'deleted': 'Deleted'}
+        return render_to_response('pkgs/delete.html', context)
+    else:
+        return HttpResponse("No form submitted.\n")
+
