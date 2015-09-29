@@ -84,10 +84,9 @@ class Packages(object):
                 break
 
     @classmethod
-    def delete_pkgs(self, pkg_name, pkg_version):
+    def delete_pkgs(self, pkg_name, pkg_version, pkg_location):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         done_delete = False
-        deleted_packages = []
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
                 # Try, because it's conceivable there's a broken / non plist
@@ -105,7 +104,6 @@ class Packages(object):
                     break
             if done_delete:
                 break
-        return deleted_packages
 
     @classmethod
     def makecatalogs(self):

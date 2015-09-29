@@ -41,7 +41,7 @@
 			</tr>
 		</thead>
 		<tbody>
-	{% for package, version, orig_catalog in items_to_move %}
+	{% for package, version, orig_catalog, pkg_location in items_to_move %}
 		{% if confirm_move and orig_catalog != dest_catalog %}
 			<tr>
 				<td class='item-name'>
@@ -54,9 +54,10 @@
 		{% else %}
 			<tr>
 				<td class='item-name'>
-				<input type='hidden' name='final_items_to_delete[]' value='{{ package }}___{{ version }}' />
+				<input type='hidden' name='final_items_to_delete[]' value='{{ package }}___{{ version }}___{{ pkg_location }}' />
 				{{ package }}</td>
 				<td class='version'>{{ version }}</td>
+				<td class='version'>{{ pkg_location }}</td>
 			</tr>
 		{% endif %}
 
