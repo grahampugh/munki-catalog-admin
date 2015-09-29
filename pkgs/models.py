@@ -97,7 +97,6 @@ class Packages(object):
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-                    deleted_packages.append(pkg_to_delete)
                     os.remove(os.path.join(root, name))
                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                     done_delete = True
