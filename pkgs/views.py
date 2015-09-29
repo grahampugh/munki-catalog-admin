@@ -79,7 +79,7 @@ def deleted(request):
         deleted_packages = []
         for n,pkg in enumerate(final_items_to_delete):
             pkg = pkg.split('___')
-            final_items_to_delete[] = pkg
+            final_items_to_delete[n] = pkg
         for pkg_name, pkg_version, pkg_location in final_items_to_delete:
             Packages.delete_pkgs(pkg_name, pkg_version)
             deleted_packages.append(pkg_location)
