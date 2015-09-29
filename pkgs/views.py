@@ -74,16 +74,16 @@ def done(request):
 @csrf_exempt
 def deleted(request):
     if request.method == 'POST': # If the form has been submitted...
-        final_items_to_move = request.POST.getlist('final_items_to_move[]')
-        tuple(final_items_to_move)
-        for n,pkg in enumerate(final_items_to_move):
+        final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
+        tuple(final_items_to_delete)
+        for n,pkg in enumerate(final_items_to_delete):
             pkg = pkg.split('___')
             final_items_to_move[n] = pkg
-        for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
-            Packages.delete_pkgs(pkg_name, pkg_version, pkg_catalog)
+        for pkg_name, pkg_version in final_items_to_delete:
+            Packages.delete_pkgs(pkg_name, pkg_version)
         Packages.makecatalogs()
         context = {'user': request.user,
-                   'final_items_to_move': final_items_to_move,
+                   'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
                    'deleted': 'Deleted'}
         return render_to_response('pkgs/deleted.html', context)

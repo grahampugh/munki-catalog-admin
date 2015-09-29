@@ -84,7 +84,7 @@ class Packages(object):
                 break
 
     @classmethod
-    def delete_pkgs(self, pkg_name, pkg_version, pkg_catalog):
+    def delete_pkgs(self, pkg_name, pkg_version):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         done_delete = False
         deleted_packages = []
