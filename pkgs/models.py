@@ -78,7 +78,6 @@ class Packages(object):
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     plist['catalogs'] = [pkg_catalog]
                     plistlib.writePlist(plist, os.path.join(root, name))
-                    run_makecatalogs = True
                     done = True
                     break
             if done:
@@ -87,7 +86,7 @@ class Packages(object):
     @classmethod
     def delete_pkgs(self, pkg_name, pkg_version, pkg_catalog):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
-        done = False
+        done_delete = False
         deleted_packages = []
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
@@ -102,9 +101,9 @@ class Packages(object):
                     deleted_packages.append(pkg_to_delete)
                     os.delete(root,name)
                     os.delete(os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
-                    done = True
+                    done_delete = True
                     break
-            if done:
+            if done_delete:
                 break
         return deleted_packages
 
