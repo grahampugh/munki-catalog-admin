@@ -73,7 +73,7 @@ def done(request):
             final_items_to_move[n] = pkg
         if confirm_remove:
             for pkg_name, pkg_version, pkg_orig in final_items_to_move:
-                if pkg_orig != 'no-catalog'
+                if pkg_orig != 'no-catalog':
                     Packages.remove(pkg_name, pkg_version, pkg_orig)
         elif confirm_add:
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
