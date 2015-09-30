@@ -26,7 +26,7 @@
 			<input class='btn btn-info' type='submit' name='move' value='Move Package to:' />
 		</div>
 		<select class='form-control-main form-control dropdown-toggle' id='section' name='dest_catalog'>
-		{% for item in catalog_list %}
+		{% for item in catalog_list where item != 'all' %}
 			<option value='{{ item }}' {% if item == catalog_name %} selected='selected' {% endif %}>{{ item|capfirst }} Catalog</option>
 		{% endfor %}
 			<option value='set-new'><i>( Create new catalog )<i></option>
