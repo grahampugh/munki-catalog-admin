@@ -117,9 +117,6 @@
 
 	            <div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
                     <ul class="nav navbar-nav side-nav" id="side-menu">
-                    	<li class="hidden-xs" style="padding-left:10px; padding-top: 10px; padding-bottom: 10px;">
-	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
-	                	</li>
                         <li {% if page == 'catalogs' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
@@ -129,6 +126,11 @@
                         <li {% if page == 'pkgs' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
+                        {% if page != 'pkgs' %}
+                    	<li class="hidden-xs" style="padding-left:10px; padding-top: 10px; padding-bottom: 10px;">
+	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
+	                	</li>
+	                	{% endif %}
                     </ul>
 	            </div>
 	        </nav>
