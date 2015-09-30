@@ -18,9 +18,8 @@
 {% block content %}
 
 {% if done %}
-	<p><i>Makecatalogs has updated the catalogs.</i></p>
-{% else %}
-	<p><i>No Packages were selected.</i></p>
-{% endif %}
 	<p><a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Back to the Packages page</a></p>
+{% else %}
+	<p><i>Error: No Packages were selected.</i></p>
+{% endif %}
 {% endblock content %}

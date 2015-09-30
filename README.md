@@ -1,17 +1,30 @@
 Munki-Do
 --------------
 
-Munki-Do enables the manipulation of Munki packages via the web. Specifically:
-
-1. Packages: manage your production workflow by adding packages to a specific catalog in bulk.
-2. Manifests: create/delete manifests, and manage the contents of manfifests.
-3. Catalogs: view the contents of catalogs.
-
-Munki-Do is an altered version of MunkiWebAdmin (v1) from Greg Neagle: 
+Munki-Do enables the manipulation of Munki packages via the web. Munki-Do is 
+an altered version of MunkiWebAdmin (v1) from Greg Neagle.  
 
 * https://github.com/munki/munkiwebadmin
 
-This version was forked from Steve Kueng's fork of MunkiWebAdmin: 
+Some existing functionality from MunkiWebAdmin has been retained:
+
+1. Manifests: create/delete manifests, and manage the contents of manifests.
+2. Catalogs: view the contents of catalogs, view pkginfo file contents in tabular form. 
+
+New functionality has been added:
+
+1. Add multiple packages to a new or existing catalog
+2. Remove multiple packages from a catalog
+3. Move packages to a new or existing catalog
+4. Delete packages and their associated pkginfo files
+
+Some of the original functionality of MunkiWebAdmin has been removed from Munki-Do,
+such as reporting tools. For reporting tools, I recommend: 
+
+* *Sal:* https://github.com/salopensource/sal
+* *MunkiReport-PHP:* https://github.com/munkireport/munkireport-php
+
+Munki-Do was forked from Steve Kueng's forked development of MunkiWebAdmin: 
 
 * https://github.com/SteveKueng/munkiwebadmin
 
@@ -22,12 +35,6 @@ permissions is recommended.
 
 The code which enables movement of packages between catalogs is a derivation of code 
 from Munki-Trello by Graham Gilbert: https://github.com/grahamgilbert/munki-trello
-
-Some of the original functionality of MunkiWebAdmin has been removed from Munki-Do,
-such as reporting tools. For reporting tools, I recommend: 
-
-* *Sal:* https://github.com/salopensource/sal
-* *MunkiReport-PHP:* https://github.com/munkireport/munkireport-php
 
 A Docker container for Munki-Do is available here: 
 
@@ -41,5 +48,6 @@ To Do
 ----
 
 Munki-Do is still a work in progress, so shouldn't be used in production. 
+I welcome the raising of issues, and pull requests.
 
 There is much documentation to do, and security of each function is not yet granularised.

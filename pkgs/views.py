@@ -73,13 +73,20 @@ def done(request):
             final_items_to_move[n] = pkg
         if confirm_remove:
             for pkg_name, pkg_version, pkg_orig in final_items_to_move:
-                Packages.remove(pkg_name, pkg_version, pkg_orig)
+                if pkg_orig != 'no-catalog'
+                    Packages.remove(pkg_name, pkg_version, pkg_orig)
         elif confirm_add:
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
-                if new_dest_catalog:
-                    pkg_catalog = new_dest_catalog
-                elif pkg_catalog != 'set-new':
-                    Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
+                if pkg_orig == 'no-catalog':
+                    if pkg_catalog == 'set-new' and new_dest_catalog:
+                        Packages.move(pkg_name, pkg_version, new_dest_catalog)
+                    elif pkg_catalog != 'set-new':
+                        Packages.move(pkg_name, pkg_version, pkg_catalog)
+                else:
+                    if pkg_catalog == 'set-new' and new_dest_catalog:
+                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog)
+                    elif pkg_catalog != 'set-new':
+                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
                 if new_dest_catalog:
