@@ -66,7 +66,7 @@ def done(request):
         confirm_remove = request.POST.get('confirm_remove')
         new_dest_catalog = request.POST.get('new_dest_catalog')
         if new_dest_catalog:
-            new_dest_catalog.lower()
+            new_dest_catalog = new_dest_catalog.lower()
         tuple(final_items_to_move)
         for n,pkg in enumerate(final_items_to_move):
             pkg = pkg.split('___')
