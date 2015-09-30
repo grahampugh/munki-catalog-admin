@@ -52,11 +52,10 @@
 			<tr>
 				<th>Name</th>
 				<th>Version</th>
-	{% if confirm_move or confirm_remove or confirm_delete %}
+	{% if confirm_remove or confirm_delete %}
 				<th>Origin Catalog(s)</th>
-	{% endif %}
-	{% if confirm_move or confirm_add %}
-				<th>New Catalog(s)</th>
+	{% else %}
+				<th>New Catalog</th>
 	{% endif %}
 			</tr>
 		</thead>
@@ -68,7 +67,6 @@
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ dest_catalog }}' />
 				{{ package }}</td>
 				<td>{{ version }}</td>
-				<td>{{ orig_catalog }}</td>
 				<td>{{ dest_catalog }}</td>
 			</tr>
 		{% elif confirm_add and orig_catalog != dest_catalog %}
