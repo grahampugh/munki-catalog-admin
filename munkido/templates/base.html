@@ -111,6 +111,7 @@
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
+	                	<li>{{ request.get_full_path }}</li>
                         <li {% if request.get_full_path == '/catalog/' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
