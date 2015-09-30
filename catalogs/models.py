@@ -8,7 +8,6 @@ REPO_DIR = settings.MUNKI_REPO_DIR
 STATIC_URL = settings.STATIC_URL
 MEDIA_URL = settings.MEDIA_URL
 ICONS_DIR = settings.ICONS_DIR
-PROD_CATALOG = "production" # change this if your production catalog is different
 
 class Catalog(object):
     @classmethod
@@ -28,8 +27,6 @@ class Catalog(object):
                 pass
             else:
                 catalogs.append(name)
-        if not PROD_CATALOG in catalogs:
-            catalogs.append(PROD_CATALOG)
         return catalogs
             
     
