@@ -24,6 +24,7 @@
 <form id='done' action='/pkgs/done/' method='post'>
 	<div class='well form-horizontal'>
 	{% if dest_catalog == "set-new" %}
+		<b>Enter a new catalog name: &nbsp;
 		<input class='form-control-main form-control dropdown-toggle' type='text' name="new_dest_catalog" />
 	{% endif %}
 	{% if confirm_move %}
@@ -57,7 +58,13 @@
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ dest_catalog }}' />
 				{{ package }}</td>
 				<td>{{ version }}</td>
-				<td>{{ dest_catalog }}</td>
+				<td>
+			{% if dest_catalog = 'set-new' %}
+				(Input new catalog above)
+			{% else %}
+				{{ dest_catalog }}
+			{% endif %}
+				</td>
 			</tr>
 		{% elif confirm_add and orig_catalog != dest_catalog %}
 			<tr>
@@ -65,7 +72,13 @@
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}___{{ dest_catalog }}' />
 				{{ package }}</td>
 				<td>{{ version }}</td>
-				<td>{{ dest_catalog }}</td>
+				<td>
+			{% if dest_catalog = 'set-new' %}
+				(Input new catalog above)
+			{% else %}
+				{{ dest_catalog }}
+			{% endif %}
+				</td>
 			</tr>
 		{% elif confirm_remove %}
 			<tr>
