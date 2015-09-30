@@ -65,7 +65,7 @@ class Packages(object):
 
     @classmethod
     def move(self, pkg_name, pkg_version, pkg_catalog):
-        '''Rewrites the catalog of the selected pkginfo files. Taken from grahamgilbert/munki-trello'''
+        '''Rewrites the catalog of the selected pkginfo files. Adapted from grahamgilbert/munki-trello'''
         done = False
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
