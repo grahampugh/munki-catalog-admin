@@ -78,13 +78,13 @@ def done(request):
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
                 if new_dest_catalog:
                     pkg_catalog = new_dest_catalog
-                else if pkg_catalog != 'set-new':
+                elif pkg_catalog != 'set-new':
                     Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
                 if new_dest_catalog:
                     pkg_catalog = new_dest_catalog
-                else if pkg_catalog != 'set-new':
+                elif pkg_catalog != 'set-new':
                     Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
         context = {'user': request.user,
