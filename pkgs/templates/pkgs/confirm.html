@@ -4,20 +4,16 @@
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
 {% block navbar-default_extensions %}
+<div class="btn" style="margin-left:45px;">
 	{% if confirm_move %}
-<div class="btn" style="margin-left:45px;">
 	<p>Confirm Move Packages</p>
-</div>
 	{% elif confirm_add %}
-<div class="btn" style="margin-left:45px;">
 	<p>Confirm add Packages to Catalog</p>
-</div>
 	{% elif confirm_remove %}
-<div class="btn" style="margin-left:45px;">
 	<p>Confirm remove Packages from Catalog</p>
-</div>
 	{% else %}
-<p>Confirm Delete Packages</p>
+	<p>Confirm Delete Packages</p>
+</div>
 	{% endif %}
 {% endblock %}
 

@@ -4,8 +4,15 @@
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
 {% block navbar-default_extensions %}
-<div class="btn" style="margin-left:45px;">
-	<p>Packages moved</p>
+<div class='btn' style='margin-left:45px;'>
+	{% if confirm_move %}
+	<p>Packages have been moved</p>
+	{% elif confirm_add %}
+	<p>Packages have been added</p>
+	{% elif confirm_remove %}
+	<p>Packages have been removed</p>
+	{% else %}
+	<p>Packages deleted</p>
 </div>
 {% endblock %}
 
@@ -16,4 +23,5 @@
 {% else %}
 	<p><i>No Packages were selected.</i></p>
 {% endif %}
+	<p><a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Back to the Packages page</a></p>
 {% endblock content %}
