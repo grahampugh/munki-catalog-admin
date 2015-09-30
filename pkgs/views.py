@@ -39,8 +39,8 @@ def confirm(request):
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
         confirm_move = request.POST.get('move')
-#        confirm_add = request.POST.get('add')
-#        confirm_remove = request.POST.get('remove')
+        confirm_add = request.POST.get('add')
+        confirm_remove = request.POST.get('remove')
         confirm_delete = request.POST.get('delete')
         tuple(items_to_move)
         for n,pkg in enumerate(items_to_move):
@@ -50,8 +50,8 @@ def confirm(request):
              'dest_catalog': dest_catalog,
              'items_to_move': items_to_move,
              'confirm_move': confirm_move,
-#             'confirm_add': confirm_add,
-#             'confirm_remove': confirm_remove,
+             'confirm_add': confirm_add,
+             'confirm_remove': confirm_remove,
              'confirm_delete': confirm_delete}
         return render_to_response('pkgs/confirm.html', c)
     else:
