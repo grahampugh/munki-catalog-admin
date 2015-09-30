@@ -96,7 +96,6 @@ class Packages(object):
                 except:
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
-                    current_catalogs = plist['catalogs']
                     # Check that the catalog is not already in this plist
                     if pkg_catalog not in plist['catalogs']:
                         plist['catalogs'].append(pkg_catalog)

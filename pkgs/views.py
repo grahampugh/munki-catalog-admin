@@ -74,7 +74,8 @@ def done(request):
         elif confirm_add:
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
                 Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
-            else:
+        else:
+            for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
                 Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
         context = {'user': request.user,
