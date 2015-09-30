@@ -49,7 +49,7 @@
 				<td>{{ pkg.version }}</td>
 				<td>
 		{% for catalog in pkg.catalogs %}
-					{{ catalog }} <br />
+					<a href="/catalog/{{ catalog }}">{{ catalog }}</a><br />
 		{% endfor %}
 				</td>
 				<td>{{ pkg.installer_item_location }}</td>
