@@ -68,11 +68,12 @@ def done(request):
         for n,pkg in enumerate(final_items_to_move):
             pkg = pkg.split('___')
             final_items_to_move[n] = pkg
-        for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
-            if confirm_remove:
-                Packages.remove(pkg_name, pkg_version, pkg_catalog)
-            elif confirm_add:
-                Packages.add(pkg_name, pkg_version, pkg_catalog)
+        if confirm_remove:
+            for pkg_name, pkg_version, pkg_orig in final_items_to_move:
+                Packages.remove(pkg_name, pkg_version, pkg_orig)
+        elif confirm_add:
+            for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
+                Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
             else:
                 Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
