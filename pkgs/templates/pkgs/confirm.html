@@ -8,6 +8,14 @@
 <div class="btn" style="margin-left:45px;">
 	<p>Confirm Move Packages</p>
 </div>
+	{% else if confirm_add %}
+<div class="btn" style="margin-left:45px;">
+	<p>Confirm add Packages to Catalog</p>
+</div>
+	{% else if confirm_remove %}
+<div class="btn" style="margin-left:45px;">
+	<p>Confirm remove Packages from Catalog</p>
+</div>
 	{% else %}
 <p>Confirm Delete Packages</p>
 	{% endif %}
@@ -18,13 +26,21 @@
 {% if items_to_move %}
 
 	{% if confirm_move %}
-	{# Drop-down list for moving to a catalog #}
 <form id='done' action='/pkgs/done/' method='post'>
 	<div class='well form-horizontal'>
-		<input class='btn' type='submit' value='Confirm Move' />
+		<input class='btn' type='submit' name='confirm_move' value='Confirm Move' />
+	</div>
+	{% else if confirm_add %}
+<form id='done' action='/pkgs/done/' method='post'>
+	<div class='well form-horizontal'>
+		<input class='btn' type='submit' name='confirm_add' value='Confirm Add' />
+	</div>
+	{% else if confirm_remove %}
+<form id='done' action='/pkgs/done/' method='post'>
+	<div class='well form-horizontal'>
+		<input class='btn' type='submit' name='confirm_remove' value='Confirm Remove' />
 	</div>
 	{% else %}
-	{# Drop-down list for deleting packages #}
 <form id='done' action='/pkgs/deleted/' method='post'>
 	<div class='well form-horizontal'>
 		<input class='btn' type='submit' value='Confirm Delete' />
@@ -36,9 +52,9 @@
 			<tr>
 				<th>Name</th>
 				<th>Version</th>
-				<th>Origin Catalog</th>
-	{% if confirm_move %}
-				<th>Destination Catalog</th>
+				<th>Origin Catalog(s)</th>
+	{% if confirm_move or confirm_add %}
+				<th>Destination Catalog(s)</th>
 	{% endif %}
 			</tr>
 		</thead>
@@ -49,17 +65,34 @@
 				<td class='item-name'>
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ dest_catalog }}' />
 				{{ package }}</td>
-				<td class='version'>{{ version }}</td>
-				<td class='orig_catalog'>{{ orig_catalog }}</td>
-				<td class='dest_catalog'>{{ dest_catalog }}</td>
+				<td>{{ version }}</td>
+				<td>{{ orig_catalog }}</td>
+				<td>{{ dest_catalog }}</td>
+			</tr>
+		{% else if confirm_add and orig_catalog != dest_catalog %}
+			<tr>
+				<td>
+				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}___{{ dest_catalog }}' />
+				{{ package }}</td>
+				<td>{{ version }}</td>
+				<td>{{ orig_catalog }}</td>
+				<td>{{ dest_catalog }}</td>
+			</tr>
+		{% else if confirm_remove %}
+			<tr>
+				<td>
+				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}' />
+				{{ package }}</td>
+				<td>{{ version }}</td>
+				<td>{{ orig_catalog }}</td>
 			</tr>
 		{% else %}
 			<tr>
 				<td class='item-name'>
 				<input type='hidden' name='final_items_to_delete[]' value='{{ package }}___{{ version }}___{{ pkg_location }}' />
 				{{ package }}</td>
-				<td class='version'>{{ version }}</td>
-				<td class='version'>{{ pkg_location }}</td>
+				<td>{{ version }}</td>
+				<td>{{ pkg_location }}</td>
 			</tr>
 		{% endif %}
 

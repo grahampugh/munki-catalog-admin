@@ -38,8 +38,10 @@ def confirm(request):
     if request.method == 'POST': # If the form has been submitted...
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
-        confirm_move = request.POST.getlist('move')
-        confirm_delete = request.POST.getlist('delete')
+        confirm_move = request.POST.get('move')
+        confirm_add = request.POST.get('add')
+        confirm_move = request.POST.get('remove')
+        confirm_delete = request.POST.get('delete')
         tuple(items_to_move)
         for n,pkg in enumerate(items_to_move):
             pkg = pkg.split('___')
@@ -48,6 +50,7 @@ def confirm(request):
              'dest_catalog': dest_catalog,
              'items_to_move': items_to_move,
              'confirm_move': confirm_move,
+             'confirm_add': confirm_add,
              'confirm_delete': confirm_delete}
         return render_to_response('pkgs/confirm.html', c)
     else:
@@ -57,12 +60,20 @@ def confirm(request):
 def done(request):
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
+        confirm_move = request.POST.get('confirm_move')
+        confirm_add = request.POST.get('confirm_add')
+        confirm_remove = request.POST.get('confirm_remove')
         tuple(final_items_to_move)
         for n,pkg in enumerate(final_items_to_move):
             pkg = pkg.split('___')
             final_items_to_move[n] = pkg
         for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
-            Packages.move(pkg_name, pkg_version, pkg_catalog)
+            if confirm_remove:
+                Packages.remove(pkg_name, pkg_version, pkg_catalog)
+            elif confirm_add:
+                Packages:add(pkg_name, pkg_version, pkg_catalog)
+            else:
+                Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
         context = {'user': request.user,
                    'final_items_to_move': final_items_to_move,

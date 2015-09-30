@@ -84,6 +84,54 @@ class Packages(object):
                 break
 
     @classmethod
+    def add(self, pkg_name, pkg_version, pkg_orig, pkg_catalog):
+        '''Appends the catalog of the selected pkginfo files.'''
+        done = False
+        for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
+            for name in files:
+                plist = None
+                # Try, because it's conceivable there's a broken / non plist
+                try:
+                    plist = plistlib.readPlist(os.path.join(root, name))
+                except:
+                    pass
+                if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
+                    current_catalogs = plist['catalogs']
+                    # Check that the catalog is not already in this plist
+                    if pkg_catalog not in plist['catalogs']:
+                        plist['catalogs'].append(pkg_catalog)
+                        plistlib.writePlist(plist, os.path.join(root, name))
+                    done = True
+                    break
+            if done:
+                break
+
+    @classmethod
+    def remove(self, pkg_name, pkg_version, pkg_orig):
+        '''Removes the selected catalog from the pkginfo files.'''
+        done = False
+        for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
+            for name in files:
+                # Try, because it's conceivable there's a broken / non plist
+                plist = None
+                try:
+                    plist = plistlib.readPlist(os.path.join(root, name))
+                except:
+                    pass
+                if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
+                    current_catalogs = plist['catalogs']
+                    # Try to remove this catalog from the array if it exists
+                    try:
+                        plist['catalogs'].remove(pkg_orig)
+                    except:
+                        pass
+                    plistlib.writePlist(plist, os.path.join(root, name))
+                    done = True
+                    break
+            if done:
+                break
+
+    @classmethod
     def delete_pkgs(self, pkg_name, pkg_version):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         done_delete = False
