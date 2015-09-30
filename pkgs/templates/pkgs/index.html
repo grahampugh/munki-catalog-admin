@@ -27,7 +27,7 @@
 		</div>
 		<select class='form-control-main form-control dropdown-toggle' id='section' name='dest_catalog'>
 			{% for item in catalog_list %}
-				<option value='{{ item }}' {% if item == catalog_name %} selected='selected' {% endif %}>{{ item.upper() }} Catalog</option>
+				<option value='{{ item }}' {% if item == catalog_name %} selected='selected' {% endif %}>{{ item|capfirst }} Catalog</option>
 			{% endfor %}
 		</select>
 		<input class='btn btn-warning' type='submit' name='remove' value='Remove Checked Catalog' />
