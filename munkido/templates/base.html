@@ -106,18 +106,18 @@
 
 	            <div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
                     <ul class="nav navbar-nav side-nav" id="side-menu">
-                        {% if resolver_context_processor.app_name != 'pkgs' %}
+                        {% if request.resolver_match.app_name != 'pkgs' %}
                     	<li class="hidden-xs" style="padding-left:10px; padding-top: 10px; padding-bottom: 10px;">
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
-                        <li {% if resolver_context_processor.app_name == 'catalogs' %} class="active" {% endif %}>
+                        <li {% if request.resolver_match.app_name == 'catalogs' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
-                        <li {% if resolver_context_processor.app_name == 'manifests' %} class="active" {% endif %}>
+                        <li {% if request.resolver_match.app_name == 'manifests' %} class="active" {% endif %}>
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>
-                        <li {% if resolver_context_processor.app_name == 'pkgs' %} class="active" {% endif %}>
+                        <li {% if request.resolver_match.app_name == 'pkgs' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
                     </ul>
