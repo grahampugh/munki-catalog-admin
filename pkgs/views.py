@@ -89,6 +89,9 @@ def done(request):
         Packages.makecatalogs()
         context = {'user': request.user,
                    'final_items_to_move': final_items_to_move,
+                   'confirm_move': confirm_move,
+                   'confirm_add': confirm_add,
+                   'confirm_remove': confirm_remove,
                    'done': 'Done'}
         return render_to_response('pkgs/done.html', context)
     else:
