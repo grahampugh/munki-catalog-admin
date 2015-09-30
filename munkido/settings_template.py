@@ -173,6 +173,7 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "munkido.processor.index",
+    "munkido.processor.resolver_context_processor",
 )
 
 MIDDLEWARE_CLASSES = (

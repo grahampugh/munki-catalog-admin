@@ -6,6 +6,4 @@ urlpatterns = patterns('pkgs.views',
 	url(r'^done/*$', 'done'),
 	url(r'^deleted/*$', 'deleted'),
 	url(r'^$', 'index'),
-	#url(r'^(?P<pkgs_name>[^/]+)/(?P<item_name>[^/]+)/$', 'test_index'),
-	#url(r'^(?P<pkgs_name>[^/]+)/edit/$', 'edit'),
 )
