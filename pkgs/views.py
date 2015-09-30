@@ -71,7 +71,7 @@ def done(request):
             if confirm_remove:
                 Packages.remove(pkg_name, pkg_version, pkg_catalog)
             elif confirm_add:
-                Packages:add(pkg_name, pkg_version, pkg_catalog)
+                Packages.add(pkg_name, pkg_version, pkg_catalog)
             else:
                 Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
