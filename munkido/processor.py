@@ -6,7 +6,7 @@ from django.conf import settings
 
 from django.contrib.auth.models import User, Group
 PROJECT_DIR = settings.PROJECT_DIR
-
+APPNAME = settings.APPNAME
 
 def index(request):
 	handle=open(PROJECT_DIR+"/../version", 'r+')
