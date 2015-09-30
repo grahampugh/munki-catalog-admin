@@ -9,7 +9,11 @@
 
 <form id='move' action='/pkgs/' method='get'>
 	<div class='well form-horizontal'>
-		<input class='form-control-main form-control dropdown-toggle' type='text' name='findtext' value='{{ findtext }}' />
+		<input class='form-control-main form-control dropdown-toggle' type='text' name='findtext' 
+	{% if findtext != None %}
+		value='{{ findtext }}'
+	{% endif %}
+		 />
 		<input class='btn' type='submit' name='filter' value='Filter List' />
 		<span class='muted'> Hint: you can use shell-style wildcards in searches for 'fuzzy' matches.</span>
 	</div>
