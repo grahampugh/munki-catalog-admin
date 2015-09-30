@@ -25,27 +25,21 @@
 
 {% if items_to_move %}
 
-	{% if confirm_move %}
 <form id='done' action='/pkgs/done/' method='post'>
 	<div class='well form-horizontal'>
-		<input class='btn' type='submit' name='confirm_move' value='Confirm Move' />
-	</div>
-	{% elif confirm_add %}
-<form id='done' action='/pkgs/done/' method='post'>
-	<div class='well form-horizontal'>
-		<input class='btn' type='submit' name='confirm_add' value='Confirm Add' />
-	</div>
-	{% elif confirm_remove %}
-<form id='done' action='/pkgs/done/' method='post'>
-	<div class='well form-horizontal'>
-		<input class='btn' type='submit' name='confirm_remove' value='Confirm Remove' />
-	</div>
-	{% else %}
-<form id='done' action='/pkgs/deleted/' method='post'>
-	<div class='well form-horizontal'>
-		<input class='btn' type='submit' value='Confirm Delete' />
-	</div>
+	{% if dest_catalog == "set-new" %}
+		<input class='form-control-main form-control dropdown-toggle' type='text' name="new_dest_catalog" />
 	{% endif %}
+	{% if confirm_move %}
+		<input class='btn' type='submit' name='confirm_move' value='Confirm Move' />
+	{% elif confirm_add %}
+		<input class='btn' type='submit' name='confirm_add' value='Confirm Add' />
+	{% elif confirm_remove %}
+		<input class='btn' type='submit' name='confirm_remove' value='Confirm Remove' />
+	{% else %}
+		<input class='btn' type='submit' value='Confirm Delete' />
+	{% endif %}
+	</div>
 	<p/>
 	<table class='pkglist table table-striped table-condensed'>
 		<thead>

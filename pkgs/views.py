@@ -64,6 +64,7 @@ def done(request):
         confirm_move = request.POST.get('confirm_move')
         confirm_add = request.POST.get('confirm_add')
         confirm_remove = request.POST.get('confirm_remove')
+        new_dest_catalog = request.POST.get('new_dest_catalog').lower()
         tuple(final_items_to_move)
         for n,pkg in enumerate(final_items_to_move):
             pkg = pkg.split('___')
@@ -73,9 +74,13 @@ def done(request):
                 Packages.remove(pkg_name, pkg_version, pkg_orig)
         elif confirm_add:
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
+                if new_dest_catalog:
+                    pkg_catalog = new_dest_catalog
                 Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
+                if new_dest_catalog:
+                    pkg_catalog = new_dest_catalog
                 Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
         context = {'user': request.user,

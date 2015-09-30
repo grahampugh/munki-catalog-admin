@@ -26,9 +26,10 @@
 			<input class='btn btn-info' type='submit' name='move' value='Move Package to:' />
 		</div>
 		<select class='form-control-main form-control dropdown-toggle' id='section' name='dest_catalog'>
-			{% for item in catalog_list %}
-				<option value='{{ item }}' {% if item == catalog_name %} selected='selected' {% endif %}>{{ item|capfirst }} Catalog</option>
-			{% endfor %}
+		{% for item in catalog_list %}
+			<option value='{{ item }}' {% if item == catalog_name %} selected='selected' {% endif %}>{{ item|capfirst }} Catalog</option>
+		{% endfor %}
+			<option value='set-new'><i>( Create new catalog )<i></option>
 		</select>
 		<input class='btn btn-warning' type='submit' name='remove' value='Remove Checked Catalog' />
 		 <input class='btn btn-danger' type='submit' name='delete' value='Delete Package' />
