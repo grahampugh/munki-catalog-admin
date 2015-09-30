@@ -40,7 +40,7 @@ def confirm(request):
         items_to_move = request.POST.getlist('items_to_move[]')
         confirm_move = request.POST.get('move')
         confirm_add = request.POST.get('add')
-        confirm_move = request.POST.get('remove')
+        confirm_remove = request.POST.get('remove')
         confirm_delete = request.POST.get('delete')
         tuple(items_to_move)
         for n,pkg in enumerate(items_to_move):
