@@ -51,6 +51,7 @@ def confirm(request):
              'items_to_move': items_to_move,
              'confirm_move': confirm_move,
              'confirm_add': confirm_add,
+             'confirm_remove': confirm_remove,
              'confirm_delete': confirm_delete}
         return render_to_response('pkgs/confirm.html', c)
     else:
