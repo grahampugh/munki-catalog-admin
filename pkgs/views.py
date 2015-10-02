@@ -30,8 +30,8 @@ def index(request):
                                'all_catalog_items': all_catalog_items,
                                'catalog_list': catalog_list,
                                'catalog_name': catalog_name,
-                               'findtext': findtext
-                               })
+                               'findtext': findtext,
+                               'page': 'pkgs'})
 
 @csrf_exempt
 def confirm(request):
@@ -52,7 +52,8 @@ def confirm(request):
              'confirm_move': confirm_move,
              'confirm_add': confirm_add,
              'confirm_remove': confirm_remove,
-             'confirm_delete': confirm_delete}
+             'confirm_delete': confirm_delete,
+             'page': 'pkgs'}
         return render_to_response('pkgs/confirm.html', c)
     else:
         return HttpResponse("No form submitted.\n")
@@ -99,7 +100,8 @@ def done(request):
                    'confirm_move': confirm_move,
                    'confirm_add': confirm_add,
                    'confirm_remove': confirm_remove,
-                   'done': 'Done'}
+                   'done': 'Done',
+                   'page': 'pkgs'}
         return render_to_response('pkgs/done.html', context)
     else:
         return HttpResponse("No form submitted.\n")
@@ -120,7 +122,8 @@ def deleted(request):
         context = {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
-                   'deleted': 'Deleted'}
+                   'deleted': 'Deleted',
+                   'page': 'pkgs'}
         return render_to_response('pkgs/deleted.html', context)
     else:
         return HttpResponse("No form submitted.\n")
