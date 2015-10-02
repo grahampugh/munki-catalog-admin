@@ -5,7 +5,7 @@ urlpatterns = patterns('manifests.views',
     url(r'^new$', 'new'),
     url(r'^copymanifest$', 'copymanifest'),
     url(r'^delete/(?P<manifest_name>[^/]+)/$', 'delete'),
-    url(r'^#(?P<manifest_name>.+)/$', 'index', name="mdo-catalogs"),
+    url(r'^#(?P<manifest_name>.+)/$', 'index'),
     url(r'^view/(?P<manifest_name>[^/]+)/$', 'view'),
     url(r'^detail/(?P<manifest_name>[^/]+)$', 'detail'),
 )
