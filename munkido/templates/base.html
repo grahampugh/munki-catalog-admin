@@ -115,13 +115,13 @@
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
-                        <li class="{% navactive request 'catalog catalogs' %}">
+                        <li class="{% navactive request 'mdo-catalogs' %}">
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
-                        <li class="{% navactive request 'manifest manifests' %}">
+                        <li class="{% navactive request 'mdo-manifests' %}">
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>
-                        <li class="{% navactive request 'pkgs' %}">
+                        <li class="{% navactive request 'mdo-pkgs' %}">
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
                     </ul>

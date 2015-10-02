@@ -15,12 +15,12 @@ urlpatterns = patterns('',
     
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
-    url(r'^manifest/', include('manifests.urls'), name='manifests'),
-    url(r'^catalog/', include('catalogs.urls'), name='catalogs'),
-    url(r'^pkgs/', include('pkgs.urls'), name='pkgs'),
+    url(r'^manifest/', include('manifests.urls'), name='mdo-manifests'),
+    url(r'^catalog/', include('catalogs.urls'), name='mdo-catalogs'),
+    url(r'^pkgs/', include('pkgs.urls'), name='mdo-pkgs'),
     
     # for compatibility with MunkiReport scripts    
-    url(r'^$', include('catalogs.urls'), name='catalogs'),
+    url(r'^$', include('catalogs.urls'), name='mdo-catalogs'),
     (r'', include('tokenapi.urls')),
     )
 # comment out the following if you are serving
