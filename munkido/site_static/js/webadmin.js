@@ -81,7 +81,7 @@ function removeWrapperMargin() {
     $('#page-wrapper').animate({ marginTop: '0px' , opacity: 1 }, 500);
 }
 
-function diableSearch() {
+function disableSearch() {
     $('#SearchFieldMobile').prop('disabled', true);
     $('#SearchField').prop('disabled', true);
 }
