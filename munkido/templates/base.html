@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
         {% load static %}
-        
 		<!-- Bootstrap Core CSS -->
 	    <link href="{% get_static_prefix %}css/bootstrap.css" rel="stylesheet">
 	    <!-- BootstrapXL CSS -->
@@ -99,7 +98,7 @@
                           <li class="divider"></li>
                           <li><a>{{ webadmin_version }}</a></li>
                           <li class="divider"></li>
-                          <li><a>URL: {{ request.path }}</a></li>
+                          <li><a>URL: {{ request.get_full_path }}</a></li>
 	                    </ul>
 	                </li>
 	                <li class="sidebar-search hidden-sm hidden-md hidden-lg" style="padding-top:8px;">
@@ -109,18 +108,18 @@
 
 	            <div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
                     <ul class="nav navbar-nav side-nav" id="side-menu">
-                        {% if request.path != '/pkgs/' %}
+                        {% if request.get_full_path != '/pkgs/' %}
                     	<li class="hidden-xs" style="padding-left:10px; padding-top: 10px; padding-bottom: 10px;">
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
-                        <li>
+                        <li {% if request.get_full_path == '/catalog/' or request.get_full_path == '/' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
-                        <li">
+                        <li {% if request.get_full_path == '/manifest/' %} class="active" {% endif %}>
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>
-                        <li>
+                        <li {% if request.get_full_path == '/pkgs/' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
                     </ul>
