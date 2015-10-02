@@ -115,13 +115,13 @@
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
-                        <li {% if navactive request 'catalog catalogs' %} class="active" {% endif %}>
+                        <li {% if navactive 'catalog catalogs' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
-                        <li {% if navactive request 'manifest manifests' %} class="active" {% endif %}>
+                        <li {% if navactive 'manifest manifests' %} class="active" {% endif %}>
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>
-                        <li {% if if navactive request 'pkgs' %} class="active" {% endif %}>
+                        <li {% if if navactive 'pkgs' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
                     </ul>
