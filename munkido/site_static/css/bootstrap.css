@@ -2727,6 +2727,10 @@ select[multiple].input-lg {
     padding-top: 6px;
   }
 }
+.section_label {
+  font-weight: bold;
+  padding: 5px 16px;
+}
 .btn {
   display: inline-block;
   padding: 6px 12px;
@@ -3070,9 +3074,9 @@ fieldset[disabled] .btn-link:focus {
 }
 .btn-xs,
 .btn-group-xs > .btn {
-  padding: 1px 5px;
+  padding: 1px 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1;
   border-radius: 3px;
 }
 .btn-block {
