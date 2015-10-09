@@ -15,6 +15,8 @@ from django import forms
 from models import Packages
 from catalogs.models import Catalog
 
+import fnmatch
+import json
 import os
 
 PROD_CATALOG = "production" # change this if your production catalog is different

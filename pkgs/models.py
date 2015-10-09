@@ -1,11 +1,10 @@
-#from django.db import models
 import os
 import sys
+import shutil
 import subprocess
 import plistlib
 import optparse
 import fnmatch
-
 from django.conf import settings
 from django.db import models
 
@@ -157,4 +156,4 @@ class Packages(object):
 
 class Pkgs(models.Model):
     class Meta:
-        permissions = (("can_view_pkgs", "Can view packages"),)
+        permissions = (("can_view_packages", "Can view packages"),)

@@ -1,5 +1,3 @@
-#from django.db import models
-# we're not using a database for out manifests, so no need to import models
 import os
 import shutil
 import subprocess
