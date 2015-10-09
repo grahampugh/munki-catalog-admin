@@ -59,12 +59,12 @@
 				<td>{{ pkg.version }}</td>
 				<td>
 		{% for catalog in pkg.catalogs %}
-					<a href="/catalog/{{ catalog }}">{{ catalog }}</a><br />
+					<a href='/catalog/{{ catalog }}'>{{ catalog }}</a><br />
 		{% empty %}
 					(No catalog)<br />
 		{% endfor %}
 				</td>
-				<td>{{ pkg.installer_item_location }}</td>
+				<td><a href='{{ settings.MUNKI_REPO.DIR }}/pkgs/{{ pkg.installer_item_location }}'>{{ pkg.installer_item_location }}</a></td>
 				<td class='td-right'>
 		{% for catalog in pkg.catalogs %}
 					<input type='checkbox' name='items_to_move[]' value='{{ pkg.name }}___{{ pkg.version }}___{{ catalog }}___{{ pkg.installer_item_location }}' /><br />
