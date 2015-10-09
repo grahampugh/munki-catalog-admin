@@ -2,58 +2,21 @@
 
 {% block content %}
 
-{% if perms.pkgs %}
-<p>perms.pkgs = yes</p>
+<p>{{ perms.pkgs }}</p>
+<p>{{ perms.catalogs }}</p>
+<p>{{ perms.manifests }}</p>
+<p>{{ perms.manifests.can_view_manifests }}</p>
+
+{% if user.has_perm('pkgs.change_pkgs') %}
+<p>user.has_perm('pkgs.change_pkgs') = True</p>
 {% else %}
-<p>perms.pkgs = no</p>
+<p>user.has_perm('pkgs.change_pkgs') = False</p>
 {% endif %}
 
-{% if perms.pkgs.change_pkgs %}
-<p>perms.pkgs.change_pkgs = yes</p>
+{% if user.has_perm('manifests.can_view_manifests') %}
+<p>user.has_perm('manifests.can_view_manifests') = True</p>
 {% else %}
-<p>perms.pkgs.change_pkgs = no</p>
-{% endif %}
-
-{% if perms.pkgs.can_view_packages %}
-<p>perms.pkgs.can_view_packages = yes</p>
-{% else %}
-<p>perms.pkgs.can_view_packages = no</p>
-{% endif %}
-
-{% if perms.manifests %}
-<p>perms.manifests = yes</p>
-{% else %}
-<p>perms.manifests = no</p>
-{% endif %}
-
-{% if perms.manifests.change_manifests %}
-<p>perms.manifests.change_manifests = yes</p>
-{% else %}
-<p>perms.manifests.change_manifests = no</p>
-{% endif %}
-
-{% if perms.manifests.can_view_manifests %}
-<p>perms.manifests.can_view_manifests = yes</p>
-{% else %}
-<p>perms.manifests.can_view_manifests = no</p>
-{% endif %}
-
-{% if perms.catalogs %}
-<p>perms.catalogs = yes</p>
-{% else %}
-<p>perms.catalogs = no</p>
-{% endif %}
-
-{% if perms.catalogs.change_catalogs %}
-<p>perms.catalogs.change_catalogs = yes</p>
-{% else %}
-<p>perms.catalogs.change_catalogs = no</p>
-{% endif %}
-
-{% if perms.catalogs.can_view_catalogs %}
-<p>perms.catalogs.can_view_catalogs = yes</p>
-{% else %}
-<p>perms.catalogs.can_view_catalogs = no</p>
+<p>user.has_perm('manifests.can_view_manifests') = False</p>
 {% endif %}
 
 {% endblock content %}
