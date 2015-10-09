@@ -197,7 +197,7 @@ def copymanifest(request):
     
 @login_required
 def test(request):
-    add_manifests = user.has_perm('manifests.add_manifests')
+    add_manifests = request.user.has_perm('manifests.add_manifests')
     context =  {'user': request.user,
                 'page': 'manifests',
                 'add_manifests': add_manifests}
