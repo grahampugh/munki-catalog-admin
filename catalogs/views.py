@@ -123,3 +123,9 @@ def catalog_view(request, catalog_name=None, item_index=None):
                                 'page': 'catalogs'})
     c.update(csrf(request))
     return render_to_response('catalogs/catalog.html', c)
+
+@login_required
+def test(request):
+        context = {'user': request.user,
+                   'page': 'catalogs'}
+        return render_to_response('catalog/test.html', context)

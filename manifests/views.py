@@ -194,3 +194,10 @@ def copymanifest(request):
     Manifest.copy(manifest_name, manifest_copy)
 
     return HttpResponse("No report submitted.\n")
+    
+@login_required
+def test(request):
+        context = {'user': request.user,
+                   'page': 'manifests'}
+        return render_to_response('manifests/test.html', context)
+

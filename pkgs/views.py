@@ -147,3 +147,8 @@ def deleted(request):
     else:
         return HttpResponse("No form submitted.\n")
 
+@login_required
+def test(request):
+        context = {'user': request.user,
+                   'page': 'pkgs'}
+        return render_to_response('pkgs/test.html', context)
