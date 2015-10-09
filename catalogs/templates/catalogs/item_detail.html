@@ -3,7 +3,10 @@
 <table class='table table-condensed'>
 
 {% for key, value in catalog_item.items %}
-    {% if value|type_is:'array' %}
+    {% if 'installer_item_location' in key %}
+        {# provide download link for the package #}
+        <tr><th scope="row">{{ key }}</th><td><a href='/munki_repo/{{ value }}'>{{ value }}</a></td></tr>
+    {% elif value|type_is:'array' %}
         {% if value.0|type_is:'dictionary' %}
             {# list of dicts #}
             <tr><th scope="row">{{ key }}</th>
@@ -13,7 +16,11 @@
             <tr><th scope="row">{{ key }}</th>
             <td>
                 {% for item in value %}
-                    {{ item }}
+                    {% if 'catalog' in key %}
+                        <a href='/catalog/{{ item }}'>{{ item }}</a>
+                    {% else %}
+                        {{ item }}
+                    {% endif %}
                     {% if not forloop.last %}<br />{% endif %}
                 {% endfor %}
             </td></tr>
