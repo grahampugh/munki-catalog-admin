@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% if perms.pkgs.change_pkgs %}
+<p>perms.pkgs.change_pkgs = yes</p>
+{% else %}
+<p>perms.pkgs.change_pkgs = no</p>
+{% endif %}
+
+{% if perms.pkgs.can_view_packages %}
+<p>perms.pkgs.can_view_packages = yes</p>
+{% else %}
+<p>perms.pkgs.can_view_packages = no</p>
+{% endif %}
+
+{% if perms.manifests.change_manifests %}
+<p>perms.manifests.change_manifests = yes</p>
+{% else %}
+<p>perms.manifests.change_manifests = no</p>
+{% endif %}
+
+{% if perms.manifests.can_view_manifests %}
+<p>perms.manifests.can_view_manifests = yes</p>
+{% else %}
+<p>perms.manifests.can_view_manifests = no</p>
+{% endif %}
+
+{% if perms.catalogs.change_catalogs %}
+<p>perms.catalogs.change_catalogs = yes</p>
+{% else %}
+<p>perms.catalogs.change_catalogs = no</p>
+{% endif %}
+
+{% if perms.catalogs.can_view_catalogs %}
+<p>perms.catalogs.can_view_catalogs = yes</p>
+{% else %}
+<p>perms.catalogs.can_view_catalogs = no</p>
+{% endif %}
+
