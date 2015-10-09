@@ -22,6 +22,11 @@ urlpatterns = patterns('',
     # for compatibility with MunkiReport scripts    
     url(r'^$', include('catalogs.urls')),
     (r'', include('tokenapi.urls')),
+    
+    # for access to the munki repo directly:
+    url(r'^munki_repo/(?P<path>.*)$',
+            'django.views.static.serve',
+            {'document_root': settings.MUNKI_PKG_ROOT, }),
     )
 # comment out the following if you are serving
 # static files a different way
