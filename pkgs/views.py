@@ -47,7 +47,7 @@ def index(request):
 @permission_required('pkgs.can_change_packages', login_url='/login/') 
 def confirm(request):
     if request.method == 'POST': # If the form has been submitted...
-        if not request.user.has_perm('pkgs.can_change_packages'):
+        if not request.user.has_perm('pkgs.change_packages'):
             return HttpResponse(json.dumps('error'))
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
@@ -72,7 +72,7 @@ def confirm(request):
         return HttpResponse("No form submitted.\n")
 
 @login_required
-@permission_required('pkgs.can_change_packages', login_url='/login/') 
+@permission_required('pkgs.change_packages', login_url='/login/') 
 def done(request):
     if request.method == 'POST': # If the form has been submitted...
         if not request.user.has_perm('pkgs.can_change_packages'):
@@ -123,7 +123,7 @@ def done(request):
         return HttpResponse("No form submitted.\n")
 
 @login_required
-@permission_required('pkgs.can_delete_packages', login_url='/login/') 
+@permission_required('pkgs.delete_packages', login_url='/login/') 
 def deleted(request):
     if request.method == 'POST': # If the form has been submitted...
         if not request.user.has_perm('pkgs.can_delete_packages'):
