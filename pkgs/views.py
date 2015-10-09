@@ -149,7 +149,7 @@ def deleted(request):
 
 @login_required
 def test(request):
-    add_catalogs = user.has_perm('pkgs.add_pkgs')
+    add_pkgs = user.has_perm('pkgs.add_pkgs')
     context =  {'user': request.user,
                 'page': 'pkgs',
                 'add_pkgs', add_pkgs}
