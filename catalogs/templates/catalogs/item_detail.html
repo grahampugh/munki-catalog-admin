@@ -6,7 +6,7 @@
     {% if 'installer_item_location' in key %}
         {# provide download link for the package #}
         <tr><th scope="row">{{ key }}</th><td><a href='/munki_repo/{{ value }}'>{{ value }}</a></td></tr>
-    {% if key == 'name' %}
+    {% elif key == 'name' %}
         {# provide link to the packages page #}
         <tr><th scope="row">{{ key }}</th><td><a href='/pkgs/?findtext={{ value }}&filter=Filter+List'>{{ value }}</a></td></tr>
     {% elif value|type_is:'array' %}
