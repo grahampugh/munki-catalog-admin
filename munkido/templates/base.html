@@ -111,17 +111,17 @@
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
-	{% if perms.catalogs.can_view_catalogs %}
+	{% if can_view_pkgs %}
                         <li {% if page == 'catalogs' or request.get_full_path == '/' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
     {% endif %}
-	{% if perms.manifests.can_view_manifests %}
+	{% if can_view_pkgs %}
                         <li {% if page == 'manifests' %} class="active" {% endif %}>
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>
     {% endif %}
-	{% if perms.pkgs.can_view_packages %}
+	{% if can_view_pkgs %}
                         <li {% if page == 'pkgs' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
