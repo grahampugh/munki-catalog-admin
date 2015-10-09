@@ -2,22 +2,13 @@
 
 {% block content %}
 
-<p>{{ perms.pkgs }}</p>
-<p>{{ perms.catalogs }}</p>
-<p>{{ perms.manifests }}</p>
-<p>{{ perms.manifests.can_view_manifests }}</p>
+<p>user: {{ user.get_all_permissions() }}</p>
+<p>perms: {{ perms }}</p>
+<p>perms.pkgs {{ perms.pkgs }}</p>
+<p>perms.catalogs: {{ perms.catalogs }}</p>
+<p>perms.manifests: {{ perms.manifests }}</p>
+<p>perms.manifests.can_view_manifests: {{ perms.manifests.can_view_manifests }}</p>
 
-{% if user.has_perm('manifests.can_view_manifests') %}
-<p>user.has_perm('manifests.can_view_manifests') = True</p>
-{% else %}
-<p>user.has_perm('manifests.can_view_manifests') = False</p>
-{% endif %}
-
-{% if user.has_perm('pkgs.change_pkgs') %}
-<p>user.has_perm('pkgs.change_pkgs') = True</p>
-{% else %}
-<p>user.has_perm('pkgs.change_pkgs') = False</p>
-{% endif %}
 
 
 
