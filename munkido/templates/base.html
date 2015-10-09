@@ -111,12 +111,12 @@
 	                        <input type="text" class="form-control dropdown-toggle" id="SearchField" autocomplete="off" data-provide="typeahead" data-source='{% block data-source %}{% endblock %}' data-items="7" placeholder="Search...">
 	                	</li>
 	                	{% endif %}
-	{% if can_view_pkgs %}
+	{% if perms.catalogs.can_view_catalogs %}
                         <li {% if page == 'catalogs' or request.get_full_path == '/' %} class="active" {% endif %}>
                             <a href="{% url 'catalogs.views.catalog_view' %}"><i class="fa fa-list-alt fa-fw"></i> Catalogs</a>
                         </li>
     {% endif %}
-	{% if can_view_pkgs %}
+	{% if perms.manifests.can_view_manifests %}
                         <li {% if page == 'manifests' %} class="active" {% endif %}>
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>

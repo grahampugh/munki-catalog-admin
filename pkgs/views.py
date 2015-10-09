@@ -24,6 +24,8 @@ PROD_CATALOG = "production" # change this if your production catalog is differen
 @login_required
 def index(request):
     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
     change_pkgs = request.user.has_perm('pkgs.change_pkgs')
     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'GET':
@@ -44,12 +46,19 @@ def index(request):
                                'catalog_name': catalog_name,
                                'findtext': findtext,
                                'can_view_pkgs': can_view_pkgs,
+                               'can_view_manifests': can_view_manifests,
+                               'can_view_catalogs': can_view_catalogs,
                                'change_pkgs': change_pkgs,
                                'delete_pkgs': delete_pkgs,
                                'page': 'pkgs'})
 
 @login_required
 def confirm(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
@@ -68,6 +77,11 @@ def confirm(request):
              'confirm_add': confirm_add,
              'confirm_remove': confirm_remove,
              'confirm_delete': confirm_delete,
+             'can_view_pkgs': can_view_pkgs,
+             'can_view_manifests': can_view_manifests,
+             'can_view_catalogs': can_view_catalogs,
+             'change_pkgs': change_pkgs,
+             'delete_pkgs': delete_pkgs,
              'page': 'pkgs'}
         return render_to_response('pkgs/confirm.html', c)
     else:
@@ -75,6 +89,11 @@ def confirm(request):
 
 @login_required
 def done(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
         confirm_move = request.POST.get('confirm_move')
@@ -115,6 +134,11 @@ def done(request):
                    'confirm_move': confirm_move,
                    'confirm_add': confirm_add,
                    'confirm_remove': confirm_remove,
+                   'can_view_pkgs': can_view_pkgs,
+                   'can_view_manifests': can_view_manifests,
+                   'can_view_catalogs': can_view_catalogs,
+                   'change_pkgs': change_pkgs,
+                   'delete_pkgs': delete_pkgs,
                    'done': 'Done',
                    'page': 'pkgs'}
         return render_to_response('pkgs/done.html', context)
@@ -123,6 +147,11 @@ def done(request):
 
 @login_required
 def deleted(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
         tuple(final_items_to_delete)
@@ -138,6 +167,11 @@ def deleted(request):
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
                    'deleted': 'Deleted',
+                   'can_view_pkgs': can_view_pkgs,
+                   'can_view_manifests': can_view_manifests,
+                   'can_view_catalogs': can_view_catalogs,
+                   'change_pkgs': change_pkgs,
+                   'delete_pkgs': delete_pkgs,
                    'page': 'pkgs'}
         return render_to_response('pkgs/deleted.html', context)
     else:
