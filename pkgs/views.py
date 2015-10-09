@@ -22,8 +22,10 @@ import os
 PROD_CATALOG = "production" # change this if your production catalog is different
 
 @login_required
-@permission_required('pkgs.can_view_packages', login_url='/login/') 
 def index(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'GET':
         findtext = request.GET.get('findtext')
         all_catalog_items = Packages.detail(findtext)
@@ -41,14 +43,14 @@ def index(request):
                                'catalog_list': catalog_list,
                                'catalog_name': catalog_name,
                                'findtext': findtext,
+                               'can_view_pkgs': can_view_pkgs,
+                               'change_pkgs': change_pkgs,
+                               'delete_pkgs': delete_pkgs,
                                'page': 'pkgs'})
 
 @login_required
-@permission_required('pkgs.can_change_packages', login_url='/login/') 
 def confirm(request):
     if request.method == 'POST': # If the form has been submitted...
-        if not request.user.has_perm('pkgs.change_packages'):
-            return HttpResponse(json.dumps('error'))
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
         confirm_move = request.POST.get('move')
@@ -72,11 +74,8 @@ def confirm(request):
         return HttpResponse("No form submitted.\n")
 
 @login_required
-@permission_required('pkgs.change_packages', login_url='/login/') 
 def done(request):
     if request.method == 'POST': # If the form has been submitted...
-        if not request.user.has_perm('pkgs.can_change_packages'):
-            return HttpResponse(json.dumps('error'))
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
         confirm_move = request.POST.get('confirm_move')
         confirm_add = request.POST.get('confirm_add')
@@ -123,11 +122,8 @@ def done(request):
         return HttpResponse("No form submitted.\n")
 
 @login_required
-@permission_required('pkgs.delete_packages', login_url='/login/') 
 def deleted(request):
     if request.method == 'POST': # If the form has been submitted...
-        if not request.user.has_perm('pkgs.can_delete_packages'):
-            return HttpResponse(json.dumps('error'))
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
         tuple(final_items_to_delete)
         deleted_packages = []

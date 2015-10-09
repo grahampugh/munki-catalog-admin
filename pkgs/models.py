@@ -156,4 +156,4 @@ class Packages(object):
 
 class Pkgs(models.Model):
     class Meta:
-        permissions = (("can_view_packages", "Can view packages"),)
+        permissions = (("can_view_pkgs", "Can view packages"),)

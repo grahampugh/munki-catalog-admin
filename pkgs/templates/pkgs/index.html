@@ -23,9 +23,9 @@
 	{# Drop-down list for moving to a catalog #}
 
 <form id='move' action='/pkgs/confirm/' method='post'>
-	{% if perms.pkgs.change_pkgs or perms.pkgs.delete_pkgs %}
+	{% if change_pkgs or delete_pkgs %}
 	<div class='well form-horizontal'>
-	{% if perms.pkgs.change_pkgs %}
+	{% if change_pkgs %}
 		<div class="btn-group">
 			<input class='btn' type='submit' name='add' value='Add Package to:' />
 			<input class='btn btn-info' type='submit' name='move' value='Move Package to:' />
@@ -40,7 +40,7 @@
 		</select>
 		<input class='btn btn-warning' type='submit' name='remove' value='Remove Checked Catalog' />
 	{% endif %}
-	{% if perms.pkgs.delete_pkgs %}
+	{% if delete_pkgs %}
 		<input class='btn btn-danger' type='submit' name='delete' value='Delete Package' />
 	{% endif %}
 	</div>
@@ -54,7 +54,7 @@
 				<th>Version</th>
 				<th>Catalog(s)</th>
 				<th>Package location</th>
-	{% if perms.pkgs.change_pkgs or perms.pkgs.delete_pkgs %}
+	{% if change_pkgs or delete_pkgs %}
 				<th class='td-right'>Check to select</th>
 	{% endif %}
 			</tr>
@@ -72,7 +72,7 @@
 		{% endfor %}
 				</td>
 				<td><a href='/munki_repo/{{ pkg.installer_item_location }}'>{{ pkg.installer_item_location }}</a></td>
-	{% if perms.pkgs.change_pkgs or perms.pkgs.delete_pkgs %}
+	{% if change_pkgs or delete_pkgs %}
 				<td class='td-right'>
 		{% for catalog in pkg.catalogs %}
 					<input type='checkbox' name='items_to_move[]' value='{{ pkg.name }}___{{ pkg.version }}___{{ catalog }}___{{ pkg.installer_item_location }}' /><br />
