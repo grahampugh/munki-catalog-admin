@@ -121,7 +121,7 @@
                             <a href="{% url 'manifests.views.index' %}"><i class="fa fa-edit fa-fw"></i> Manifests</a>
                         </li>
     {% endif %}
-	{% if can_view_pkgs %}
+	{% if perms.pkgs.can_view_pkgs or can_view_pkgs %}
                         <li {% if page == 'pkgs' %} class="active" {% endif %}>
                             <a href="{% url 'pkgs.views.index' %}"><i class="fa fa-gift fa-fw"></i> Packages</a>
                         </li>
