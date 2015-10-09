@@ -200,5 +200,5 @@ def test(request):
     add_manifests = user.has_perm('manifests.add_manifests')
     context =  {'user': request.user,
                 'page': 'manifests',
-                'add_manifests', add_manifests}
+                'add_manifests': add_manifests}
     return render_to_response('manifests/test.html', context)

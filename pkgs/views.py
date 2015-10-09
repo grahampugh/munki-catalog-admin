@@ -152,5 +152,5 @@ def test(request):
     add_pkgs = user.has_perm('pkgs.add_pkgs')
     context =  {'user': request.user,
                 'page': 'pkgs',
-                'add_pkgs', add_pkgs}
+                'add_pkgs': add_pkgs}
     return render_to_response('pkgs/test.html', context)

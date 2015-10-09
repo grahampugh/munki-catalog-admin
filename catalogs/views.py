@@ -129,5 +129,5 @@ def test(request):
     add_catalogs = user.has_perm('catalogs.add_catalogs')
     context =  {'user': request.user,
                 'page': 'catalogs',
-                'add_catalogs', add_catalogs}
+                'add_catalogs': add_catalogs}
     return render_to_response('catalog/test.html', context)
