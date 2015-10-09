@@ -126,6 +126,8 @@ def catalog_view(request, catalog_name=None, item_index=None):
 
 @login_required
 def test(request):
-        context = {'user': request.user,
-                   'page': 'catalogs'}
-        return render_to_response('catalog/test.html', context)
+    add_catalogs = user.has_perm('catalogs.add_catalogs')
+    context =  {'user': request.user,
+                'page': 'catalogs',
+                'add_catalogs', add_catalogs}
+    return render_to_response('catalog/test.html', context)
