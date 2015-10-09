@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block content %}
+
 {% if perms.pkgs.change_pkgs %}
 <p>perms.pkgs.change_pkgs = yes</p>
 {% else %}
@@ -35,4 +37,6 @@
 {% else %}
 <p>perms.catalogs.can_view_catalogs = no</p>
 {% endif %}
+
+{% endblock content %}
 
