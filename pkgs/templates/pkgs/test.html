@@ -7,17 +7,19 @@
 <p>{{ perms.manifests }}</p>
 <p>{{ perms.manifests.can_view_manifests }}</p>
 
+{% if user.has_perm('manifests.can_view_manifests') %}
+<p>user.has_perm('manifests.can_view_manifests') = True</p>
+{% else %}
+<p>user.has_perm('manifests.can_view_manifests') = False</p>
+{% endif %}
+
 {% if user.has_perm('pkgs.change_pkgs') %}
 <p>user.has_perm('pkgs.change_pkgs') = True</p>
 {% else %}
 <p>user.has_perm('pkgs.change_pkgs') = False</p>
 {% endif %}
 
-{% if user.has_perm('manifests.can_view_manifests') %}
-<p>user.has_perm('manifests.can_view_manifests') = True</p>
-{% else %}
-<p>user.has_perm('manifests.can_view_manifests') = False</p>
-{% endif %}
+
 
 {% endblock content %}
 
