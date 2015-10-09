@@ -142,7 +142,7 @@ function makeEditableItems(manifest_name) {
         var item = "<div class='editable'>" + $(this).parent().attr('id') + "</div>";
         $(this).replaceWith(item);
     });
-    $('.entrys').append("<span class='btn btn-danger lineitem_delete pull-right' style='margin-top:-16px;'></span>");
+    $('.entrys').append("<span class='btn-xs btn-danger btn-mini lineitem_delete pull-right' style='margin-top:-16px;'>-</span>");
     $('.manifest_section').on('dblclick', '.editable', function() {
         makeEditableItem(manifest_name, autocomplete_data, $(this));
     });
@@ -154,9 +154,9 @@ function makeEditableItems(manifest_name) {
           $(this).parent().remove();
       }
     });
-    $('.section_label').append("<a class='btn btn-success btn-mini add_item pull-right' href='#'></a>");
+    $('.section_label').append("<a class='btn-xs btn-success btn-mini add_item pull-right' href='#'>+</a>");
     $('.add_item').click(function() {
-        var list_item = $("<li class='list-group-item entrys'><span class='btn btn-danger btn-mini lineitem_delete pull-right' style='margin-top:4px;'></span><div class='editable'></div></li>");
+        var list_item = $("<li class='list-group-item entrys'><span class='btn-xs btn-danger btn-mini lineitem_delete pull-right' style='margin-top:4px;'>-</span><div class='editable'>-</div></li>");
         $(this).parent().siblings($('ul')).append(list_item);
         makeEditableItem(
             manifest_name, autocomplete_data, list_item.children(".editable"));
