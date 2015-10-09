@@ -36,6 +36,8 @@ def index(request):
 @csrf_exempt
 def confirm(request):
     if request.method == 'POST': # If the form has been submitted...
+        if not request.user.has_perm('manifests.change_manifests'):
+            return HttpResponse(json.dumps('error'))
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
         confirm_move = request.POST.get('move')
@@ -61,6 +63,8 @@ def confirm(request):
 @csrf_exempt
 def done(request):
     if request.method == 'POST': # If the form has been submitted...
+        if not request.user.has_perm('manifests.change_manifests'):
+            return HttpResponse(json.dumps('error'))
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
         confirm_move = request.POST.get('confirm_move')
         confirm_add = request.POST.get('confirm_add')
@@ -109,6 +113,8 @@ def done(request):
 @csrf_exempt
 def deleted(request):
     if request.method == 'POST': # If the form has been submitted...
+        if not request.user.has_perm('manifests.change_manifests'):
+            return HttpResponse(json.dumps('error'))
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
         tuple(final_items_to_delete)
         deleted_packages = []
