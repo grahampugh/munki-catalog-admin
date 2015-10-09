@@ -2,6 +2,12 @@
 
 {% block content %}
 
+{% if perms.pkgs %}
+<p>perms.pkgs = yes</p>
+{% else %}
+<p>perms.pkgs = no</p>
+{% endif %}
+
 {% if perms.pkgs.change_pkgs %}
 <p>perms.pkgs.change_pkgs = yes</p>
 {% else %}
@@ -14,6 +20,12 @@
 <p>perms.pkgs.can_view_packages = no</p>
 {% endif %}
 
+{% if perms.manifests %}
+<p>perms.manifests = yes</p>
+{% else %}
+<p>perms.manifests = no</p>
+{% endif %}
+
 {% if perms.manifests.change_manifests %}
 <p>perms.manifests.change_manifests = yes</p>
 {% else %}
@@ -24,6 +36,12 @@
 <p>perms.manifests.can_view_manifests = yes</p>
 {% else %}
 <p>perms.manifests.can_view_manifests = no</p>
+{% endif %}
+
+{% if perms.catalogs %}
+<p>perms.catalogs = yes</p>
+{% else %}
+<p>perms.catalogs = no</p>
 {% endif %}
 
 {% if perms.catalogs.change_catalogs %}
