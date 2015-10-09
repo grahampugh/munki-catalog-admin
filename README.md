@@ -17,6 +17,7 @@ New functionality has been added:
 2. Remove multiple packages from a catalog
 3. Move packages to a new or existing catalog
 4. Delete packages and their associated pkginfo files
+5. Download packages directly from the Munki Repo for ad-hoc installation
 
 Some of the original functionality of MunkiWebAdmin has been removed from Munki-Do,
 such as reporting tools. For reporting tools, I recommend: 
@@ -50,4 +51,4 @@ To Do
 Munki-Do is still a work in progress, so shouldn't be used in production. 
 I welcome the raising of issues, and pull requests.
 
-There is much documentation to do, and security of each function is not yet granularised.
+Security of the packages functions are not yet granularised.
