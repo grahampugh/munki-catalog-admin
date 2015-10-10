@@ -1,12 +1,12 @@
-#from django.db import models
-# we're not using a database for out manifests, so no need to import models
 import os
 import shutil
 import subprocess
 import plistlib
-from catalogs.models import Catalog
+
 from django.conf import settings
 from django.db import models
+
+from catalogs.models import Catalog
 
 USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 APPNAME = settings.APPNAME

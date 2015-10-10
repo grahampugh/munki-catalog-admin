@@ -1,19 +1,33 @@
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.contrib.auth.decorators import login_required
+from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
+from django.core.urlresolvers import reverse
+from django.http import Http404
+#from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Permission
+from django.contrib.auth.models import User
+from django.conf import settings
 from django import forms
 
 from models import Packages
 from catalogs.models import Catalog
 
+import fnmatch
+import json
 import os
 
 PROD_CATALOG = "production" # change this if your production catalog is different
 
 @login_required
 def index(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'GET':
         findtext = request.GET.get('findtext')
         all_catalog_items = Packages.detail(findtext)
@@ -31,10 +45,20 @@ def index(request):
                                'catalog_list': catalog_list,
                                'catalog_name': catalog_name,
                                'findtext': findtext,
+                               'can_view_pkgs': can_view_pkgs,
+                               'can_view_manifests': can_view_manifests,
+                               'can_view_catalogs': can_view_catalogs,
+                               'change_pkgs': change_pkgs,
+                               'delete_pkgs': delete_pkgs,
                                'page': 'pkgs'})
 
-@csrf_exempt
+@login_required
 def confirm(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         dest_catalog = request.POST.get('dest_catalog')
         items_to_move = request.POST.getlist('items_to_move[]')
@@ -53,13 +77,23 @@ def confirm(request):
              'confirm_add': confirm_add,
              'confirm_remove': confirm_remove,
              'confirm_delete': confirm_delete,
+             'can_view_pkgs': can_view_pkgs,
+             'can_view_manifests': can_view_manifests,
+             'can_view_catalogs': can_view_catalogs,
+             'change_pkgs': change_pkgs,
+             'delete_pkgs': delete_pkgs,
              'page': 'pkgs'}
         return render_to_response('pkgs/confirm.html', c)
     else:
         return HttpResponse("No form submitted.\n")
 
-@csrf_exempt
+@login_required
 def done(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
         confirm_move = request.POST.get('confirm_move')
@@ -100,14 +134,24 @@ def done(request):
                    'confirm_move': confirm_move,
                    'confirm_add': confirm_add,
                    'confirm_remove': confirm_remove,
+                   'can_view_pkgs': can_view_pkgs,
+                   'can_view_manifests': can_view_manifests,
+                   'can_view_catalogs': can_view_catalogs,
+                   'change_pkgs': change_pkgs,
+                   'delete_pkgs': delete_pkgs,
                    'done': 'Done',
                    'page': 'pkgs'}
         return render_to_response('pkgs/done.html', context)
     else:
         return HttpResponse("No form submitted.\n")
 
-@csrf_exempt
+@login_required
 def deleted(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
         tuple(final_items_to_delete)
@@ -123,6 +167,11 @@ def deleted(request):
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
                    'deleted': 'Deleted',
+                   'can_view_pkgs': can_view_pkgs,
+                   'can_view_manifests': can_view_manifests,
+                   'can_view_catalogs': can_view_catalogs,
+                   'change_pkgs': change_pkgs,
+                   'delete_pkgs': delete_pkgs,
                    'page': 'pkgs'}
         return render_to_response('pkgs/deleted.html', context)
     else:
