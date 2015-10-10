@@ -177,14 +177,3 @@ def deleted(request):
     else:
         return HttpResponse("No form submitted.\n")
 
-@login_required
-def test(request):
-    add_pkgs = request.user.has_perm('pkgs.add_pkgs')
-    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
-    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
-    context =  {'user': request.user,
-                'page': 'pkgs',
-                'can_view_manifests': can_view_manifests,
-                'can_view_catalogs': can_view_catalogs,
-                'add_pkgs': add_pkgs}
-    return render_to_response('pkgs/test.html', context)

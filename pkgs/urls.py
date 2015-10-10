@@ -5,6 +5,5 @@ urlpatterns = patterns('pkgs.views',
 	url(r'^confirm/*$', 'confirm'),
 	url(r'^done/*$', 'done'),
 	url(r'^deleted/*$', 'deleted'),
-	url(r'^test/*$', 'test'),
 	url(r'^$', 'index'),
 )

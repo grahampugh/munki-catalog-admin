@@ -124,10 +124,3 @@ def catalog_view(request, catalog_name=None, item_index=None):
     c.update(csrf(request))
     return render_to_response('catalogs/catalog.html', c)
 
-@login_required
-def test(request):
-    add_catalogs = request.user.has_perm('catalogs.add_catalogs')
-    context =  {'user': request.user,
-                'page': 'catalogs',
-                'add_catalogs': add_catalogs}
-    return render_to_response('catalog/test.html', context)
