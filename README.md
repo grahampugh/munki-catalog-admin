@@ -45,10 +45,11 @@ I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, avail
 
 * https://github.com/grahampugh/docker-munkiwebadmin
 
+*New!* Permissions are now working for the Packages view. You can now 
+set users who can view but not edit Packages.
+
 To Do
 ----
 
 Munki-Do is still a work in progress, so shouldn't be used in production. 
-I welcome the raising of issues, and pull requests.
-
-Security of the packages functions are not yet granularised.
+I welcome the raising of issues, and pull requests..
