@@ -4,7 +4,6 @@ from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
-@ensure_csrf_cookie
 from django.core.urlresolvers import reverse
 from django.http import Http404
 #from django.contrib.auth import authenticate, login, logout
@@ -23,6 +22,7 @@ import os
 
 PROD_CATALOG = "production" # change this if your production catalog is different
 
+@ensure_csrf_cookie
 @login_required
 def index(request):
     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
