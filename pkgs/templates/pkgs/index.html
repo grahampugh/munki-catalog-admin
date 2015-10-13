@@ -23,6 +23,7 @@
 	{# Drop-down list for moving to a catalog #}
 
 <form id='move' action='/pkgs/confirm/' method='post'>
+	{% csrf_token %}
 	{% if change_pkgs or delete_pkgs %}
 	<div class='well form-horizontal'>
 	{% if change_pkgs %}
