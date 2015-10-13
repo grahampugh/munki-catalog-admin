@@ -22,6 +22,7 @@
 {% if items_to_move %}
 
 <form id='done' action='/pkgs/done/' method='post'>
+	{% csrf_token %}
 	<div class='well form-horizontal'>
 	{% if dest_catalog == "set-new" %}
 		<b>Enter a new catalog name:</b> &nbsp;
