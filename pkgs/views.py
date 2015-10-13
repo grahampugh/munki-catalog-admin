@@ -41,8 +41,7 @@ def index(request):
         catalog_name = PROD_CATALOG
     elif 'testing' in catalog_list:
         catalog_name = 'testing'
-    return render_to_response('pkgs/index.html',
-                              {'user': request.user,
+    c = RequestContext(request, {'user': request.user,
                                'all_catalog_items': all_catalog_items,
                                'catalog_list': catalog_list,
                                'catalog_name': catalog_name,
@@ -53,6 +52,7 @@ def index(request):
                                'change_pkgs': change_pkgs,
                                'delete_pkgs': delete_pkgs,
                                'page': 'pkgs'})
+    return render_to_response('pkgs/index.html', c)
 
 @login_required
 def confirm(request):
@@ -72,7 +72,7 @@ def confirm(request):
         for n,pkg in enumerate(items_to_move):
             pkg = pkg.split('___')
             items_to_move[n] = pkg
-        c = {'user': request.user,
+        c = RequestContext(request, {'user': request.user,
              'dest_catalog': dest_catalog,
              'items_to_move': items_to_move,
              'confirm_move': confirm_move,
@@ -84,7 +84,7 @@ def confirm(request):
              'can_view_catalogs': can_view_catalogs,
              'change_pkgs': change_pkgs,
              'delete_pkgs': delete_pkgs,
-             'page': 'pkgs'}
+             'page': 'pkgs'})
         return render_to_response('pkgs/confirm.html', c)
     else:
         return HttpResponse("No form submitted.\n")
@@ -131,7 +131,7 @@ def done(request):
                 elif pkg_catalog != 'set-new':
                     Packages.move(pkg_name, pkg_version, pkg_catalog)
         Packages.makecatalogs()
-        context = {'user': request.user,
+        c = RequestContext(request, {'user': request.user,
                    'final_items_to_move': final_items_to_move,
                    'confirm_move': confirm_move,
                    'confirm_add': confirm_add,
@@ -142,8 +142,8 @@ def done(request):
                    'change_pkgs': change_pkgs,
                    'delete_pkgs': delete_pkgs,
                    'done': 'Done',
-                   'page': 'pkgs'}
-        return render_to_response('pkgs/done.html', context)
+                   'page': 'pkgs'})
+        return render_to_response('pkgs/done.html', c)
     else:
         return HttpResponse("No form submitted.\n")
 
@@ -165,7 +165,7 @@ def deleted(request):
             Packages.delete_pkgs(pkg_name, pkg_version)
             deleted_packages.append(pkg_location)
         Packages.makecatalogs()
-        context = {'user': request.user,
+        c = RequestContext(request, {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
                    'deleted': 'Deleted',
@@ -174,8 +174,8 @@ def deleted(request):
                    'can_view_catalogs': can_view_catalogs,
                    'change_pkgs': change_pkgs,
                    'delete_pkgs': delete_pkgs,
-                   'page': 'pkgs'}
-        return render_to_response('pkgs/deleted.html', context)
+                   'page': 'pkgs'})
+        return render_to_response('pkgs/deleted.html', c)
     else:
         return HttpResponse("No form submitted.\n")
 
