@@ -68,7 +68,9 @@ class MunkiGit:
         author_name = author_name if author_name != ' ' else committer.username
         author_email = (committer.email or 
                         "%s@munkiwebadmin" % committer.username)
-        author_info = '%s <%s>' % (author_name, author_email)
+        # author_info = '%s <%s>' % (author_name, author_email)
+        self.runGit(['config', 'user.email', author_email])
+        self.runGit(['config', 'user.name', author_name])
 
         # get the status of the file at aPath
         statusResults = self.runGit(['status', aPath])
@@ -91,7 +93,7 @@ class MunkiGit:
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
                   % (author_name, action, itempath, APPNAME))
-        self.runGit(['commit', '-m', log_msg, '--author', author_info])
+        self.runGit(['commit', '-m', log_msg)
         if self.results['returncode'] != 0:
             logger.error("Failed to commit changes to %s" % aPath)
             logger.error("This was the error: %s" % self.results['error'])
