@@ -1,8 +1,9 @@
 import os
+import socket
 from django.conf import global_settings
 
 ##############################
-# MunkiWeb-specific settings #
+# Munki-Do-specific settings #
 ##############################
 
 # APPNAME is user-visable web app name
@@ -10,16 +11,29 @@ APPNAME = 'Munki-Do'
 # MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
 MUNKI_REPO_DIR = '/munki_repo'
 ICONS_DIR = 'icons'
+PKGS_DIR = 'pkgs'
+
 # provide the path to the git binary if you want MunkiWeb to add and commit
 # manifest edits to a git repo
 # if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-GIT_PATH = ''
+GIT_PATH = '/usr/bin/git'
+
+# The following is used for the download links for pkgs.
+# It assumes that the full munki_repo is accessable at /munki_repo
+# If you are using git and aren't syncing the pkgs folder,
+# you will need to set a different path:
+MUNKI_PKG_ROOT = os.path.join(MUNKI_REPO_DIR, PKGS_DIR)
+# REMOTE_MUNKI_URL = 'http://munki/repo'
+# MUNKI_PKG_ROOT = os.path.join(REMOTE_MUNKI_URL, PKGS_DIR)
 
 # name of the key in a manifest file that names the user or dept
 MANIFEST_USERNAME_KEY = 'user'
 # set MANIFEST_USERNAME_IS_EDITABLE to allow edits to the displayed username
 MANIFEST_USERNAME_IS_EDITABLE = False
+
+# path to makecatalogs - required for packages section
+DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
 
 # enable WARRANTY to show warranty information on the detail machine report
 WARRANTY_LOOKUP_ENABLED = True
@@ -57,6 +71,7 @@ ALLOWED_HOSTS = ['*']
 TOKEN_TIMEOUT_DAYS = 1
 
 ANONYMOUS_USER_ID = -1
+
 # -------------------------
 
 USE_LDAP = False
@@ -173,7 +188,7 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "munkido.processor.index",
-    "munkido.processor.resolver_context_processor",
+    "django.core.context_processors.request",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -213,6 +228,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'munkido',
     'tokenapi',
     'catalogs',
     'manifests',
