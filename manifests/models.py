@@ -1,4 +1,5 @@
 import os
+import logging
 import shutil
 import subprocess
 import plistlib
@@ -7,6 +8,8 @@ from django.conf import settings
 from django.db import models
 
 from catalogs.models import Catalog
+
+logger = logging.getLogger(__name__)
 
 USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 APPNAME = settings.APPNAME
@@ -90,8 +93,8 @@ class MunkiGit:
                   % (author_name, action, itempath, APPNAME))
         self.runGit(['commit', '-m', log_msg, '--author', author_info])
         if self.results['returncode'] != 0:
-            print "Failed to commit changes to %s" % aPath
-            print self.results['error']
+            logger.error("Failed to commit changes to %s") % aPath
+            logger.error(self.results['error'])
             return -1
         return 0
 
@@ -203,7 +206,7 @@ class Manifest(object):
         '''Deletes a manifest from the disk'''
         manifest_path = cls.__pathForManifestNamed(manifest_name)
         if not os.path.exists(manifest_path):
-            print "Unable to find manifest to delete '%s'" % manifest_path
+            logger.error("Unable to find manifest to delete '%s'") % manifest_path
             return -1
 
         if not GIT:
