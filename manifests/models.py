@@ -93,7 +93,7 @@ class MunkiGit:
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
                   % (author_name, action, itempath, APPNAME))
-        self.runGit(['commit', '-m', log_msg)
+        self.runGit(['commit', '-m', log_msg])
         if self.results['returncode'] != 0:
             logger.error("Failed to commit changes to %s" % aPath)
             logger.error("This was the error: %s" % self.results['error'])
