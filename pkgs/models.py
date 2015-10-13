@@ -9,8 +9,7 @@ import fnmatch
 from django.conf import settings
 from django.db import models
 
-#DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
-DEFAULT_MAKECATALOGS = "/munki-tools/code/client/makecatalogs"
+DEFAULT_MAKECATALOGS = settings.DEFAULT_MAKECATALOGS
 REPO_DIR = settings.MUNKI_REPO_DIR
 
 def fail(message):
