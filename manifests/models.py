@@ -98,6 +98,11 @@ class MunkiGit:
             logger.error("Failed to commit changes to %s" % aPath)
             logger.error("This was the error: %s" % self.results['error'])
             return -1
+        else:
+            self.runGit(['push'])
+            if self.results['returncode'] != 0:
+                logger.error("Failed to push changes to %s" % aPath)
+                logger.error("This was the error: %s" % self.results['error'])
         return 0
 
     def addFileAtPathForCommitter(self, aPath, aCommitter):
