@@ -42,7 +42,7 @@ try:
 except:
     GIT = None
 
-class MunkiGit:
+class MunkiPkgGit:
     """A simple interface for some common interactions with the git binary"""
     cmd = GIT
     args = []
@@ -201,7 +201,7 @@ class Packages(object):
                     plist['catalogs'] = [pkg_catalog]
                     plistlib.writePlist(plist, os.path.join(root, name))
                     if GIT:
-                        git = MunkiGit()
+                        git = MunkiPkgGit()
                         git.addFileAtPathForCommitter(os.path.join(root, name), committer)
                     done = True
                     break
@@ -226,7 +226,7 @@ class Packages(object):
                         plist['catalogs'].append(pkg_catalog)
                         plistlib.writePlist(plist, os.path.join(root, name))
                         if GIT:
-                            git = MunkiGit()
+                            git = MunkiPkgGit()
                             git.addFileAtPathForCommitter(os.path.join(root, name), committer)
                     done = True
                     break
@@ -254,7 +254,7 @@ class Packages(object):
                         pass
                     plistlib.writePlist(plist, os.path.join(root, name))
                     if GIT:
-                        git = MunkiGit()
+                        git = MunkiPkgGit()
                         git.addFileAtPathForCommitter(os.path.join(root, name), committer)
                     done = True
                     break
@@ -281,12 +281,13 @@ class Packages(object):
                         os.remove(pkginfo_path)
                         os.remove(pkg_path)
                     else:
-                        git = MunkiGit()
+                        git = MunkiPkgGit()
                         git.deleteFileAtPathForCommitter(root, pkginfo_path, committer)
                         if settings.GIT_IGNORE_PKGS:
                             os.remove(pkg_path)
                         else:
-                            git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs'), pkg_to_delete, committer)
+                            git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs'), 
+                                                             pkg_path, committer)
                     done_delete = True
                     break
             if done_delete:
@@ -296,7 +297,7 @@ class Packages(object):
     def makecatalogs(self, committer):
         task = execute([MAKECATALOGS, REPO_DIR])
         if GIT:
-            git = MunkiGit()
+            git = MunkiPkgGit()
             git.addMakeCatalogsForCommitter(committer)
 
 
