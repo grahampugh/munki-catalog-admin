@@ -9,6 +9,7 @@ import fnmatch
 from django.conf import settings
 from django.db import models
 
+APPNAME = settings.APPNAME
 DEFAULT_MAKECATALOGS = settings.DEFAULT_MAKECATALOGS
 REPO_DIR = settings.MUNKI_REPO_DIR
 
