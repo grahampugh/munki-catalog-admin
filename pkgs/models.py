@@ -278,7 +278,7 @@ class Packages(object):
                     os.remove(os.path.join(root, name))
                     logger.error("Attempted to delete %s %s" % (root, name))
                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                    logger.error("Attempted to delete %s %s" % (os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                    logger.error("Attempted to delete %s" % pkg_to_delete)
                     done_delete = True
                     break
             if done_delete:
