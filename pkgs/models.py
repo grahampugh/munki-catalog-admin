@@ -286,7 +286,7 @@ class Packages(object):
                 break
 
     @classmethod
-    def makecatalogs(self):
+    def makecatalogs(self, commiter):
         task = execute([MAKECATALOGS, REPO_DIR])
         if GIT:
             git = MunkiGit()
