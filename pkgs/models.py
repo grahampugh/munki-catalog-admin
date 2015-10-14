@@ -108,9 +108,12 @@ class MunkiGit:
         if aPath.startswith(pkgsinfo_path):
             itempath = aPath[len(pkgsinfo_path):]
 
-        # generate the log message
-        log_msg = ('%s %s pkginfo file \'%s\' via %s'
-                  % (author_name, action, itempath, APPNAME))
+        # generate the log message - would be good to pass details of each file
+        # maybe we can get it from the status message - return it to views.py?
+        # In the meantime, we just log the author and that it's a Munki-Do run
+        # log_msg = ('%s %s pkginfo file \'%s\' via %s'
+        #            % (author_name, action, itempath, APPNAME))
+        log_msg = ('makecatalogs run by %s via %s' % (author_name, APPNAME))
         self.runGit(['commit', '-m', log_msg])
         if self.results['returncode'] != 0:
             logger.error("Failed to commit changes to %s" % aPath)
@@ -127,22 +130,25 @@ class MunkiGit:
         """Commits a file to the Git repo."""
         self.__chdirToMatchPath(aPath)
         self.runGit(['add', aPath])
-        if self.results['returncode'] == 0:
-            self.commitFileAtPathForCommitter(aPath, aCommitter)
+#         We don't really need to commit each file individually, except during debugging
+#         if self.results['returncode'] == 0:
+#             self.commitFileAtPathForCommitter(aPath, aCommitter)
 
     def addMakeCatalogsForCommitter(self, aCommitter):
         """Commits the updated catalogs to the Git repo."""
         catalogs_path = os.path.join(REPO_DIR, 'catalogs')
         self.__chdirToMatchPath(catalogs_path)
         self.runGit(['add', catalogs_path])
+        # Let's just do one commit when everything's added.
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
         """Deletes a file from the filesystem and Git repo."""
         self.__chdirToMatchPath(aPath)
         self.runGit(['rm', aPath])
-        if self.results['returncode'] == 0:
-            self.commitFileAtPathForCommitter(aPath, aCommitter)
+#         We don't really need to commit each file individually, except during debugging
+#         if self.results['returncode'] == 0:
+#             self.commitFileAtPathForCommitter(aPath, aCommitter)
 
 
 
@@ -284,7 +290,7 @@ class Packages(object):
         task = execute([MAKECATALOGS, REPO_DIR])
         if GIT:
             git = MunkiGit()
-            
+            git.addMakeCatalogsForCommitter(committer)
 
 
 class Pkgs(models.Model):
