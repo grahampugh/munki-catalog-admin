@@ -275,10 +275,14 @@ class Packages(object):
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-                    os.remove(os.path.join(root, name))
-                    logger.error("Attempted to delete %s %s" % (root, name))
-                    os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                    logger.error("Attempted to delete %s" % pkg_to_delete)
+                    try:
+                        os.remove(os.path.join(root, name))
+                    except OSError as e:
+                        logger.error("Delete %s %s failed with: %s" % (root, name, e))
+                    try:
+                        os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                    except OSError as e:
+                        logger.error("Delete pkg %s failed with: %s" % (pkg_to_delete, name, e))
                     done_delete = True
                     break
             if done_delete:
