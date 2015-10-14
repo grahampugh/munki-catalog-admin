@@ -280,10 +280,10 @@ class Packages(object):
                         git = MunkiGit()
                         git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                    if GIT:
-                        git = MunkiGit()
-                        git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs',pkg_to_delete),
-                                                         committer)
+#                     if GIT:
+#                         git = MunkiGit()
+#                         git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs',pkg_to_delete),
+#                                                          committer)
                     done_delete = True
                     break
             if done_delete:
