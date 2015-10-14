@@ -262,23 +262,25 @@ class Packages(object):
                 break
 
     @classmethod
-    def delete_pkgs(self, pkg_name, pkg_version, committer):
+    def delete_pkgs(self, pkg_name, pkg_version):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         done_delete = False
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
                 # Try, because it's conceivable there's a broken / non plist
                 plist = None
-#                pkginfo_path = os.path.join(root, name)
                 try:
-                    plist = plistlib.readPlist(pkginfo_path)
+                    plist = plistlib.readPlist(os.path.join(root, name))
                 except:
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-#                    pkg_path = os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
                     os.remove(os.path.join(root, name))
                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                    done_delete = True
+                    break
+            if done_delete:
+                break
 #                     if not GIT:
 #                         os.remove(pkginfo_path)
 #                         os.remove(pkg_path)
@@ -289,10 +291,6 @@ class Packages(object):
 #                             os.remove(pkg_path)
 #                         else:
 #                             git.deleteFileAtPathForCommitter(pkg_path, committer)
-                    done_delete = True
-                    break
-            if done_delete:
-                break
 
     @classmethod
     def makecatalogs(self, committer):
