@@ -50,7 +50,8 @@ I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, avail
 The Admin console can be used to set users with discrete permissions on the Packages,
 Catalogs and Manifests sections. The relevant permissions are:
 
-|| User permission || What it allows ||
+| User permission | What it allows |
+| --- | --- |
 | catalogs \| catalogs \| Can view catalogs | Viewing Catalogs Index - this *must* be set for all users |
 | manifests \| manifests \| Can view manifests | Viewing Manifests Index - this *must* be set for all users |
 | manifests \| manifests \| Can add manifests | Add new manifests |
