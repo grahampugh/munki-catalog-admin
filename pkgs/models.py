@@ -146,9 +146,9 @@ class MunkiGit:
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
-    def deleteFileAtPathForCommitter(self, aPath, aCommitter):
+    def deleteFileAtPathForCommitter(self, aRoot, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
-        self.__chdirToMatchPath(aPath)
+        self.__chdirToMatchPath(aRoot)
         self.runGit(['rm', aPath])
 #         We don't really need to commit each file individually, except during debugging
 #         if self.results['returncode'] == 0:
@@ -269,20 +269,21 @@ class Packages(object):
             for name in files:
                 # Try, because it's conceivable there's a broken / non plist
                 plist = None
+                pkginfo_path = os.path.join(root, name)
                 try:
-                    plist = plistlib.readPlist(os.path.join(root, name))
+                    plist = plistlib.readPlist(pkginfo_path)
                 except:
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
+                    pkg_path = os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
                     if not GIT:
-                        os.remove(os.path.join(root, name))
-                        os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                        os.remove(pkginfo_path)
+                        os.remove(pkg_path)
                     else:
                         git = MunkiGit()
-                        git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
-                        git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs',pkg_to_delete),
-                                                         committer)
+                        git.deleteFileAtPathForCommitter(root, pkginfo_path, committer)
+                        git.deleteFileAtPathForCommitter(root, pkg_path, committer)
                     done_delete = True
                     break
             if done_delete:
