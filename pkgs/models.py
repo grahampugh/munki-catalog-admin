@@ -279,12 +279,12 @@ class Packages(object):
                         os.remove(os.path.join(root, name))
                     except:
                         logger.error("Failed to delete %s %s" % (root, name))
-
                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                     done_delete = True
                     break
             if done_delete:
                 break
+
 #                     if not GIT:
 #                         os.remove(pkginfo_path)
 #                         os.remove(pkg_path)
