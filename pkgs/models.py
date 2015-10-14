@@ -277,16 +277,18 @@ class Packages(object):
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
                     pkg_path = os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
-                    if not GIT:
-                        os.remove(pkginfo_path)
-                        os.remove(pkg_path)
-                    else:
-                        git = MunkiPkgGit()
-                        git.deleteFileAtPathForCommitter(pkginfo_path, committer)
-                        if settings.GIT_IGNORE_PKGS:
-                            os.remove(pkg_path)
-                        else:
-                            git.deleteFileAtPathForCommitter(pkg_path, committer)
+                    os.remove(pkginfo_path)
+                    os.remove(pkg_path)
+#                     if not GIT:
+#                         os.remove(pkginfo_path)
+#                         os.remove(pkg_path)
+#                     else:
+#                         git = MunkiPkgGit()
+#                         git.deleteFileAtPathForCommitter(pkginfo_path, committer)
+#                         if settings.GIT_IGNORE_PKGS:
+#                             os.remove(pkg_path)
+#                         else:
+#                             git.deleteFileAtPathForCommitter(pkg_path, committer)
                     done_delete = True
                     break
             if done_delete:
