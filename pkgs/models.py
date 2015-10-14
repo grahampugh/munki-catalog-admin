@@ -33,6 +33,11 @@ opts, args = o.parse_args()
 
 MAKECATALOGS = opts.makecatalogs
 
+try:
+    GIT = settings.GIT_PATH
+except:
+    GIT = None
+
 class MunkiGit:
     """A simple interface for some common interactions with the git binary"""
     cmd = GIT
@@ -103,7 +108,7 @@ class MunkiGit:
             itempath = aPath[len(pkgsinfo_path):]
 
         # generate the log message
-        log_msg = ('%s %s manifest \'%s\' via %s'
+        log_msg = ('%s %s pkginfo file \'%s\' via %s'
                   % (author_name, action, itempath, APPNAME))
         self.runGit(['commit', '-m', log_msg])
         if self.results['returncode'] != 0:
@@ -126,12 +131,11 @@ class MunkiGit:
 
     def addMakeCatalogsForCommitter(self, aCommitter):
         """Commits the updated catalogs to the Git repo."""
-        self.__chdirToMatchPath(aPath)
-        self.runGit(['add', aPath])
+        catalogs_path = os.path.join(REPO_DIR, 'catalogs')
+        self.__chdirToMatchPath(catalogs_path)
+        self.runGit(['add', catalogs_path])
         if self.results['returncode'] == 0:
-            self.commitFileAtPathForCommitter(aPath, aCommitter)
-            catalogs_path = os.path.join(REPO_DIR, 'catalogs')
-
+            self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
         """Deletes a file from the filesystem and Git repo."""
         self.__chdirToMatchPath(aPath)
