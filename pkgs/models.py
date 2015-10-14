@@ -269,16 +269,16 @@ class Packages(object):
             for name in files:
                 # Try, because it's conceivable there's a broken / non plist
                 plist = None
-                pkginfo_path = os.path.join(root, name)
+#                pkginfo_path = os.path.join(root, name)
                 try:
                     plist = plistlib.readPlist(pkginfo_path)
                 except:
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-                    pkg_path = os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
-                    os.remove(pkginfo_path)
-                    os.remove(pkg_path)
+#                    pkg_path = os.path.join(REPO_DIR,'pkgs',pkg_to_delete)
+                    os.remove(os.path.join(root, name))
+                    os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
 #                     if not GIT:
 #                         os.remove(pkginfo_path)
 #                         os.remove(pkg_path)
