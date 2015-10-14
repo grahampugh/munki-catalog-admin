@@ -111,25 +111,28 @@ def done(request):
         if confirm_remove:
             for pkg_name, pkg_version, pkg_orig in final_items_to_move:
                 if pkg_orig != 'no-catalog':
-                    Packages.remove(pkg_name, pkg_version, pkg_orig)
+                    Packages.remove(pkg_name, pkg_version, pkg_orig, request.user)
         elif confirm_add:
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
                 if pkg_orig == 'no-catalog':
                     if pkg_catalog == 'set-new' and new_dest_catalog:
-                        Packages.move(pkg_name, pkg_version, new_dest_catalog)
+                        Packages.move(pkg_name, pkg_version, new_dest_catalog, 
+                                      request.user)
                     elif pkg_catalog != 'set-new':
-                        Packages.move(pkg_name, pkg_version, pkg_catalog)
+                        Packages.move(pkg_name, pkg_version, pkg_catalog, request.user)
                 else:
                     if pkg_catalog == 'set-new' and new_dest_catalog:
-                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog)
+                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog, 
+                                     request.user)
                     elif pkg_catalog != 'set-new':
-                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
+                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog, 
+                                     request.user)
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
                 if new_dest_catalog:
                     pkg_catalog = new_dest_catalog
                 elif pkg_catalog != 'set-new':
-                    Packages.move(pkg_name, pkg_version, pkg_catalog)
+                    Packages.move(pkg_name, pkg_version, pkg_catalog, request.user)
         Packages.makecatalogs()
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_move': final_items_to_move,
