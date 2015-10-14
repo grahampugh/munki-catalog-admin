@@ -111,26 +111,29 @@ def done(request):
         if confirm_remove:
             for pkg_name, pkg_version, pkg_orig in final_items_to_move:
                 if pkg_orig != 'no-catalog':
-                    Packages.remove(pkg_name, pkg_version, pkg_orig)
+                    Packages.remove(pkg_name, pkg_version, pkg_orig, request.user)
         elif confirm_add:
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
                 if pkg_orig == 'no-catalog':
                     if pkg_catalog == 'set-new' and new_dest_catalog:
-                        Packages.move(pkg_name, pkg_version, new_dest_catalog)
+                        Packages.move(pkg_name, pkg_version, new_dest_catalog, 
+                                      request.user)
                     elif pkg_catalog != 'set-new':
-                        Packages.move(pkg_name, pkg_version, pkg_catalog)
+                        Packages.move(pkg_name, pkg_version, pkg_catalog, request.user)
                 else:
                     if pkg_catalog == 'set-new' and new_dest_catalog:
-                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog)
+                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog, 
+                                     request.user)
                     elif pkg_catalog != 'set-new':
-                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog)
+                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog, 
+                                     request.user)
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
                 if new_dest_catalog:
                     pkg_catalog = new_dest_catalog
                 elif pkg_catalog != 'set-new':
-                    Packages.move(pkg_name, pkg_version, pkg_catalog)
-        Packages.makecatalogs()
+                    Packages.move(pkg_name, pkg_version, pkg_catalog, request.user)
+        Packages.makecatalogs(request.user)
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_move': final_items_to_move,
                    'confirm_move': confirm_move,
@@ -162,9 +165,9 @@ def deleted(request):
             pkg = pkg.split('___')
             final_items_to_delete[n] = pkg
         for pkg_name, pkg_version, pkg_location in final_items_to_delete:
-            Packages.delete_pkgs(pkg_name, pkg_version)
+            Packages.delete_pkgs(pkg_name, pkg_version, request.user)
             deleted_packages.append(pkg_location)
-        Packages.makecatalogs()
+        Packages.makecatalogs(request.user)
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
