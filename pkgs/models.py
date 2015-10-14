@@ -143,6 +143,7 @@ class MunkiGit:
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
+    def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
         self.__chdirToMatchPath(aPath)
         self.runGit(['rm', aPath])
