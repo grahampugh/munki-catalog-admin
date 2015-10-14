@@ -1,5 +1,6 @@
 import os
 import sys
+import logging
 import shutil
 import subprocess
 import plistlib
@@ -8,6 +9,8 @@ import fnmatch
 
 from django.conf import settings
 from django.db import models
+
+logger = logging.getLogger(__name__)
 
 APPNAME = settings.APPNAME
 DEFAULT_MAKECATALOGS = settings.DEFAULT_MAKECATALOGS
