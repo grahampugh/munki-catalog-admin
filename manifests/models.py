@@ -1,5 +1,4 @@
 import os
-import logging
 import shutil
 import subprocess
 import plistlib
@@ -8,8 +7,6 @@ from django.conf import settings
 from django.db import models
 
 from catalogs.models import Catalog
-
-logger = logging.getLogger(__name__)
 
 USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 APPNAME = settings.APPNAME
@@ -68,9 +65,7 @@ class MunkiGit:
         author_name = author_name if author_name != ' ' else committer.username
         author_email = (committer.email or 
                         "%s@munkiwebadmin" % committer.username)
-        # author_info = '%s <%s>' % (author_name, author_email)
-        self.runGit(['config', 'user.email', author_email])
-        self.runGit(['config', 'user.name', author_name])
+        author_info = '%s <%s>' % (author_name, author_email)
 
         # get the status of the file at aPath
         statusResults = self.runGit(['status', aPath])
@@ -93,16 +88,11 @@ class MunkiGit:
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
                   % (author_name, action, itempath, APPNAME))
-        self.runGit(['commit', '-m', log_msg])
+        self.runGit(['commit', '-m', log_msg, '--author', author_info])
         if self.results['returncode'] != 0:
-            logger.error("Failed to commit changes to %s" % aPath)
-            logger.error("This was the error: %s" % self.results['error'])
+            print "Failed to commit changes to %s" % aPath
+            print self.results['error']
             return -1
-        else:
-            self.runGit(['push'])
-            if self.results['returncode'] != 0:
-                logger.error("Failed to push changes to %s" % aPath)
-                logger.error("This was the error: %s" % self.results['error'])
         return 0
 
     def addFileAtPathForCommitter(self, aPath, aCommitter):
@@ -213,7 +203,7 @@ class Manifest(object):
         '''Deletes a manifest from the disk'''
         manifest_path = cls.__pathForManifestNamed(manifest_name)
         if not os.path.exists(manifest_path):
-            logger.error("Unable to find manifest to delete '%s'") % manifest_path
+            print "Unable to find manifest to delete '%s'" % manifest_path
             return -1
 
         if not GIT:

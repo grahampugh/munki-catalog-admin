@@ -286,7 +286,7 @@ class Packages(object):
                         if settings.GIT_IGNORE_PKGS:
                             os.remove(pkg_path)
                         else:
-                            git.deleteFileAtPathForCommitter(root, pkg_path, committer)
+                            git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs'), pkg_to_delete, committer)
                     done_delete = True
                     break
             if done_delete:
