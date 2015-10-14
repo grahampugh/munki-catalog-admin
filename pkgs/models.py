@@ -146,9 +146,9 @@ class MunkiPkgGit:
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
-    def deleteFileAtPathForCommitter(self, aRoot, aPath, aCommitter):
+    def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
-        self.__chdirToMatchPath(aRoot)
+        self.__chdirToMatchPath(REPO_DIR)
         self.runGit(['rm', aPath])
 #         We don't really need to commit each file individually, except during debugging
 #         if self.results['returncode'] == 0:
@@ -282,12 +282,11 @@ class Packages(object):
                         os.remove(pkg_path)
                     else:
                         git = MunkiPkgGit()
-                        git.deleteFileAtPathForCommitter(root, pkginfo_path, committer)
+                        git.deleteFileAtPathForCommitter(pkginfo_path, committer)
                         if settings.GIT_IGNORE_PKGS:
                             os.remove(pkg_path)
                         else:
-                            git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs'), 
-                                                             pkg_path, committer)
+                            git.deleteFileAtPathForCommitter(pkg_path, committer)
                     done_delete = True
                     break
             if done_delete:
