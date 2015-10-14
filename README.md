@@ -37,6 +37,11 @@ permissions is recommended.
 The code which enables movement of packages between catalogs is a derivation of code 
 from Munki-Trello by Graham Gilbert: https://github.com/grahamgilbert/munki-trello
 
+#Docker
+
+I encourage the use of Munki-Do as a Docker container. I have personally never 
+attempted to install it natively.
+
 A Docker container for Munki-Do is available here: 
 
 * https://github.com/grahampugh/docker-munki-catalog-admin
