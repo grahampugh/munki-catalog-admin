@@ -45,11 +45,47 @@ I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, avail
 
 * https://github.com/grahampugh/docker-munkiwebadmin
 
-*New!* Permissions are now working for the Packages view. You can now 
-set users who can view but not edit Packages.
+#User permissions
+
+The Admin console can be used to set users with discrete permissions on the Packages,
+Catalogs and Manifests sections. The relevant permissions are:
+
+|| User permission || What it allows ||
+| catalogs \| catalogs \| Can view catalogs | Viewing Catalogs Index - this *must* be set for all users |
+| manifests \| manifests \| Can view manifests | Viewing Manifests Index - this *must* be set for all users |
+| manifests \| manifests \| Can add manifests | Add new manifests |
+| manifests \| manifests \| Can change manifests | Edit manifests |
+| manifests \| manifests \| Can delete manifests | Delete manifests |
+| pkgs \| pkgs \| Can view packages | Viewing Packages Index - this *must* be set for all users |
+| pkgs \| pkgs \| Can change pkgs | Edit pkginfo files - i.e. add/remove catalog array entries |
+| pkgs \| pkgs \| Can delete pkgs | Delete pkginfo files and packages from the repository |
+
+Superusers automatically have all permissions. 
+Users given 'staff' rights can access the admin console.
+
+#Munki-with-Git
+
+Munki-Do is now enabled for Git. If you set the path to `git` in `settings.py`, 
+any changes made to the manifests or pkginfo files will attempt to be committed to 
+the git repository.
+
+To enable git in your repository, follow the instructions here: 
+https://github.com/munki/munki/wiki/Munki-With-Git
+
+You can put the `pkgs` folder in `.gitignore`, but you must allow the `catalogs`, 
+`manifests` and `pkgsinfo` folders to be updated.
+
+Munki-Do does not determine the branch of your repository, so you could choose to 
+work on an "unstable" branch and use another means to push to a master branch (e.g. 
+manual intervention by a superuser, or a cron job).
+
+A future release may checkout a new branch based on the username, which can be viewed 
+and managed by a superuser for merging. But not yet.
 
 To Do
 ----
 
-Munki-Do is still a work in progress, so shouldn't be used in production. 
-I welcome the raising of issues, and pull requests..
+Munki-Do is still a work in progress, so use in production at your own risk. 
+I welcome the raising of issues, and pull requests...
+
+Git branching?
