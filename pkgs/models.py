@@ -283,7 +283,10 @@ class Packages(object):
                     else:
                         git = MunkiGit()
                         git.deleteFileAtPathForCommitter(root, pkginfo_path, committer)
-                        git.deleteFileAtPathForCommitter(root, pkg_path, committer)
+                        if settings.GIT_IGNORE_PKGS:
+                            os.remove(pkg_path)
+                        else:
+                            git.deleteFileAtPathForCommitter(root, pkg_path, committer)
                     done_delete = True
                     break
             if done_delete:

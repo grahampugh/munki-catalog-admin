@@ -1,5 +1,6 @@
 import os
 import socket
+import logging
 from django.conf import global_settings
 
 ##############################
@@ -15,17 +16,17 @@ PKGS_DIR = 'pkgs'
 
 # provide the path to the git binary if you want MunkiWeb to add and commit
 # manifest edits to a git repo
-# if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
+# if GIT_PATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-GIT_PATH = '/usr/bin/git'
+GIT_PATH = ''
+#GIT_PATH = '/usr/bin/git'
+# If GIT_IGNORE_PKGS is not empty, git will attempt to remove packages.
+# Otherwise, the packages will be deleted as standard.
+GIT_IGNORE_PKGS = 'yes'
 
 # The following is used for the download links for pkgs.
 # It assumes that the full munki_repo is accessable at /munki_repo
-# If you are using git and aren't syncing the pkgs folder,
-# you will need to set a different path:
 MUNKI_PKG_ROOT = os.path.join(MUNKI_REPO_DIR, PKGS_DIR)
-# REMOTE_MUNKI_URL = 'http://munki/repo'
-# MUNKI_PKG_ROOT = os.path.join(REMOTE_MUNKI_URL, PKGS_DIR)
 
 # name of the key in a manifest file that names the user or dept
 MANIFEST_USERNAME_KEY = 'user'
@@ -33,7 +34,8 @@ MANIFEST_USERNAME_KEY = 'user'
 MANIFEST_USERNAME_IS_EDITABLE = False
 
 # path to makecatalogs - required for packages section
-DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
+#DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
+DEFAULT_MAKECATALOGS = "/munki-tools/code/client/makecatalogs"
 
 # enable WARRANTY to show warranty information on the detail machine report
 WARRANTY_LOOKUP_ENABLED = True
@@ -238,21 +240,21 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-     },
     'handlers': {
-        'mail_admins': {
+        'file': {
             'level': 'ERROR',
-	    'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/error.log',
+        },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
+        'manifests.models': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'pkgs.models': {
+            'handlers': ['file'],
             'level': 'ERROR',
             'propagate': True,
         },
