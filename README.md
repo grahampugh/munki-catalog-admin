@@ -44,7 +44,7 @@ attempted to install it natively.
 
 A Docker container for Munki-Do is available here: 
 
-* https://github.com/grahampugh/docker-munki-catalog-admin
+* https://github.com/grahampugh/docker-munki-do
 
 I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, available here:
 
