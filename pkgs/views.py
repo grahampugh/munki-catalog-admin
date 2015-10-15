@@ -165,10 +165,8 @@ def deleted(request):
             pkg = pkg.split('___')
             final_items_to_delete[n] = pkg
         for pkg_name, pkg_version, pkg_location in final_items_to_delete:
-#            Packages.delete_pkgs(pkg_name, pkg_version, request.user)
-#            Packages.delete_pkgs()
             try:
-                os.remove('/munki_repo/pkgsinfo/apps/Dropbox/Dropbox-3.10.6.plist')
+                Packages.delete_pkgs(pkg_name, pkg_version, request.user)
                 deleted = 'deleted'
             except OSError as e:
                 logger.info("The error was %s" % e)

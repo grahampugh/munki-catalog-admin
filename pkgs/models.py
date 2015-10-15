@@ -261,56 +261,56 @@ class Packages(object):
             if done:
                 break
 
-#     @classmethod
-#     def delete_pkgs(self, pkg_name, pkg_version, committer):
-#         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
-#         logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
-#         done_delete = False
-#         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
-#             for name in files:
-#                 # Try, because it's conceivable there's a broken / non plist
-#                 plist = None
-#                 try:
-#                     plist = plistlib.readPlist(os.path.join(root, name))
-#                 except:
-#                     pass
-#                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
-#                     pkg_to_delete = plist['installer_item_location']
-#                     os.remove(os.path.join(root, name))
-#                     logger.info("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
-#                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-#                     logger.info("/munki_repo/pkgs/internet_plugins: %s" % (name))
-#                     done_delete = True
-#                     break
-#             if done_delete:
-#                 break
-
     @classmethod
-    def delete_pkgs(self):
+    def delete_pkgs(self, pkg_name, pkg_version, committer):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
         done_delete = False
-        try:
-            os.remove('/munki_repo/pkgs/apps/Dropbox/Dropbox-3.10.6.dmg')
-        except OSError as e:
-            logger.info("The error was %s" % e)
-        try:
-            os.remove('/munki_repo/pkgsinfo/apps/Dropbox/Dropbox-3.10.6.plist')
-            done_delete = True
-        except OSError as e:
-            logger.info("The error was %s" % e)
-        done_delete = True
+        for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
+            for name in files:
+                # Try, because it's conceivable there's a broken / non plist
+                plist = None
+                try:
+                    plist = plistlib.readPlist(os.path.join(root, name))
+                except:
+                    pass
+                if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
+                    pkg_to_delete = plist['installer_item_location']
+                    if not GIT:
+                        try:
+                            os.remove(os.path.join(root, name))
+                        except OSError as e:
+                            logger.info("This failed to delete: %s" % (name))
+                        try:
+                            os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                        except OSError as e:
+                            logger.info("This failed to delete: %s" % (name))
+                    else:
+                        git = MunkiPkgGit()
+                        git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
+                        if settings.GIT_IGNORE_PKGS:
+                            try:
+                                os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                            except OSError as e:
+                                logger.info("This failed to delete: %s" % (name))
+                        else:
+                            git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
+                    done_delete = True
+                    break
+            if done_delete:
+                break
 
-#                     if not GIT:
-#                         os.remove(pkginfo_path)
-#                         os.remove(pkg_path)
-#                     else:
-#                         git = MunkiPkgGit()
-#                         git.deleteFileAtPathForCommitter(pkginfo_path, committer)
-#                         if settings.GIT_IGNORE_PKGS:
-#                             os.remove(pkg_path)
-#                         else:
-#                             git.deleteFileAtPathForCommitter(pkg_path, committer)
+
+                    if not GIT:
+                        os.remove(pkginfo_path)
+                        os.remove(pkg_path)
+                    else:
+                        git = MunkiPkgGit()
+                        git.deleteFileAtPathForCommitter(pkginfo_path, committer)
+                        if settings.GIT_IGNORE_PKGS:
+                            os.remove(pkg_path)
+                        else:
+                            git.deleteFileAtPathForCommitter(pkg_path, committer)
 
     @classmethod
     def makecatalogs(self, committer):
