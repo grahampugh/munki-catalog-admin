@@ -287,30 +287,20 @@ class Packages(object):
                             logger.info("This failed to delete: %s" % (name))
                     else:
                         git = MunkiPkgGit()
-                        git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
+                        git.deleteFileAtPathForCommitter(
+                                os.path.join(root, name), committer)
                         if settings.GIT_IGNORE_PKGS:
                             try:
                                 os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                             except OSError as e:
                                 logger.info("This failed to delete: %s" % (name))
                         else:
-                            git.deleteFileAtPathForCommitter(os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
+                            git.deleteFileAtPathForCommitter(
+                                    os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
                     done_delete = True
                     break
             if done_delete:
                 break
-
-
-                    if not GIT:
-                        os.remove(pkginfo_path)
-                        os.remove(pkg_path)
-                    else:
-                        git = MunkiPkgGit()
-                        git.deleteFileAtPathForCommitter(pkginfo_path, committer)
-                        if settings.GIT_IGNORE_PKGS:
-                            os.remove(pkg_path)
-                        else:
-                            git.deleteFileAtPathForCommitter(pkg_path, committer)
 
     @classmethod
     def makecatalogs(self, committer):
