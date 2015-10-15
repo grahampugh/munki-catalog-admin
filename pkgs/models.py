@@ -282,7 +282,7 @@ class Packages(object):
                     try:
                         os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                     except OSError as e:
-                        logger.error("Delete pkg %s failed with: %s" % (pkg_to_delete, name, e))
+                        logger.error("Delete pkg %s failed with: %s" % (pkg_to_delete, e))
                     done_delete = True
                     break
             if done_delete:
