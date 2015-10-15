@@ -282,7 +282,7 @@ class Packages(object):
                         logger.error("Delete %s %s failed with: %s" % (root, name, e))
                     try:
 #                        os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                        os.remove(os.path.join('/munki_repo,'pkgs',pkg_to_delete))
+                        os.remove(os.path.join('/munki_repo','pkgs',pkg_to_delete))
                     except OSError as e:
                         logger.error("Delete pkg %s failed with: %s" % (pkg_to_delete, e))
                     done_delete = True
