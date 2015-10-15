@@ -261,29 +261,37 @@ class Packages(object):
             if done:
                 break
 
+#     @classmethod
+#     def delete_pkgs(self, pkg_name, pkg_version, committer):
+#         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
+#         logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
+#         done_delete = False
+#         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
+#             for name in files:
+#                 # Try, because it's conceivable there's a broken / non plist
+#                 plist = None
+#                 try:
+#                     plist = plistlib.readPlist(os.path.join(root, name))
+#                 except:
+#                     pass
+#                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
+#                     pkg_to_delete = plist['installer_item_location']
+#                     os.remove(os.path.join(root, name))
+#                     logger.info("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
+#                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+#                     logger.info("/munki_repo/pkgs/internet_plugins: %s" % (name))
+#                     done_delete = True
+#                     break
+#             if done_delete:
+#                 break
+
     @classmethod
     def delete_pkgs(self, pkg_name, pkg_version, committer):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
         done_delete = False
-        for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
-            for name in files:
-                # Try, because it's conceivable there's a broken / non plist
-                plist = None
-                try:
-                    plist = plistlib.readPlist(os.path.join(root, name))
-                except:
-                    pass
-                if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
-                    pkg_to_delete = plist['installer_item_location']
-                    os.remove(os.path.join(root, name))
-                    logger.info("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
-                    os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                    logger.info("/munki_repo/pkgs/internet_plugins: %s" % (name))
-                    done_delete = True
-                    break
-            if done_delete:
-                break
+        os.remove('/munki_repo/pkgs/internet_plugins/internet_plugins/AdobeFlashPlayer-19.0.0.185.dmg')
+        os.remove('/munki_repo/pkgsinfo/internet_plugins/internet_plugins/AdobeFlashPlayer-19.0.0.185.plist')
 
 #                     if not GIT:
 #                         os.remove(pkginfo_path)

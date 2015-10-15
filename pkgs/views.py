@@ -91,11 +91,11 @@ def confirm(request):
 
 @login_required
 def done(request):
-    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
-    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
-    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
-    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
-    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
+#     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+#     can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+#     can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+#     change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+#     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_move = request.POST.getlist('final_items_to_move[]')
         confirm_move = request.POST.get('confirm_move')
@@ -152,11 +152,11 @@ def done(request):
 
 @login_required
 def deleted(request):
-    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
-    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
-    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
-    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
-    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
+#     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+#     can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+#     can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+#     change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+#     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
         tuple(final_items_to_delete)
