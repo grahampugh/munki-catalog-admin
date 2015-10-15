@@ -275,18 +275,12 @@ class Packages(object):
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-                    try:
-#                        os.remove(os.path.join(root, name))
-                        os.remove(os.path.join('/munki_repo/pkgsinfo/internet_plugins', name))
-                        logger.debug("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
-                    except OSError as e:
-                        logger.debug("Delete %s %s failed with: %s" % (root, name, e))
-                    try:
-#                        os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                        os.remove(os.path.join('/munki_repo','pkgs',pkg_to_delete))
-                        logger.debug("/munki_repo/pkgs/internet_plugins: %s" % (name))
-                    except OSError as e:
-                        logger.debug("Delete pkg %s failed with: %s" % (pkg_to_delete, e))
+#                    os.remove(os.path.join(root, name))
+                    os.remove(os.path.join('/munki_repo/pkgsinfo/internet_plugins', name))
+                    logger.debug("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
+#                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                    os.remove(os.path.join('/munki_repo','pkgs',pkg_to_delete))
+                    logger.debug("/munki_repo/pkgs/internet_plugins: %s" % (name))
                     done_delete = True
                     break
             if done_delete:
