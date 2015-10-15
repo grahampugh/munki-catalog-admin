@@ -169,14 +169,16 @@ def deleted(request):
 #            Packages.delete_pkgs()
             try:
                 os.remove('/munki_repo/pkgsinfo/apps/Dropbox/Dropbox-3.10.6.plist')
+                deleted = 'deleted'
             except OSError as e:
                 logger.info("The error was %s" % e)
+                deleted = None
             deleted_packages.append(pkg_location)
         Packages.makecatalogs(request.user)
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
-                   'deleted': 'Deleted',
+                   'deleted': deleted,
 #                    'can_view_pkgs': can_view_pkgs,
 #                    'can_view_manifests': can_view_manifests,
 #                    'can_view_catalogs': can_view_catalogs,
