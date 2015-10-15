@@ -291,11 +291,11 @@ class Packages(object):
         logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
         done_delete = False
         try:
-            os.remove('/munki_repo/pkgs/internet_plugins/AdobeFlashPlayer-19.0.0.185.dmg')
+            os.remove('/munki_repo/pkgs/apps/Dropbox/Dropbox-3.10.6.dmg')
         except OSError as e:
             logger.info("The error was %s" % e)
         try:
-            os.remove('/munki_repo/pkgsinfo/internet_plugins/AdobeFlashPlayer-19.0.0.185.plist')
+            os.remove('/munki_repo/pkgsinfo/apps/Dropbox/Dropbox-3.10.6.plist')
             done_delete = True
         except OSError as e:
             logger.info("The error was %s" % e)
