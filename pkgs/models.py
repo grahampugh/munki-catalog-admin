@@ -290,8 +290,16 @@ class Packages(object):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
         logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
         done_delete = False
-        os.remove('/munki_repo/pkgs/internet_plugins/AdobeFlashPlayer-19.0.0.185.dmg')
-        os.remove('/munki_repo/pkgsinfo/internet_plugins/AdobeFlashPlayer-19.0.0.185.plist')
+        try:
+            os.remove('/munki_repo/pkgs/internet_plugins/AdobeFlashPlayer-19.0.0.185.dmg')
+        except OSError as e:
+            logger.info("The error was %s" % e)
+        try:
+            os.remove('/munki_repo/pkgsinfo/internet_plugins/AdobeFlashPlayer-19.0.0.185.plist')
+            done_delete = True
+        except OSError as e:
+            logger.info("The error was %s" % e)
+        done_delete = True
 
 #                     if not GIT:
 #                         os.remove(pkginfo_path)
