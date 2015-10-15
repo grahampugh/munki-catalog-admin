@@ -119,14 +119,14 @@ class MunkiPkgGit:
         log_msg = ('makecatalogs run by %s via %s' % (author_name, APPNAME))
         self.runGit(['commit', '-m', log_msg])
         if self.results['returncode'] != 0:
-            logger.debug("Failed to commit changes to %s" % aPath)
-            logger.debug("This was the error: %s" % self.results['error'])
+            logger.info("Failed to commit changes to %s" % aPath)
+            logger.info("This was the error: %s" % self.results['output'])
             return -1
         else:
             self.runGit(['push'])
             if self.results['returncode'] != 0:
-                logger.debug("Failed to push changes to %s" % aPath)
-                logger.debug("This was the error: %s" % self.results['error'])
+                logger.info("Failed to push changes to %s" % aPath)
+                logger.info("This was the error: %s" % self.results['output'])
         return 0
 
     def addFileAtPathForCommitter(self, aPath, aCommitter):
@@ -264,6 +264,7 @@ class Packages(object):
     @classmethod
     def delete_pkgs(self, pkg_name, pkg_version, committer):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
+        logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
         done_delete = False
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
@@ -273,7 +274,6 @@ class Packages(object):
                     plist = plistlib.readPlist(os.path.join(root, name))
                 except:
                     pass
-                logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
                     os.remove(os.path.join(root, name))
