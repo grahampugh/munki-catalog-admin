@@ -150,9 +150,9 @@ class MunkiPkgGit:
         """Deletes a file from the filesystem and Git repo."""
         self.__chdirToMatchPath(REPO_DIR)
         self.runGit(['rm', aPath])
-#         We don't really need to commit each file individually, except during debugging
-#         if self.results['returncode'] == 0:
-#             self.commitFileAtPathForCommitter(aPath, aCommitter)
+        # We don't really need to commit each file individually, except during debugging
+        # if self.results['returncode'] == 0:
+        #     self.commitFileAtPathForCommitter(aPath, aCommitter)
 
 
 
@@ -273,14 +273,13 @@ class Packages(object):
                     plist = plistlib.readPlist(os.path.join(root, name))
                 except:
                     pass
+                logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-#                    os.remove(os.path.join(root, name))
-                    os.remove(os.path.join('/munki_repo/pkgsinfo/internet_plugins', name))
-                    logger.debug("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
-#                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
-                    os.remove(os.path.join('/munki_repo','pkgs',pkg_to_delete))
-                    logger.debug("/munki_repo/pkgs/internet_plugins: %s" % (name))
+                    os.remove(os.path.join(root, name))
+                    logger.info("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
+                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                    logger.info("/munki_repo/pkgs/internet_plugins: %s" % (name))
                     done_delete = True
                     break
             if done_delete:
