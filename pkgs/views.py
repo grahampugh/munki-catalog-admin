@@ -139,11 +139,11 @@ def done(request):
                    'confirm_move': confirm_move,
                    'confirm_add': confirm_add,
                    'confirm_remove': confirm_remove,
-                   'can_view_pkgs': can_view_pkgs,
-                   'can_view_manifests': can_view_manifests,
-                   'can_view_catalogs': can_view_catalogs,
-                   'change_pkgs': change_pkgs,
-                   'delete_pkgs': delete_pkgs,
+#                    'can_view_pkgs': can_view_pkgs,
+#                    'can_view_manifests': can_view_manifests,
+#                    'can_view_catalogs': can_view_catalogs,
+#                    'change_pkgs': change_pkgs,
+#                    'delete_pkgs': delete_pkgs,
                    'done': 'Done',
                    'page': 'pkgs'})
         return render_to_response('pkgs/done.html', c)
@@ -172,11 +172,11 @@ def deleted(request):
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
                    'deleted': 'Deleted',
-                   'can_view_pkgs': can_view_pkgs,
-                   'can_view_manifests': can_view_manifests,
-                   'can_view_catalogs': can_view_catalogs,
-                   'change_pkgs': change_pkgs,
-                   'delete_pkgs': delete_pkgs,
+#                    'can_view_pkgs': can_view_pkgs,
+#                    'can_view_manifests': can_view_manifests,
+#                    'can_view_catalogs': can_view_catalogs,
+#                    'change_pkgs': change_pkgs,
+#                    'delete_pkgs': delete_pkgs,
                    'page': 'pkgs'})
         return render_to_response('pkgs/deleted.html', c)
     else:
