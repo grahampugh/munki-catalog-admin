@@ -278,7 +278,7 @@ class Packages(object):
                     pkg_to_delete = plist['installer_item_location']
                     os.remove(os.path.join(root, name))
                     logger.info("/munki_repo/pkgsinfo/internet_plugins: %s" % (name))
-                     os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                    os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                     logger.info("/munki_repo/pkgs/internet_plugins: %s" % (name))
                     done_delete = True
                     break
