@@ -6,11 +6,11 @@
 {% block navbar-default_extensions %}
 <div class='btn' style='margin-left:45px;'>
 	{% if confirm_move %}
-	<p>Packages have been moved</p>
+	<p>Packages have been moved to a new catalog</p>
 	{% elif confirm_add %}
-	<p>Packages have been added</p>
+	<p>Packages have been added to a new catalog</p>
 	{% else %}
-	<p>Packages have been removed</p>
+	<p>Packages have been removed from a catalog</p>
 	{% endif %}
 </div>
 {% endblock %}

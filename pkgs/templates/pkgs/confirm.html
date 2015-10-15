@@ -21,7 +21,11 @@
 
 {% if items_to_move %}
 
-<form id='done' action='/pkgs/done/' method='post'>
+	{% if confirm_delete %}
+	<form id='done' action='/pkgs/deleted/' method='post'>
+	{% else %}
+	<form id='done' action='/pkgs/done/' method='post'>
+	{% endif %}
 	{% csrf_token %}
 	<div class='well form-horizontal'>
 	{% if dest_catalog == "set-new" %}
