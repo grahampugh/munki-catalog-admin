@@ -60,7 +60,7 @@ class MunkiGit:
 
     def checkoutUserBranch(self, aPath, committer):
         """Creates a new git branch with name+timestamp"""
-        branch_name = committer + "_" + time.strftime('%Y%m%d%H%M%S')
+        branch_name = committer + "_" + str(time.strftime('%Y%m%d%H%M%S'))
         self.__chdirToMatchPath(aPath)
         self.runGit(['checkout', '-b', branch_name])
         self.runGit(['push', 'origin', branch_name])
