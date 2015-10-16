@@ -13,11 +13,11 @@ USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 APPNAME = settings.APPNAME
 REPO_DIR = settings.MUNKI_REPO_DIR
 ALL_ITEMS = settings.ALL_ITEMS
-GIT_BRANCHING = settings.GIT_BRANCHING
-PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 try:
     GIT = settings.GIT_PATH
+    GIT_BRANCHING = settings.GIT_BRANCHING
+    PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 except:
     GIT = None
 
@@ -63,7 +63,6 @@ class MunkiGit:
         time_stamp = time.strftime('%Y%m%d%H%M%S')
         branch_name = str.join(committer, "_", time_stamp)
         logger.info("Branch name: %s" % branch_name)
-        self.__chdirToMatchPath(aPath)
         self.runGit(['checkout', '-b', branch_name])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % branch_name)
@@ -75,7 +74,6 @@ class MunkiGit:
 
     def checkoutProductionBranch(self, aPath):
         """Checkout the master/production branch"""
-        self.__chdirToMatchPath(aPath)
         self.runGit(['checkout', PRODUCTION_BRANCH])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
