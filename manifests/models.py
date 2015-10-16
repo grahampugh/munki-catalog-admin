@@ -65,14 +65,24 @@ class MunkiGit:
         self.__chdirToMatchPath(aPath)
         self.runGit(['checkout', '-b', branch_name])
         self.runGit(['push', 'origin', branch_name])
-        return 0
+        if self.results['returncode'] != 0:
+            logger.info("Failed to change branches to %s" % branch_name)
+            logger.info("This was the error: %s" % self.results['output'])
+            return -1
+        else:
+            return 0
 
     def checkoutProductionBranch(self, aPath):
         """Checkout the master/production branch"""
         self.__chdirToMatchPath(aPath)
-        self.runGit(['checkout', '-b', PRODUCTION_BRANCH])
+        self.runGit(['checkout', PRODUCTION_BRANCH])
         self.runGit(['push', 'origin', PRODUCTION_BRANCH])
-        return 0
+        if self.results['returncode'] != 0:
+            logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
+            logger.info("This was the error: %s" % self.results['output'])
+            return -1
+        else:
+            return 0
 
     def commitFileAtPathForCommitter(self, aPath, committer):
         """Commits the file at 'aPath'. This method will also automatically
