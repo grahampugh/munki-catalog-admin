@@ -69,8 +69,8 @@ class MunkiGit:
             logger.info("Failed to change branches to %s" % branch_name)
             logger.info("This was the error: %s" % self.results['output'])
             return -1
-        self.runGit(['push', 'origin', branch_name])
         else:
+            self.runGit(['push', 'origin', branch_name])
             return 0
 
     def checkoutProductionBranch(self, aPath):
@@ -81,8 +81,8 @@ class MunkiGit:
             logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
             logger.info("This was the error: %s" % self.results['output'])
             return -1
-        self.runGit(['push', 'origin', PRODUCTION_BRANCH])
         else:
+            self.runGit(['push', 'origin', PRODUCTION_BRANCH])
             return 0
 
     def commitFileAtPathForCommitter(self, aPath, committer):
