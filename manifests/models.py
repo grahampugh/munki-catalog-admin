@@ -65,7 +65,7 @@ class MunkiGit:
         logger.info("Branch name: %s" % branch_name)
         self.runGit(['checkout', '-b', branch_name])
         if self.results['returncode'] != 0:
-            logger.info("Failed to change branches to %s" % branch_name)
+            logger.info("%s Failed to change branches to %s" % (time_stamp, branch_name))
             logger.info("This was the error: %s" % self.results['output'])
         else:
             self.runGit(['push', '--set-upstream', 'origin', branch_name])
