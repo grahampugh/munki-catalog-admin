@@ -62,13 +62,14 @@ class MunkiGit:
         """Creates a new git branch with name+timestamp"""
         time_stamp = time.strftime('%Y%m%d%H%M%S')
         branch_name = str.join(committer, "_", time_stamp)
+        logger.info("Branch name: %s" % branch_name)
         self.__chdirToMatchPath(aPath)
         self.runGit(['checkout', '-b', branch_name])
-        self.runGit(['push', 'origin', branch_name])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % branch_name)
             logger.info("This was the error: %s" % self.results['output'])
             return -1
+        self.runGit(['push', 'origin', branch_name])
         else:
             return 0
 
@@ -76,11 +77,11 @@ class MunkiGit:
         """Checkout the master/production branch"""
         self.__chdirToMatchPath(aPath)
         self.runGit(['checkout', PRODUCTION_BRANCH])
-        self.runGit(['push', 'origin', PRODUCTION_BRANCH])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
             logger.info("This was the error: %s" % self.results['output'])
             return -1
+        self.runGit(['push', 'origin', PRODUCTION_BRANCH])
         else:
             return 0
 
