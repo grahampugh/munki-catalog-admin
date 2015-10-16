@@ -22,6 +22,8 @@ import os
 MANIFEST_USERNAME_IS_EDITABLE = settings.MANIFEST_USERNAME_IS_EDITABLE
 MANIFEST_USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 
+GIT_BRANCHING = settings.GIT_BRANCHING
+PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 class NewManifestForm(forms.Form):
     manifest_name = forms.CharField(label='', widget=forms.TextInput(attrs={'class' : 'form-control', 'id' : 'error1'}), max_length=120)
@@ -105,6 +107,10 @@ def index(request, manifest_name=None):
         username = None
         manifest = None
         
+        git_branch = None
+        if GIT_BRANCHING:
+            git_branch = PRODUCTION_BRANCH
+
         manifest_list_json = list()
         for item in manifest_list:
             manifest_list_json.append(item['name'])
@@ -123,6 +129,7 @@ def index(request, manifest_name=None):
              'manifest_name': manifest_name,
              'manifest_user': username,
              'manifest': manifest,
+             'git_branch': git_branch,
              'user': request.user,
              'page': 'manifests'})
         

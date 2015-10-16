@@ -14,7 +14,7 @@ APPNAME = settings.APPNAME
 REPO_DIR = settings.MUNKI_REPO_DIR
 ALL_ITEMS = settings.ALL_ITEMS
 GIT_BRANCHING = settings.GIT_BRANCHING
-PRODCUTION_BRANCH = settings.PRODUCTION_BRANCH
+PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 try:
     GIT = settings.GIT_PATH
@@ -70,7 +70,7 @@ class MunkiGit:
             logger.info("This was the error: %s" % self.results['output'])
             return -1
         else:
-            self.runGit(['push', 'origin', branch_name])
+            self.runGit(['push', '--set-upstream', 'origin', branch_name])
             return 0
 
     def checkoutProductionBranch(self, aPath):
@@ -82,7 +82,7 @@ class MunkiGit:
             logger.info("This was the error: %s" % self.results['output'])
             return -1
         else:
-            self.runGit(['push', 'origin', PRODUCTION_BRANCH])
+            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
             return 0
 
     def commitFileAtPathForCommitter(self, aPath, committer):
