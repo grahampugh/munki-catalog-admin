@@ -94,4 +94,6 @@ To Do
 Munki-Do is still a work in progress, so use in production at your own risk. 
 I welcome the raising of issues, and pull requests...
 
-Git branching?
+Possible new features:
+  * Git branching
+  * Inline XML editor for editing pkginfo files, e.g. CKEditor
