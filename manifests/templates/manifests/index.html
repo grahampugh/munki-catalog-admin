@@ -14,8 +14,7 @@
 
 {% block navbar-default_extensions %}
 {% if perms.manifests.add_manifests %}
-<a style="margin-left:40px;" class='hidden-xs {% if not perms.manifests.change_manifests %}disabled{% endif %}' id='new_manifest' onclick="location.href='{% url "manifests.views.new" %}';">New manifest</a> |
-{% if git_branch %}Git enabled: Viewing branch {{ git_branch }}{% endif %}
+<a style="margin-left:40px;" class='hidden-xs {% if not perms.manifests.change_manifests %}disabled{% endif %}' id='new_manifest' onclick="location.href='{% url "manifests.views.new" %}';">New manifest</a>&nbsp;|&nbsp;{% if git_branch %}Git enabled: Viewing branch {{ git_branch }}{% endif %}
 {% endif %}
 {% endblock %}
 
