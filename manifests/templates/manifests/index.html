@@ -13,7 +13,10 @@
 {% block page_title %}<a href="{% url 'manifests.views.index' %}" class="navbar-brand">Manifests</a>{% endblock %}
 
 {% block navbar-default_extensions %}
-{% if git_branch %}Git enabled: Viewing branch {{ git_branch }}{% endif %}
+{% if git_branch %}
+<div class="btn" style="margin-left:45px;">
+Git enabled: Viewing branch {{ git_branch }}
+</div>{% endif %}
 {% endblock %}
 
 {% block content %}
