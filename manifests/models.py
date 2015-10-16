@@ -61,7 +61,7 @@ class MunkiGit:
     def checkoutUserBranch(self, aPath, committer):
         """Creates a new git branch with name+timestamp"""
         time_stamp = str(time.strftime('%Y%m%d%H%M%S'))
-        branch_name = str.join(committer, "_", time_stamp)
+        branch_name = str.join(str(committer), "_", time_stamp)
         logger.info("Branch name: %s" % branch_name)
         self.runGit(['checkout', '-b', branch_name])
         if self.results['returncode'] != 0:
