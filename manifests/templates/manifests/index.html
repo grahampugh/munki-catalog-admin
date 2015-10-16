@@ -34,7 +34,7 @@ Git enabled: Viewing branch {{ git_branch }}
 				<p>No manifests are available.</p>
 				{% endif %}
 				{% if perms.manifests.add_manifests %}
-				<a style="margin-left:40px;" class='hidden-xs {% if not perms.manifests.change_manifests %}disabled{% endif %}' id='new_manifest' onclick="location.href='{% url "manifests.views.new" %}';">New manifest</a>
+				<a class='btn hidden-xs {% if not perms.manifests.change_manifests %}disabled{% endif %}' id='new_manifest' onclick="location.href='{% url "manifests.views.new" %}';">New manifest</a>
 				{% endif %}
 			</div>
 		</div>
