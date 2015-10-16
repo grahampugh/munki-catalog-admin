@@ -96,4 +96,6 @@ I welcome the raising of issues, and pull requests...
 
 Possible new features:
   * Git branching
+  * Reskin to MunkiWebAdmin 2 UI when it's released. 
+  * (or, alternatively, reskin the Packages section to take advantage of SteveKueng's UI)
   * Inline XML editor for editing pkginfo files, e.g. CKEditor
