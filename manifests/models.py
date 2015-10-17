@@ -19,8 +19,8 @@ ALL_ITEMS = settings.ALL_ITEMS
 
 try:
     GIT = settings.GIT_PATH
-#     GIT_BRANCHING = settings.GIT_BRANCHING
-#     PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
+    GIT_BRANCHING = settings.GIT_BRANCHING
+    PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 except:
     GIT = None
 
