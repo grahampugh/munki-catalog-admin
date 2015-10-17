@@ -61,9 +61,9 @@ class MunkiGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
-    def getCurrentBranch(self):
+    def getCurrentBranch(self, aPath):
         """Returns the current branch"""
-        self.__chdirToMatchPath(REPO_DIR)
+        self.__chdirToMatchPath(aPath)
         self.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
         return self.results['output']
 
@@ -328,8 +328,9 @@ class Manifest(object):
     @classmethod
     def getGitBranch(self):
         """Returns the current branch"""
+        manifests_path = os.path.join(REPO_DIR, 'manifests')
         git = MunkiGit()
-        current_branch = git.getCurrentBranch()
+        current_branch = git.getCurrentBranch(manifests_path)
         return current_branch
 
 
