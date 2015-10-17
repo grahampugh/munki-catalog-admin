@@ -19,18 +19,19 @@ PKGS_DIR = 'pkgs'
 # manifest edits to a git repo
 # if GIT_PATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-#GIT_PATH = ''
-GIT_PATH = '/usr/bin/git'
+GIT_PATH = ''
+#GIT_PATH = '/usr/bin/git'
 # If GIT_IGNORE_PKGS is empty, git will attempt to remove packages.
 # Otherwise, the packages will be deleted as standard.
 GIT_IGNORE_PKGS = 'yes'
 # If GIT_BRANCHING is enabled, users create a new branch when making a commit
 # (if that branch doesn't already exist) rather than committing to the 
-# current branch)
-GIT_BRANCHING = 'yes'
+# current branch. Set to 'yes' (or anything) to enable.
+GIT_BRANCHING = ''
 # If Git branching is available, you should set the default branch here.
 # This is the branch which people logging into Munki-Dp will see.
 # This may be master, or something else if you have a different workflow.
+# This does nothing if GIT_BRANCHING isn't set.
 PRODUCTION_BRANCH = 'master'
 ## END OF GIT STUFF ##
 
@@ -250,21 +251,38 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/django/error.log',
+            'formatter': 'verbose',
+             'filename': '/var/log/django/error.log',
         },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/django/debug.log',
+            'formatter': 'verbose',
+             'filename': '/var/log/django/debug.log',
         },
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
+            'formatter': 'verbose',
             'filename': '/var/log/django/info.log',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format':
+                '%(levelname)s %(message)s'
         },
     },
     'loggers': {
