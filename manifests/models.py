@@ -68,10 +68,11 @@ class MunkiGit:
         logger.info("Branch name: %s" % branch_name)
         self.runGit(['checkout', '-b', branch_name])
         if self.results['returncode'] != 0:
-            logger.info("%s Failed to change branches to %s" % (time_stamp, branch_name))
+            logger.info("Failed to change branches to %s" % (time_stamp, branch_name))
             logger.info("This was the error: %s" % self.results['output'])
         else:
             self.runGit(['push', '--set-upstream', 'origin', branch_name])
+            logger.info("Checked out branch %s" % branch_name)
 
     def checkoutProductionBranch(self, aPath):
         """Checkout the master/production branch"""
@@ -81,6 +82,7 @@ class MunkiGit:
             logger.info("This was the error: %s" % self.results['output'])
         else:
             self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
+            logger.info("Checked out branch %s" % PRODUCTION_BRANCH)
 
     def commitFileAtPathForCommitter(self, aPath, committer):
         """Commits the file at 'aPath'. This method will also automatically
@@ -127,11 +129,15 @@ class MunkiGit:
             logger.info("This was the error: %s" % self.results['output'])
             return -1
         else:
+            logger.info("Committed changes to %s" % aPath)
             self.runGit(['push'])
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
                 logger.info("This was the error: %s" % self.results['output'])
                 return -1
+            else:
+                logger.info("Pushed changes to %s" % aPath)
+
 
         # If Git branching is enabled, return to master branch
         if GIT_BRANCHING:
