@@ -346,7 +346,6 @@ class Manifest(object):
         manifests_path = os.path.join(REPO_DIR, 'manifests')
         git = MunkiGit()
         git.gitPull(manifests_path)
-        HttpResponseRedirect('#')
 
 
 class Manifests(models.Model):
