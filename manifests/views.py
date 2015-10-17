@@ -110,7 +110,7 @@ def index(request, manifest_name=None):
         username = None
         manifest = None
         
-        git_branching = None
+        git_branching_enabled = None
         if GIT_BRANCHING:
             git_branching_enabled = GIT_BRANCHING
             # option to show the actual branch. It takes a toll on loading speed though
