@@ -103,6 +103,7 @@ def index(request, manifest_name=None):
                                 'managed_updates',
                                 'optional_installs']
         section = request.GET.get('section', 'manifest_name')
+        gitpull = request.GET.get('gitpull')
         findtext = request.GET.get('findtext', '')
         sort = request.GET.get('sort', 'name')
 
@@ -110,9 +111,13 @@ def index(request, manifest_name=None):
         username = None
         manifest = None
         
-        git_branch = None
+        git_branching = None
         if GIT_BRANCHING:
-            git_branch = Manifest.getGitBranch()
+            git_branching_enabled = GIT_BRANCHING
+            # option to show the actual branch. It takes a toll on loading speed though
+            # git_branch = Manifest.getGitBranch()
+            if gitpull:
+                Manifest.gitPull()
 
         manifest_list_json = list()
         for item in manifest_list:
@@ -132,7 +137,7 @@ def index(request, manifest_name=None):
              'manifest_name': manifest_name,
              'manifest_user': username,
              'manifest': manifest,
-             'git_branch': git_branch,
+             'git_branching_enabled': git_branching_enabled,
              'user': request.user,
              'page': 'manifests'})
         

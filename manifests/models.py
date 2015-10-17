@@ -340,6 +340,13 @@ class Manifest(object):
         current_branch = git.getCurrentBranch(manifests_path)
         return current_branch
 
+    @classmethod
+    def gitPull(self):
+        """Performs git pull"""
+        manifests_path = os.path.join(REPO_DIR, 'manifests')
+        git = MunkiGit()
+        git.gitPull(manifests_path)
+
 
 class Manifests(models.Model):
     class Meta:
