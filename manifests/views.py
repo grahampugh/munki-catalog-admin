@@ -13,7 +13,6 @@ from django.conf import settings
 from django import forms
 
 from models import Manifest
-from models import MunkiGit
 from catalogs.models import Catalog
 
 import fnmatch
