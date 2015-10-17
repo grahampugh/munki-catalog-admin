@@ -85,8 +85,9 @@ class MunkiGit:
             logger.info("Failed to checkout to branch %s" % (time_stamp, branch_name))
             logger.info("This was the error: %s" % self.results['output'])
         else:
-            self.runGit(['push', '--set-upstream', 'origin', branch_name])
+#            self.runGit(['push', '--set-upstream', 'origin', branch_name])
             logger.info("Checked out branch %s" % branch_name)
+            return branch_name
 
     def checkoutProductionBranch(self):
         """Checkout the master/production branch"""
@@ -103,6 +104,7 @@ class MunkiGit:
         """Commits the file at 'aPath'. This method will also automatically
         generate the commit log appropriate for the status of aPath where status
         would be 'modified', 'new file', or 'deleted'"""
+        branch_name = None
         self.__chdirToMatchPath(aPath)
         # get the author information
         author_name = committer.first_name + ' ' + committer.last_name
@@ -131,7 +133,7 @@ class MunkiGit:
 
         # If Git branching is enabled, create a new branch
         if GIT_BRANCHING:
-            self.checkoutUserBranch(committer)
+            branch_name = self.checkoutUserBranch(committer)
 
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
@@ -145,7 +147,10 @@ class MunkiGit:
             return -1
         else:
             logger.info("Committed changes to %s" % aPath)
-            self.runGit(['push'])
+            if branch_name:
+                self.runGit(['push', '--set-upstream', 'origin', branch_name])
+            else:
+                self.runGit(['push'])
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
                 logger.info("This was the error: %s" % self.results['output'])
