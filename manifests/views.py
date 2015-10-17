@@ -18,10 +18,15 @@ from catalogs.models import Catalog
 import fnmatch
 import json
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 MANIFEST_USERNAME_IS_EDITABLE = settings.MANIFEST_USERNAME_IS_EDITABLE
 MANIFEST_USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 
+GIT_BRANCHING = settings.GIT_BRANCHING
+PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 class NewManifestForm(forms.Form):
     manifest_name = forms.CharField(label='', widget=forms.TextInput(attrs={'class' : 'form-control', 'id' : 'error1'}), max_length=120)
@@ -105,6 +110,12 @@ def index(request, manifest_name=None):
         username = None
         manifest = None
         
+        git_branching_enabled = None
+        if GIT_BRANCHING:
+            git_branching_enabled = GIT_BRANCHING
+            # option to show the actual branch. It takes a toll on loading speed though
+            # git_branch = Manifest.getGitBranch()
+
         manifest_list_json = list()
         for item in manifest_list:
             manifest_list_json.append(item['name'])
@@ -123,6 +134,7 @@ def index(request, manifest_name=None):
              'manifest_name': manifest_name,
              'manifest_user': username,
              'manifest': manifest,
+             'git_branching_enabled': git_branching_enabled,
              'user': request.user,
              'page': 'manifests'})
         
@@ -133,6 +145,13 @@ def index(request, manifest_name=None):
 @permission_required('manifests.can_view_manifests', login_url='/login/') 
 def view(request, manifest_name=None):
     return index(request, manifest_name)
+
+@login_required
+@permission_required('manifests.can_view_manifests', login_url='/login/') 
+def gitpull(request, manifest_name=None):
+    if request.method == 'GET':
+        Manifest.gitPull()
+    return HttpResponseRedirect('/manifest/')
 
 
 @login_required

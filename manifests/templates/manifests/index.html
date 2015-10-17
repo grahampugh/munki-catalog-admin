@@ -13,9 +13,10 @@
 {% block page_title %}<a href="{% url 'manifests.views.index' %}" class="navbar-brand">Manifests</a>{% endblock %}
 
 {% block navbar-default_extensions %}
-{% if perms.manifests.add_manifests %}
-<a style="margin-left:40px;" class='hidden-xs {% if not perms.manifests.change_manifests %}disabled{% endif %}' id='new_manifest' onclick="location.href='{% url "manifests.views.new" %}';">New manifest</a>
-{% endif %}
+{% if git_branching_enabled %}
+<div class="btn" style="margin-left:45px;">
+<a id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
+</div>{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -31,6 +32,9 @@
 				</div>
 				{% else %}
 				<p>No manifests are available.</p>
+				{% endif %}
+				{% if perms.manifests.add_manifests %}
+				<a class='btn btn-info hidden-xs {% if not perms.manifests.change_manifests %}disabled{% endif %}' id='new_manifest' onclick="location.href='{% url "manifests.views.new" %}';">New manifest</a>
 				{% endif %}
 			</div>
 		</div>

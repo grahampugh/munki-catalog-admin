@@ -14,15 +14,25 @@ MUNKI_REPO_DIR = '/munki_repo'
 ICONS_DIR = 'icons'
 PKGS_DIR = 'pkgs'
 
+## GIT STUFF ##
 # provide the path to the git binary if you want MunkiWeb to add and commit
 # manifest edits to a git repo
 # if GIT_PATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-GIT_PATH = ''
-#GIT_PATH = '/usr/bin/git'
-# If GIT_IGNORE_PKGS is not empty, git will attempt to remove packages.
+#GIT_PATH = ''
+GIT_PATH = '/usr/bin/git'
+# If GIT_IGNORE_PKGS is empty, git will attempt to remove packages.
 # Otherwise, the packages will be deleted as standard.
 GIT_IGNORE_PKGS = 'yes'
+# If GIT_BRANCHING is enabled, users create a new branch when making a commit
+# (if that branch doesn't already exist) rather than committing to the 
+# current branch)
+GIT_BRANCHING = 'yes'
+# If Git branching is available, you should set the default branch here.
+# This is the branch which people logging into Munki-Dp will see.
+# This may be master, or something else if you have a different workflow.
+PRODUCTION_BRANCH = 'master'
+## END OF GIT STUFF ##
 
 # The following is used for the download links for pkgs.
 # It assumes that the full munki_repo is accessable at /munki_repo
@@ -246,8 +256,23 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '/var/log/django/error.log',
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/debug.log',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/info.log',
+        },
     },
     'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
         'manifests.models': {
             'handlers': ['file'],
             'level': 'ERROR',
@@ -255,7 +280,7 @@ LOGGING = {
         },
         'pkgs.models': {
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
     }

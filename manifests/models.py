@@ -1,17 +1,23 @@
 import os
 import shutil
+import logging
 import subprocess
 import plistlib
+import time
 
 from django.conf import settings
 from django.db import models
 
 from catalogs.models import Catalog
 
+logger = logging.getLogger(__name__)
+
 USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 APPNAME = settings.APPNAME
 REPO_DIR = settings.MUNKI_REPO_DIR
 ALL_ITEMS = settings.ALL_ITEMS
+GIT_BRANCHING = settings.GIT_BRANCHING
+PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 try:
     GIT = settings.GIT_PATH
@@ -55,10 +61,50 @@ class MunkiGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
+    def gitPull(self, aPath):
+        """Does a git pull!"""
+        self.__chdirToMatchPath(aPath)
+        self.runGit(['pull'])
+
+    def getCurrentBranch(self, aPath):
+        """Returns the current branch"""
+        self.__chdirToMatchPath(aPath)
+        self.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
+        return self.results['output']
+
+    def checkoutUserBranch(self, committer):
+        """Creates a new git branch with name_timestamp"""
+        time_stamp = str(time.strftime('%Y%m%d%H%M%S'))
+        branch_committer = str(committer)
+        seq = (branch_committer, time_stamp)
+        s = "_"
+        branch_name = s.join(seq)
+        logger.info("Branch name: %s" % branch_name)
+        self.runGit(['checkout', '-b', branch_name])
+        if self.results['returncode'] != 0:
+            logger.info("Failed to checkout to branch %s" % (time_stamp, branch_name))
+            logger.info("This was the error: %s" % self.results['output'])
+        else:
+#            self.runGit(['push', '--set-upstream', 'origin', branch_name])
+            logger.info("Checked out branch %s" % branch_name)
+            return branch_name
+
+    def checkoutProductionBranch(self):
+        """Checkout the master/production branch"""
+        self.runGit(['checkout', PRODUCTION_BRANCH])
+        if self.results['returncode'] != 0:
+            logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
+            logger.info("This was the error: %s" % self.results['output'])
+        else:
+            self.runGit(['pull'])
+#            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
+            logger.info("Checked out branch %s" % PRODUCTION_BRANCH)
+
     def commitFileAtPathForCommitter(self, aPath, committer):
         """Commits the file at 'aPath'. This method will also automatically
         generate the commit log appropriate for the status of aPath where status
         would be 'modified', 'new file', or 'deleted'"""
+        branch_name = None
         self.__chdirToMatchPath(aPath)
         # get the author information
         author_name = committer.first_name + ' ' + committer.last_name
@@ -85,15 +131,38 @@ class MunkiGit:
         if aPath.startswith(manifests_path):
             itempath = aPath[len(manifests_path):]
 
+        # If Git branching is enabled, create a new branch
+        if GIT_BRANCHING:
+            branch_name = self.checkoutUserBranch(committer)
+
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
                   % (author_name, action, itempath, APPNAME))
+        
+        # commit
         self.runGit(['commit', '-m', log_msg, '--author', author_info])
         if self.results['returncode'] != 0:
-            print "Failed to commit changes to %s" % aPath
-            print self.results['error']
+            logger.info("Failed to commit changes to %s" % aPath)
+            logger.info("This was the error: %s" % self.results['output'])
             return -1
+        else:
+            logger.info("Committed changes to %s" % aPath)
+            if branch_name:
+                self.runGit(['push', '--set-upstream', 'origin', branch_name])
+            else:
+                self.runGit(['push'])
+            if self.results['returncode'] != 0:
+                logger.info("Failed to push changes to %s" % aPath)
+                logger.info("This was the error: %s" % self.results['output'])
+                return -1
+            else:
+                logger.info("Pushed changes to %s" % aPath)
+
+        # If Git branching is enabled, return to master branch
+        if GIT_BRANCHING:
+            self.checkoutProductionBranch()
         return 0
+        
 
     def addFileAtPathForCommitter(self, aPath, aCommitter):
         """Commits a file to the Git repo."""
@@ -101,6 +170,7 @@ class MunkiGit:
         self.runGit(['add', aPath])
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(aPath, aCommitter)
+        return 0
 
     def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
@@ -108,6 +178,7 @@ class MunkiGit:
         self.runGit(['rm', aPath])
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(aPath, aCommitter)
+        return 0
 
 
 def trimVersionString(version_string):
@@ -264,6 +335,23 @@ class Manifest(object):
         '''returns a username for a given manifest name'''
         if USERNAME_KEY:
             return cls.read(manifest_name).get(USERNAME_KEY, '')
+
+    @classmethod
+    def getGitBranch(self):
+        """Returns the current branch"""
+        manifests_path = os.path.join(REPO_DIR, 'manifests')
+        git = MunkiGit()
+        git.gitPull(manifests_path)
+        current_branch = git.getCurrentBranch(manifests_path)
+        return current_branch
+
+    @classmethod
+    def gitPull(self):
+        """Performs git pull"""
+        manifests_path = os.path.join(REPO_DIR, 'manifests')
+        git = MunkiGit()
+        git.gitPull(manifests_path)
+
 
 class Manifests(models.Model):
     class Meta:

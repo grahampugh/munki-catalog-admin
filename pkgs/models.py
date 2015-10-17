@@ -127,6 +127,7 @@ class MunkiPkgGit:
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
                 logger.info("This was the error: %s" % self.results['output'])
+                return -1
         return 0
 
     def addFileAtPathForCommitter(self, aPath, aCommitter):
