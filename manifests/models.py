@@ -61,7 +61,7 @@ class MunkiGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
-    def getCurrentBranch(self)
+    def getCurrentBranch(self):
         """Returns the current branch"""
         self.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
         return self.results
