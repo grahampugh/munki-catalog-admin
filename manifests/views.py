@@ -151,7 +151,7 @@ def view(request, manifest_name=None):
 def gitpull(request, manifest_name=None):
     if request.method == 'GET':
         Manifest.gitPull()
-    return index(request, manifest_name)
+    return index(request)
 
 
 @login_required
