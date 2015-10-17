@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 import subprocess
 import plistlib
 import time
@@ -8,6 +9,8 @@ from django.conf import settings
 from django.db import models
 
 from catalogs.models import Catalog
+
+logger = logging.getLogger(__name__)
 
 USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 APPNAME = settings.APPNAME

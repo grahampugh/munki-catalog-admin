@@ -18,6 +18,9 @@ from catalogs.models import Catalog
 import fnmatch
 import json
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 MANIFEST_USERNAME_IS_EDITABLE = settings.MANIFEST_USERNAME_IS_EDITABLE
 MANIFEST_USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
