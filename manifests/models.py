@@ -63,8 +63,9 @@ class MunkiGit:
 
     def getCurrentBranch(self):
         """Returns the current branch"""
+        self.__chdirToMatchPath(REPO_DIR)
         self.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
-        return self.results
+        return self.results['output']
 
     def checkoutUserBranch(self, committer):
         """Creates a new git branch with name_timestamp"""
