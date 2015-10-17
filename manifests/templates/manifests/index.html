@@ -15,7 +15,7 @@
 {% block navbar-default_extensions %}
 {% if git_branching_enabled %}
 <div class="btn" style="margin-left:45px;">
-<a class='btn' id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
+<a id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
 </div>{% endif %}
 {% endblock %}
 
