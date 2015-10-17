@@ -13,6 +13,7 @@ from django.conf import settings
 from django import forms
 
 from models import Manifest
+from models import MunkiGit
 from catalogs.models import Catalog
 
 import fnmatch
@@ -112,7 +113,7 @@ def index(request, manifest_name=None):
         
         git_branch = None
         if GIT_BRANCHING:
-            git_branch = PRODUCTION_BRANCH
+            git_branch = runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
 
         manifest_list_json = list()
         for item in manifest_list:
