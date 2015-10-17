@@ -61,6 +61,11 @@ class MunkiGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
+    def gitPull(self, aPath):
+        """Does a git pull!"""
+        self.__chdirToMatchPath(aPath)
+        self.runGit(['pull'])
+
     def getCurrentBranch(self, aPath):
         """Returns the current branch"""
         self.__chdirToMatchPath(aPath)
@@ -90,7 +95,8 @@ class MunkiGit:
             logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
             logger.info("This was the error: %s" % self.results['output'])
         else:
-            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
+            self.runGit(['pull'])
+#            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
             logger.info("Checked out branch %s" % PRODUCTION_BRANCH)
 
     def commitFileAtPathForCommitter(self, aPath, committer):
@@ -330,6 +336,7 @@ class Manifest(object):
         """Returns the current branch"""
         manifests_path = os.path.join(REPO_DIR, 'manifests')
         git = MunkiGit()
+        git.gitPull(manifests_path)
         current_branch = git.getCurrentBranch(manifests_path)
         return current_branch
 
