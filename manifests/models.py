@@ -61,7 +61,7 @@ class MunkiGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
-    def checkoutUserBranch(self, aPath, committer):
+    def checkoutUserBranch(self, committer):
         """Creates a new git branch with name_timestamp"""
         time_stamp = str(time.strftime('%Y%m%d%H%M%S'))
         branch_committer = str(committer)
@@ -77,7 +77,7 @@ class MunkiGit:
             self.runGit(['push', '--set-upstream', 'origin', branch_name])
             logger.info("Checked out branch %s" % branch_name)
 
-    def checkoutProductionBranch(self, aPath):
+    def checkoutProductionBranch(self):
         """Checkout the master/production branch"""
         self.runGit(['checkout', PRODUCTION_BRANCH])
         if self.results['returncode'] != 0:
@@ -119,7 +119,7 @@ class MunkiGit:
 
         # If Git branching is enabled, create a new branch
         if GIT_BRANCHING:
-            self.checkoutUserBranch(aPath, committer)
+            self.checkoutUserBranch(committer)
 
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
@@ -141,10 +141,9 @@ class MunkiGit:
             else:
                 logger.info("Pushed changes to %s" % aPath)
 
-
         # If Git branching is enabled, return to master branch
         if GIT_BRANCHING:
-            self.checkoutProductionBranch(aPath)
+            self.checkoutProductionBranch()
         return 0
         
 
