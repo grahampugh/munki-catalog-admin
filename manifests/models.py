@@ -61,6 +61,11 @@ class MunkiGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
+    def getCurrentBranch(self)
+        """Returns the current branch"""
+        self.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
+        return self.results
+
     def checkoutUserBranch(self, committer):
         """Creates a new git branch with name_timestamp"""
         time_stamp = str(time.strftime('%Y%m%d%H%M%S'))
@@ -318,6 +323,13 @@ class Manifest(object):
         '''returns a username for a given manifest name'''
         if USERNAME_KEY:
             return cls.read(manifest_name).get(USERNAME_KEY, '')
+
+    @classmethod
+    def getGitBranch():
+        """Returns the current branch"""
+        git = MunkiGit()
+        return git.getCurrentBranch()
+
 
 class Manifests(models.Model):
     class Meta:

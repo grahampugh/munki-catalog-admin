@@ -113,7 +113,7 @@ def index(request, manifest_name=None):
         
         git_branch = None
         if GIT_BRANCHING:
-            git_branch = MunkiGit.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
+            git_branch = Manifest.getGitBranch()
 
         manifest_list_json = list()
         for item in manifest_list:
