@@ -325,10 +325,11 @@ class Manifest(object):
             return cls.read(manifest_name).get(USERNAME_KEY, '')
 
     @classmethod
-    def getGitBranch():
+    def getGitBranch(self):
         """Returns the current branch"""
         git = MunkiGit()
-        return git.getCurrentBranch()
+        current_branch = git.getCurrentBranch()
+        return current_branch
 
 
 class Manifests(models.Model):
