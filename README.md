@@ -71,9 +71,10 @@ Users given 'staff' rights can access the admin console.
 
 #Munki-with-Git
 
-Munki-Do is now enabled for Git. If you set the path to `git` in `settings.py`, 
+Munki-Do is now enabled for Git. If you set the `GIT_PATH` path in `settings.py`, 
 any changes made to the manifests or pkginfo files will attempt to be committed to 
-the git repository.
+the git repository.  By default, these are committed to the current branch, which is not 
+determined by Munki-Do. See Git Branching below to change this behaviour.
 
 To enable git in your repository, follow the instructions here: 
 https://github.com/munki/munki/wiki/Munki-With-Git
@@ -85,8 +86,25 @@ Munki-Do does not determine the branch of your repository, so you could choose t
 work on an "unstable" branch and use another means to push to a master branch (e.g. 
 manual intervention by a superuser, or a cron job).
 
-A future release may checkout a new branch based on the username, which can be viewed 
-and managed by a superuser for merging. But not yet.
+# Git Branching
+
+Git branching is now available for the Manifests section. This is enabled in 
+`settings.py` by setting `GIT_BRANCHING` to 'yes'.
+
+With Git branching enabled, any commit made by a user creates a new branch 
+in the repo named `username_DDMMYYhhmmss` and pushes the changes to that branch. 
+The server then checks out the default branch to maintain a consistent view for 
+all users and avoid checkout competition.
+
+Note: no commit notification is built into Munki-Do. You should configure your Git 
+repository to provide notifications when new commits are pushed.  I recommend using 
+Slack for these notifications.
+
+An administrator with rights to the repo then can check and merge (or reject) the user's 
+branch into the master branch.
+
+A button is made available for users to update their view (this issues a 'git pull' 
+command).
 
 To Do
 ----
@@ -95,7 +113,8 @@ Munki-Do is still a work in progress, so use in production at your own risk.
 I welcome the raising of issues, and pull requests...
 
 Possible new features:
-  * Git branching
+
+  * Restrict user access to specific Manifests
   * Reskin to MunkiWebAdmin 2 UI when it's released. 
   * (or, alternatively, reskin the Packages section to take advantage of SteveKueng's UI)
   * Inline XML editor for editing pkginfo files, e.g. CKEditor
