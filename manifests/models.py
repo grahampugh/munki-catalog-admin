@@ -118,8 +118,8 @@ class MunkiGit:
             itempath = aPath[len(manifests_path):]
 
         # If Git branching is enabled, create a new branch
-#         if GIT_BRANCHING:
-#             self.checkoutUserBranch(aPath, committer)
+        if GIT_BRANCHING:
+            self.checkoutUserBranch(aPath, committer)
 
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
@@ -143,8 +143,8 @@ class MunkiGit:
 
 
         # If Git branching is enabled, return to master branch
-#         if GIT_BRANCHING:
-#             self.checkoutProductionBranch(aPath)
+        if GIT_BRANCHING:
+            self.checkoutProductionBranch(aPath)
         return 0
         
 
