@@ -123,7 +123,7 @@ class MunkiPkgGit:
             logger.info("Checked out branch %s" % PRODUCTION_BRANCH)
 
     def commitFileAtPathForCommitter(self, aPath, committer):
-        """Commits the file at 'aPath'. This method will also automatically
+        """Commits the file(s) at 'aPath'. This method will also automatically
         generate the commit log appropriate for the status of aPath where status
         would be 'modified', 'new file', or 'deleted'"""
         branch_name = None
@@ -165,7 +165,7 @@ class MunkiPkgGit:
         # In the meantime, we just log the author and that it's a Munki-Do run
         # log_msg = ('%s %s pkginfo file \'%s\' via %s'
         #            % (author_name, action, itempath, APPNAME))
-        log_msg = ('makecatalogs run by %s via %s' % (author_name, APPNAME))
+        log_msg = ('makecatalogs run at %s by %s via %s' % (aPath, author_name, APPNAME))
         
         # commit
         self.runGit(['commit', '-m', log_msg, '--author', author_info])
