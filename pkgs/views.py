@@ -22,6 +22,7 @@ import os
 
 PROD_CATALOG = "production" # change this if your production catalog is different
 GIT_BRANCHING = settings.GIT_BRANCHING
+GIT_IGNORE_PKGS = settings.GIT_IGNORE_PKGS
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 @ensure_csrf_cookie
