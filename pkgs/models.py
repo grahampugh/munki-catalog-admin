@@ -357,15 +357,23 @@ class Packages(object):
                         git = MunkiPkgGit()
                         git.deleteFileAtPathForCommitter(
                                 os.path.join(root, name), committer)
-                        if GIT_IGNORE_PKGS:
+                        if not GIT_IGNORE_PKGS:
+                            git.deleteFileAtPathForCommitter(
+                                    os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
+                        else if GIT_BRANCHING:
+                            # If we're not git'ting packages but we're branching git, we
+                            # shouldn't allow the packages to actually be deleted!
+                            # Makecatalogs will still remove the plists from munki catalogs.
+                            # Admin will have to manually remove packages :(
+                            logger.info("Not deleting since GIT_BRANCHING is enabled: %s" % (pkg_to_delete))
+                        else:
+                            # If we're not branching then everyone is on the master branch so 
+                            # can also delete the packages
                             try:
                                 os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                             except OSError as e:
-                                logger.info("This failed to delete: %s" % (name))
+                                logger.info("This failed to delete: %s" % (pkg_to_delete))
                                 logger.info("The error message was: %s" % (e))
-                        else:
-                            git.deleteFileAtPathForCommitter(
-                                    os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
                     done_delete = True
                     break
             if done_delete:
