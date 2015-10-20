@@ -260,7 +260,7 @@ class Packages(object):
             try:
                 all_catalog_items = plistlib.readPlist(all_catalog_path)
                 for item in all_catalog_items:
-                    item_location = os.path.join(MUNKI_PKG_DIR, item['installer_item_location'])
+                    item_location = os.path.join(MUNKI_PKG_ROOT, item['installer_item_location'])
                     all_pkgs.append(item_location)
             except OSError as e: 
                 logger.info("Error: %s" % (e))
