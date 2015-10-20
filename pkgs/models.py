@@ -360,7 +360,7 @@ class Packages(object):
                         if not GIT_IGNORE_PKGS:
                             git.deleteFileAtPathForCommitter(
                                     os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
-                        else if GIT_BRANCHING:
+                        elif GIT_BRANCHING:
                             # If we're not git'ting packages but we're branching git, we
                             # shouldn't allow the packages to actually be deleted!
                             # Makecatalogs will still remove the plists from munki catalogs.
