@@ -19,6 +19,7 @@ REPO_DIR = settings.MUNKI_REPO_DIR
 GIT_BRANCHING = settings.GIT_BRANCHING
 GIT_IGNORE_PKGS = settings.GIT_IGNORE_PKGS
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
+MUNKI_PKG_ROOT = settings.MUNKI_PKG_ROOT
 
 def fail(message):
     sys.stderr.write(message)
@@ -372,7 +373,7 @@ class Packages(object):
                             logger.info("This failed to delete: %s" % (name))
                             logger.info("The error message was: %s" % (e))
                         try:
-                            os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                            os.remove(os.path.join(MUNKI_PKG_ROOT,pkg_to_delete))
                         except OSError as e:
                             logger.info("This failed to delete: %s" % (name))
                             logger.info("The error message was: %s" % (e))
@@ -381,7 +382,7 @@ class Packages(object):
                         git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
                         if not GIT_IGNORE_PKGS:
                             git.deleteFileAtPathForCommitter(
-                                    os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
+                                    os.path.join(MUNKI_PKG_ROOT,pkg_to_delete), committer)
                         elif GIT_BRANCHING:
                             # If we're not git'ting packages but we're branching git, we
                             # shouldn't allow the packages to actually be deleted!
@@ -392,7 +393,7 @@ class Packages(object):
                             # If we're not branching then everyone is on the master branch so 
                             # can also delete the packages
                             try:
-                                os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
+                                os.remove(os.path.join(MUNKI_PKG_ROOT,pkg_to_delete))
                             except OSError as e:
                                 logger.info("This failed to delete: %s" % (pkg_to_delete))
                                 logger.info("The error message was: %s" % (e))
@@ -425,7 +426,18 @@ class Packages(object):
             git.addMakeCatalogsForCommitter(committer)
 
     @classmethod
-    def delete_orphaned_pkg(self, pkg_locatiocommitter):
+    def delete_orphaned_pkg(self, pkg_to_delete, committer):
+        '''Deletes a package, then induces makecatalogs if not set to ignore pkgs'''
+        if not GIT_IGNORE_PKGS:
+            git = MunkiPkgGit()
+            git.deleteFileAtPathForCommitter(
+                                    os.path.join(MUNKI_PKG_ROOT,pkg_to_delete), committer)
+        else:
+            try:
+                os.remove(os.path.join(MUNKI_PKG_ROOT,pkg_to_delete))
+            except OSError as e:
+                logger.info("This failed to delete: %s" % (pkg_to_delete))
+                logger.info("The error message was: %s" % (e))
 
 
 class Pkgs(models.Model):

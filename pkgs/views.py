@@ -180,17 +180,26 @@ def deleted(request):
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
         tuple(final_items_to_delete)
         deleted_packages = []
-        for n,pkg in enumerate(final_items_to_delete):
-            pkg = pkg.split('___')
-            final_items_to_delete[n] = pkg
-        for pkg_name, pkg_version, pkg_location in final_items_to_delete:
-            try:
-                Packages.delete_pkgs(pkg_name, pkg_version, request.user)
-                deleted = 'deleted'
-            except OSError as e:
-                logger.info("The error was %s" % e)
-                deleted = None
-            deleted_packages.append(pkg_location)
+        if confirm_delete:
+            for n,pkg in enumerate(final_items_to_delete):
+                pkg = pkg.split('___')
+                final_items_to_delete[n] = pkg
+            for pkg_name, pkg_version, pkg_location in final_items_to_delete:
+                try:
+                    Packages.delete_pkgs(pkg_name, pkg_version, request.user)
+                    deleted = 'deleted'
+                except OSError as e:
+                    logger.info("The error was %s" % e)
+                    deleted = None
+        else:
+            for pkg_location in final_items_to_delete:
+                try:
+                    Packages.delete_orphaned_pkg(pkg_location, request.user)
+                    deleted = 'deleted'
+                except OSError as e:
+                    logger.info("The error was %s" % e)
+                    deleted = None
+        deleted_packages.append(pkg_location)
         Packages.makecatalogs(request.user)
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
