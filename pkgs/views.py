@@ -66,9 +66,9 @@ def index(request):
 
 @login_required
 @permission_required('manifests.can_view_manifests', login_url='/login/') 
-def gitpull(request, manifest_name=None):
+def gitpull(request, pkgsinfo_name=None):
     if request.method == 'GET':
-        Manifest.gitPull()
+        Packages.gitPull()
     return HttpResponseRedirect('/manifest/')
 
 @login_required

@@ -110,7 +110,7 @@ class MunkiGit:
         author_name = committer.first_name + ' ' + committer.last_name
         author_name = author_name if author_name != ' ' else committer.username
         author_email = (committer.email or 
-                        "%s@munkiwebadmin" % committer.username)
+                        "%s@munki-do" % committer.username)
         author_info = '%s <%s>' % (author_name, author_email)
         # Pre-configure git - required because Bitbucket ignores the --author flag
         self.runGit(['config', 'user.email', author_email])
