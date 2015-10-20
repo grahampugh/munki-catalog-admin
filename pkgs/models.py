@@ -269,6 +269,9 @@ class Packages(object):
             orphaned_pkgs = []
             for root, dirs, files in os.walk(MUNKI_PKG_ROOT, topdown=False):
                 for name in files:
+                    if name.startswith("._") or name == ".DS_Store":
+                        #we don't want to list these files
+                        continue
                     pkg_fullpath = os.path.join(os.path.join(root, name))
                     pkg_location = pkg_fullpath[(len(MUNKI_PKG_ROOT)+1):]
                     if pkg_fullpath not in all_pkgs:

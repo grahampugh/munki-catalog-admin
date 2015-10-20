@@ -5,9 +5,11 @@
 
 {% block navbar-default_extensions %}
 {% if git_branching_enabled %}
-<div class="btn" style="margin-left:45px;">
-<a id='git-pull' onclick="location.href='{% url "pkgs.views.gitpull" %}';">Update view (git pull)</a>
-</div>{% endif %}
+<div class="btn btn-group" style="margin-left:45px;">
+	<a id='git-pull' onclick="location.href='{% url "pkgs.views.gitpull" %}';">Update view (git pull)</a>
+	<a id='git-pull' onclick="location.href='{% url "pkgs.views.orphaned" %}';">Manage Orphaned Packages</a>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block content %}
