@@ -264,6 +264,7 @@ class Packages(object):
             except OSError as e: 
                 logger.info("Error: %s" % (e))
                 return None
+            logger.info("all_pkgs:\n%s" % (all_pkgs))
             orphaned_pkgs = []
             for root, dirs, files in os.walk(MUNKI_PKG_ROOT, topdown=False):
                 for name in files:
