@@ -30,12 +30,12 @@ Orphaned packages
 			</tr>
 		</thead>
 		<tbody>
-	{% for pkg in all_pkgs %}
+	{% for pkg in orphaned_pkgs %}
 			<tr>
-				<td><a href='/munki_repo/{{ pkg.installer_item_location }}'>{{ pkg.installer_item_location }}</a></td>
+				<td><a href='/munki_repo/{{ pkg }}'>{{ pkg }}</a></td>
 		{% if change_pkgs or delete_pkgs %}
 				<td class='td-right'>
-					<input type='checkbox' name='items_to_move[]' value='{{ pkg.installer_item_location }}' /><br />
+					<input type='checkbox' name='items_to_move[]' value='{{ pkg }}' /><br />
 				</td>
 		{% endif %}
 			</tr>
