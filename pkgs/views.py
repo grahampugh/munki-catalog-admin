@@ -86,10 +86,11 @@ def confirm(request):
         confirm_remove = request.POST.get('remove')
         confirm_delete = request.POST.get('delete')
         confirm_delete_pkgs = request.POST.get('delete_pkgs')
-        tuple(items_to_move)
-        for n,pkg in enumerate(items_to_move):
-            pkg = pkg.split('___')
-            items_to_move[n] = pkg
+        if not confirm_delete_pkgs:
+            tuple(items_to_move)
+            for n,pkg in enumerate(items_to_move):
+                pkg = pkg.split('___')
+                items_to_move[n] = pkg
         c = RequestContext(request, {'user': request.user,
              'dest_catalog': dest_catalog,
              'items_to_move': items_to_move,
