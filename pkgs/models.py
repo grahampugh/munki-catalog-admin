@@ -6,6 +6,7 @@ import subprocess
 import plistlib
 import optparse
 import fnmatch
+import time
 
 from django.conf import settings
 from django.db import models
