@@ -112,6 +112,9 @@ class MunkiGit:
         author_email = (committer.email or 
                         "%s@munkiwebadmin" % committer.username)
         author_info = '%s <%s>' % (author_name, author_email)
+        # Pre-configure git - required because Bitbucket ignores the --author flag
+        self.runGit(['config', 'user.email', author_email])
+        self.runGit(['config', 'user.name', author_name])
 
         # get the status of the file at aPath
         statusResults = self.runGit(['status', aPath])
@@ -147,6 +150,7 @@ class MunkiGit:
             return -1
         else:
             logger.info("Committed changes to %s" % aPath)
+            # if git branching enabled, we need to push to the correct branch
             if branch_name:
                 self.runGit(['push', '--set-upstream', 'origin', branch_name])
             else:

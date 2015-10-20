@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 APPNAME = settings.APPNAME
 DEFAULT_MAKECATALOGS = settings.DEFAULT_MAKECATALOGS
 REPO_DIR = settings.MUNKI_REPO_DIR
+GIT_BRANCHING = settings.GIT_BRANCHING
+PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 def fail(message):
     sys.stderr.write(message)
@@ -79,17 +81,58 @@ class MunkiPkgGit:
         self.runGit(['status', aPath])
         return self.results['returncode'] == 0
 
+    def gitPull(self, aPath):
+        """Does a git pull!"""
+        self.__chdirToMatchPath(aPath)
+        self.runGit(['pull'])
+
+    def getCurrentBranch(self, aPath):
+        """Returns the current branch"""
+        self.__chdirToMatchPath(aPath)
+        self.runGit(['rev-parse', '--abbrev-ref', 'HEAD'])
+        return self.results['output']
+
+    def checkoutUserBranch(self, committer):
+        """Creates a new git branch with name_timestamp"""
+        time_stamp = str(time.strftime('%Y%m%d%H%M%S'))
+        branch_committer = str(committer)
+        seq = (branch_committer, time_stamp)
+        s = "_"
+        branch_name = s.join(seq)
+        logger.info("Branch name: %s" % branch_name)
+        self.runGit(['checkout', '-b', branch_name])
+        if self.results['returncode'] != 0:
+            logger.info("Failed to checkout to branch %s" % (time_stamp, branch_name))
+            logger.info("This was the error: %s" % self.results['output'])
+        else:
+#            self.runGit(['push', '--set-upstream', 'origin', branch_name])
+            logger.info("Checked out branch %s" % branch_name)
+            return branch_name
+
+    def checkoutProductionBranch(self):
+        """Checkout the master/production branch"""
+        self.runGit(['checkout', PRODUCTION_BRANCH])
+        if self.results['returncode'] != 0:
+            logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
+            logger.info("This was the error: %s" % self.results['output'])
+        else:
+            self.runGit(['pull'])
+#            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
+            logger.info("Checked out branch %s" % PRODUCTION_BRANCH)
+
     def commitFileAtPathForCommitter(self, aPath, committer):
         """Commits the file at 'aPath'. This method will also automatically
         generate the commit log appropriate for the status of aPath where status
         would be 'modified', 'new file', or 'deleted'"""
+        branch_name = None
         self.__chdirToMatchPath(aPath)
         # get the author information
         author_name = committer.first_name + ' ' + committer.last_name
         author_name = author_name if author_name != ' ' else committer.username
         author_email = (committer.email or 
                         "%s@munkiwebadmin" % committer.username)
-        # author_info = '%s <%s>' % (author_name, author_email)
+        author_info = '%s <%s>' % (author_name, author_email)
+        # Pre-configure git - required because Bitbucket ignores the --author flag
         self.runGit(['config', 'user.email', author_email])
         self.runGit(['config', 'user.name', author_name])
 
@@ -111,23 +154,40 @@ class MunkiPkgGit:
         if aPath.startswith(pkgsinfo_path):
             itempath = aPath[len(pkgsinfo_path):]
 
+        # If Git branching is enabled, create a new branch
+        if GIT_BRANCHING:
+            branch_name = self.checkoutUserBranch(committer)
+
         # generate the log message - would be good to pass details of each file
         # maybe we can get it from the status message - return it to views.py?
         # In the meantime, we just log the author and that it's a Munki-Do run
         # log_msg = ('%s %s pkginfo file \'%s\' via %s'
         #            % (author_name, action, itempath, APPNAME))
         log_msg = ('makecatalogs run by %s via %s' % (author_name, APPNAME))
-        self.runGit(['commit', '-m', log_msg])
+        
+        # commit
+        self.runGit(['commit', '-m', log_msg, '--author', author_info])
         if self.results['returncode'] != 0:
             logger.info("Failed to commit changes to %s" % aPath)
             logger.info("This was the error: %s" % self.results['output'])
             return -1
         else:
-            self.runGit(['push'])
+            logger.info("Committed changes to %s" % aPath)
+            # if git branching enabled, we need to push to the correct branch
+            if branch_name:
+                self.runGit(['push', '--set-upstream', 'origin', branch_name])
+            else:
+                self.runGit(['push'])
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
                 logger.info("This was the error: %s" % self.results['output'])
                 return -1
+            else:
+                logger.info("Pushed changes to %s" % aPath)
+
+        # If Git branching is enabled, return to master branch
+        if GIT_BRANCHING:
+            self.checkoutProductionBranch()
         return 0
 
     def addFileAtPathForCommitter(self, aPath, aCommitter):
@@ -143,17 +203,19 @@ class MunkiPkgGit:
         catalogs_path = os.path.join(REPO_DIR, 'catalogs')
         self.__chdirToMatchPath(catalogs_path)
         self.runGit(['add', catalogs_path])
-        # Let's just do one commit when everything's added.
-        if self.results['returncode'] == 0:
-            self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
+        # Let's just do one commit when everything's added. That is set during
+        # makecatalogs so no need to do it here
+        #  if self.results['returncode'] == 0:
+        #      self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
     def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
         self.__chdirToMatchPath(REPO_DIR)
         self.runGit(['rm', aPath])
-        # We don't really need to commit each file individually, except during debugging
-        # if self.results['returncode'] == 0:
-        #     self.commitFileAtPathForCommitter(aPath, aCommitter)
+        # Let's just do one commit when everything's added. That is set during
+        # makecatalogs so no need to do it here
+        #  if self.results['returncode'] == 0:
+        #      self.commitFileAtPathForCommitter(aPath, aCommitter)
 
 
 
@@ -302,6 +364,22 @@ class Packages(object):
                     break
             if done_delete:
                 break
+
+    @classmethod
+    def getGitBranch(self):
+        """Returns the current branch"""
+        pkgsinfo_path = os.path.join(REPO_DIR, 'pkgsinfo')
+        git = MunkiGit()
+        git.gitPull(pkgsinfo_path)
+        current_branch = git.getCurrentBranch(pkgsinfo_path)
+        return current_branch
+
+    @classmethod
+    def gitPull(self):
+        """Performs git pull"""
+        pkgsinfo_path = os.path.join(REPO_DIR, 'pkgsinfo')
+        git = MunkiGit()
+        git.gitPull(pkgsinfo_path)
 
     @classmethod
     def makecatalogs(self, committer):

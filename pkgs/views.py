@@ -30,6 +30,13 @@ def index(request):
     can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
     change_pkgs = request.user.has_perm('pkgs.change_pkgs')
     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
+    
+    git_branching_enabled = None
+    if GIT_BRANCHING:
+        git_branching_enabled = GIT_BRANCHING
+        # option to show the actual branch. It takes a toll on loading speed though
+        # git_branch = Manifest.getGitBranch()
+
     if request.method == 'GET':
         findtext = request.GET.get('findtext')
         all_catalog_items = Packages.detail(findtext)
@@ -51,8 +58,16 @@ def index(request):
                                'can_view_catalogs': can_view_catalogs,
                                'change_pkgs': change_pkgs,
                                'delete_pkgs': delete_pkgs,
+                               'git_branching_enabled': git_branching_enabled,
                                'page': 'pkgs'})
     return render_to_response('pkgs/index.html', c)
+
+@login_required
+@permission_required('manifests.can_view_manifests', login_url='/login/') 
+def gitpull(request, manifest_name=None):
+    if request.method == 'GET':
+        Manifest.gitPull()
+    return HttpResponseRedirect('/manifest/')
 
 @login_required
 def confirm(request):
