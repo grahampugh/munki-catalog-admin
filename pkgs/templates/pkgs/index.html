@@ -52,10 +52,12 @@
 		{% endfor %}
 			<option value='set-new'><i>( Create new catalog )<i></option>
 		</select>
+		&nbsp;or&nbsp;
 		<input class='btn btn-warning' type='submit' name='remove' value='Remove Checked Catalog' />
-	{% endif %}
+		&nbsp;&nbsp;&nbsp;&nbsp;
+	{% endif %} 
 	{% if delete_pkgs %}
-		<input class='btn btn-danger' type='submit' name='delete' value='Delete Package' />
+		<input class='btn btn-danger' type='submit' name='delete' value='Delete Checked Packages' />
 	{% endif %}
 	</div>
 	{% endif %}
