@@ -51,15 +51,17 @@
 	{% if confirm_remove or confirm_delete or confirm_add or confirm_move %}
 				<th>Name</th>
 				<th>Version</th>
-		{% if confirm_remove or confirm_delete %}
+	{% endif %}
+	{% if confirm_remove %}
 				<th>Origin Catalog(s)</th>
-		{% else %}
-				<th>New Catalog</th>
-		{% endif %}
-	{% else %}
+	{% endif %}
+	{% if confirm_delete or confirm_delete_pkgs %}
 				<th>Package Location</th>
 	{% endif %}
-				</tr>
+	{% if confirm_add or confirm_move %}
+				<th>New Catalog</th>
+	{% endif %}
+			</tr>
 		</thead>
 		<tbody>
 	{% if confirm_delete_pkgs %}
