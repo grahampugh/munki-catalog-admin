@@ -212,8 +212,9 @@ class MunkiPkgGit:
 
     def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
-        self.__chdirToMatchPath(REPO_DIR)
+        self.__chdirToMatchPath(aPath)
         self.runGit(['rm', aPath])
+        logger.info("Performed 'git rm' on %s" % aPath)
         # Let's just do one commit when everything's added. That is set during
         # makecatalogs so no need to do it here
         #  if self.results['returncode'] == 0:
@@ -355,8 +356,7 @@ class Packages(object):
                             logger.info("The error message was: %s" % (e))
                     else:
                         git = MunkiPkgGit()
-                        git.deleteFileAtPathForCommitter(
-                                os.path.join(root, name), committer)
+                        git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
                         if not GIT_IGNORE_PKGS:
                             git.deleteFileAtPathForCommitter(
                                     os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)
