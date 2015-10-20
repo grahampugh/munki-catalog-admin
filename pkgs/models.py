@@ -372,7 +372,7 @@ class Packages(object):
     def getGitBranch(self):
         """Returns the current branch"""
         pkgsinfo_path = os.path.join(REPO_DIR, 'pkgsinfo')
-        git = MunkiGit()
+        git = MunkiPkgGit()
         git.gitPull(pkgsinfo_path)
         current_branch = git.getCurrentBranch(pkgsinfo_path)
         return current_branch
@@ -381,7 +381,7 @@ class Packages(object):
     def gitPull(self):
         """Performs git pull"""
         pkgsinfo_path = os.path.join(REPO_DIR, 'pkgsinfo')
-        git = MunkiGit()
+        git = MunkiPkgGit()
         git.gitPull(pkgsinfo_path)
 
     @classmethod
