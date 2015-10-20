@@ -178,6 +178,8 @@ def deleted(request):
 #     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     if request.method == 'POST': # If the form has been submitted...
         final_items_to_delete = request.POST.getlist('final_items_to_delete[]')
+        confirm_delete = request.POST.getlist('confirm_delete')
+        confirm_delete_pkgs = request.POST.getlist('confirm_delete_pkgs')
         tuple(final_items_to_delete)
         deleted_packages = []
         if confirm_delete:
