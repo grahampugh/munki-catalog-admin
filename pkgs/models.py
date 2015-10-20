@@ -339,15 +339,18 @@ class Packages(object):
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
+                    logger.info("name: %s; pkg_to_delete: %s" % (name, pkg_to_delete))
                     if not GIT:
                         try:
                             os.remove(os.path.join(root, name))
                         except OSError as e:
                             logger.info("This failed to delete: %s" % (name))
+                            logger.info("The error message was: %s" % (e))
                         try:
                             os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                         except OSError as e:
                             logger.info("This failed to delete: %s" % (name))
+                            logger.info("The error message was: %s" % (e))
                     else:
                         git = MunkiPkgGit()
                         git.deleteFileAtPathForCommitter(
