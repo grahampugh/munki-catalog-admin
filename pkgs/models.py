@@ -172,7 +172,6 @@ class MunkiPkgGit:
         if self.results['returncode'] != 0:
             logger.info("Failed to commit changes to %s" % aPath)
             logger.info("This was the error: %s" % self.results['output'])
-            return -1
         else:
             logger.info("Committed changes to %s" % aPath)
             # if git branching enabled, we need to push to the correct branch
@@ -183,7 +182,6 @@ class MunkiPkgGit:
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
                 logger.info("This was the error: %s" % self.results['output'])
-                return -1
             else:
                 logger.info("Pushed changes to %s" % aPath)
 
