@@ -271,8 +271,6 @@ class Packages(object):
             return orphaned_pkgs
         else:
             return None
-            break
-
 
     @classmethod
     def move(self, pkg_name, pkg_version, pkg_catalog, committer):
