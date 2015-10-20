@@ -21,7 +21,7 @@
 
 {% if items_to_move %}
 
-	{% if confirm_delete %}
+	{% if confirm_delete or confirm_delete_pkgs %}
 	<form id='done' action='/pkgs/deleted/' method='post'>
 	{% else %}
 	<form id='done' action='/pkgs/done/' method='post'>
@@ -46,14 +46,18 @@
 	<table class='pkglist table table-striped table-condensed'>
 		<thead>
 			<tr>
+	{% if confirm_remove or confirm_delete or confirm_add or confirm_move %}
 				<th>Name</th>
 				<th>Version</th>
-	{% if confirm_remove or confirm_delete %}
+		{% if confirm_remove or confirm_delete %}
 				<th>Origin Catalog(s)</th>
-	{% else %}
+		{% else %}
 				<th>New Catalog</th>
+		{% endif %}
+	{% else %}
+				<th>Package Location</th>
 	{% endif %}
-			</tr>
+				</tr>
 		</thead>
 		<tbody>
 	{% for package, version, orig_catalog, pkg_location in items_to_move %}
@@ -92,6 +96,12 @@
 				{{ package }}</td>
 				<td>{{ version }}</td>
 				<td>{{ orig_catalog }}</td>
+			</tr>
+		{% elif confirm_delete_pkgs %}
+			<tr>
+				<td class='item-name'>
+				<input type='hidden' name='final_items_to_delete[]' value='{{ pkg_location }}' />
+				<td>{{ pkg_location }}</td>
 			</tr>
 		{% else %}
 			<tr>

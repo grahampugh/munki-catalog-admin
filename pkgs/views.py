@@ -85,6 +85,7 @@ def confirm(request):
         confirm_add = request.POST.get('add')
         confirm_remove = request.POST.get('remove')
         confirm_delete = request.POST.get('delete')
+        confirm_delete_pkgs = request.POST.get('delete_pkgs')
         tuple(items_to_move)
         for n,pkg in enumerate(items_to_move):
             pkg = pkg.split('___')
@@ -96,6 +97,7 @@ def confirm(request):
              'confirm_add': confirm_add,
              'confirm_remove': confirm_remove,
              'confirm_delete': confirm_delete,
+             'confirm_delete_pkgs': confirm_delete_pkgs,
              'can_view_pkgs': can_view_pkgs,
              'can_view_manifests': can_view_manifests,
              'can_view_catalogs': can_view_catalogs,
@@ -204,3 +206,15 @@ def deleted(request):
     else:
         return HttpResponse("No form submitted.\n")
 
+@login_required
+def orphaned(request):
+    orphaned_pkgs = Packages.orphaned()
+    c = RequestContext(request, {'user': request.user,
+                                 'orphaned_pkgs': orphaned_pkgs,
+                                 'can_view_pkgs': can_view_pkgs,
+                                 'can_view_manifests': can_view_manifests,
+                                 'can_view_catalogs': can_view_catalogs,
+                                 'change_pkgs': change_pkgs,
+                                 'delete_pkgs': delete_pkgs,
+                                 'page': 'pkgs'})
+    return render_to_response('pkgs/orphaned.html', c)

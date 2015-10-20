@@ -251,6 +251,29 @@ class Packages(object):
             return None
 
     @classmethod
+    def orphaned(self):
+        '''Returns a list of orphaned pkg files where pkginfo files have been removed'''
+        all_catalog_path = os.path.join(REPO_DIR, 'catalogs/all')
+        all_pkgs = []
+        if os.path.exists(all_catalog_path):
+            try:
+                all_catalog_items = plistlib.readPlist(all_catalog_path)
+                for item in all_catalog_items:
+                all_pkgs = all_pkgs.append(item['installer_item_location'] )
+            except Exception, errmsg: 
+                return None
+            orphaned_pkgs = []
+            for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgs'), topdown=False):
+                for name in files:
+                    if name not in all_pkgs:
+                        orphaned_pkgs = orphaned_pkgs.append(os.path.join(root, name))
+            return orphaned_pkgs
+        else:
+            return None
+            break
+
+
+    @classmethod
     def move(self, pkg_name, pkg_version, pkg_catalog, committer):
         '''Rewrites the catalog of the selected pkginfo files. Adapted from grahamgilbert/munki-trello'''
         done = False
@@ -400,6 +423,9 @@ class Packages(object):
         if GIT:
             git = MunkiPkgGit()
             git.addMakeCatalogsForCommitter(committer)
+
+    @classmethod
+    def delete_orphaned_pkg(self, pkg_locatiocommitter):
 
 
 class Pkgs(models.Model):

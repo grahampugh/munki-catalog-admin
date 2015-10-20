@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+<!-- page title -->
+{% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
+
+{% block navbar-default_extensions %}
+<div class="btn" style="margin-left:45px;">
+Orphaned packages
+</div>
+{% endblock %}
+
+{% block content %}
+<form id='move' action='/pkgs/confirm/' method='post'>
+	{% csrf_token %}
+	{% if delete_pkgs %}
+	<div class='well form-horizontal'>
+		<input class='btn btn-danger' type='submit' name='delete_pkgs' value='Delete Orphaned Packages' />
+	{% endif %}
+	</div>
+
+	<p/>
+	<table class='pkglist table table-striped table-condensed'>
+		<thead>
+			<tr>
+				<th>Package location</th>
+	{% if delete_pkgs %}
+				<th class='td-right'>Check to select</th>
+	{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+	{% for pkg in all_pkgs %}
+			<tr>
+				<td><a href='/munki_repo/{{ pkg.installer_item_location }}'>{{ pkg.installer_item_location }}</a></td>
+	{% if change_pkgs or delete_pkgs %}
+				<td class='td-right'>
+					<input type='checkbox' name='items_to_move[]' value='{{ pkg.installer_item_location }}' /><br />
+				</td>
+	{% endif %}
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+</form>
+{% else %}
+	<p><i>No Packages.</i></p>
+{% endif %}
+{% endblock content %}
