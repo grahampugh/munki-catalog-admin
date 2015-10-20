@@ -62,50 +62,53 @@
 				</tr>
 		</thead>
 		<tbody>
-	{% for package, version, orig_catalog, pkg_location in items_to_move %}
-		{% if confirm_move and orig_catalog != dest_catalog %}
+	{% if confirm_delete_pkgs %}
+		{% for pkg_location in items_to_move %}
+			<tr>
+				<td class='item-name'>
+				<input type='hidden' name='final_items_to_delete[]' value='{{ pkg_location }}' />
+				<td>{{ pkg_location }}</td>
+			</tr>
+		{% endfor %}
+	{% else %}
+		{% for package, version, orig_catalog, pkg_location in items_to_move %}
+			{% if confirm_move and orig_catalog != dest_catalog %}
 			<tr>
 				<td class='item-name'>
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ dest_catalog }}' />
 				{{ package }}</td>
 				<td>{{ version }}</td>
 				<td>
-			{% if dest_catalog = 'set-new' %}
-				(Input new catalog above)
-			{% else %}
-				{{ dest_catalog }}
-			{% endif %}
+				{% if dest_catalog = 'set-new' %}
+					(Input new catalog above)
+				{% else %}
+					{{ dest_catalog }}
+				{% endif %}
 				</td>
 			</tr>
-		{% elif confirm_add and orig_catalog != dest_catalog %}
+			{% elif confirm_add and orig_catalog != dest_catalog %}
 			<tr>
 				<td>
 				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}___{{ dest_catalog }}' />
 				{{ package }}</td>
 				<td>{{ version }}</td>
 				<td>
-			{% if dest_catalog = 'set-new' %}
-				(Input new catalog above)
-			{% else %}
-				{{ dest_catalog }}
-			{% endif %}
+				{% if dest_catalog = 'set-new' %}
+					(Input new catalog above)
+				{% else %}
+					{{ dest_catalog }}
+				{% endif %}
 				</td>
 			</tr>
-		{% elif confirm_remove %}
+			{% elif confirm_remove %}
 			<tr>
 				<td>
-				<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}' />
-				{{ package }}</td>
+					<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}' />
+					{{ package }}</td>
 				<td>{{ version }}</td>
 				<td>{{ orig_catalog }}</td>
 			</tr>
-		{% elif confirm_delete_pkgs %}
-			<tr>
-				<td class='item-name'>
-				<input type='hidden' name='final_items_to_delete[]' value='{{ pkg_location }}' />
-				<td>{{ pkg_location }}</td>
-			</tr>
-		{% else %}
+			{% else %}
 			<tr>
 				<td class='item-name'>
 				<input type='hidden' name='final_items_to_delete[]' value='{{ package }}___{{ version }}___{{ pkg_location }}' />
@@ -113,9 +116,9 @@
 				<td>{{ version }}</td>
 				<td>{{ pkg_location }}</td>
 			</tr>
-		{% endif %}
-
-	{% endfor %}
+			{% endif %}
+		{% endfor %}
+	{% endif %}
 		</tbody>
 	</table>
 </form>
