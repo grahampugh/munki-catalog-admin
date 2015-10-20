@@ -260,7 +260,8 @@ class Packages(object):
             try:
                 all_catalog_items = plistlib.readPlist(all_catalog_path)
                 for item in all_catalog_items:
-                    all_pkgs.append(item['installer_item_location'])
+                    item_location = os.path.join(MUNKI_PKG_DIR, item['installer_item_location'])
+                    all_pkgs.append(item_location)
             except OSError as e: 
                 logger.info("Error: %s" % (e))
                 return None
@@ -268,8 +269,9 @@ class Packages(object):
             orphaned_pkgs = []
             for root, dirs, files in os.walk(MUNKI_PKG_ROOT, topdown=False):
                 for name in files:
+                    pkg_location = os.path.join(os.path.join(root, name))
                     if name not in all_pkgs:
-                        orphaned_pkgs.append(os.path.join(root, name))
+                        orphaned_pkgs.append(pkg_location)
                         logger.info("Orphaned pkg found: %s" % (name))
                     else:
                         # TEMP DEBUG ONLY
