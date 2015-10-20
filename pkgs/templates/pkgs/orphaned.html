@@ -44,6 +44,7 @@ Orphaned packages
 	</table>
 </form>
 {% else %}
-	<p><i>No Packages.</i></p>
+	<p>There are no Orphaned Packages at this time.</i></p>
+	<p><a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Back to the Packages page</a></p>
 {% endif %}
 {% endblock content %}
