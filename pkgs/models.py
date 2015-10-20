@@ -195,19 +195,19 @@ class MunkiPkgGit:
         """Commits a file to the Git repo."""
         self.__chdirToMatchPath(aPath)
         self.runGit(['add', aPath])
-#         We don't really need to commit each file individually, except during debugging
-#         if self.results['returncode'] == 0:
-#             self.commitFileAtPathForCommitter(aPath, aCommitter)
+        # Let's just do one commit when everything's added. That is set during
+        # makecatalogs so no need to do it here
+        #  if self.results['returncode'] == 0:
+        #      self.commitFileAtPathForCommitter(aPath, aCommitter)
 
     def addMakeCatalogsForCommitter(self, aCommitter):
         """Commits the updated catalogs to the Git repo."""
         catalogs_path = os.path.join(REPO_DIR, 'catalogs')
         self.__chdirToMatchPath(catalogs_path)
         self.runGit(['add', catalogs_path])
-        # Let's just do one commit when everything's added. That is set during
-        # makecatalogs so no need to do it here
-        #  if self.results['returncode'] == 0:
-        #      self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
+        # Let's just do one commit when everything's added.
+        if self.results['returncode'] == 0:
+            self.commitFileAtPathForCommitter(catalogs_path, aCommitter)
 
     def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
