@@ -194,6 +194,7 @@ def deleted(request):
                 except OSError as e:
                     logger.info("The error was %s" % e)
                     deleted = None
+            Packages.makecatalogs(request.user)
         else:
             for pkg_location in final_items_to_delete:
                 try:
@@ -202,8 +203,9 @@ def deleted(request):
                 except OSError as e:
                     logger.info("The error was %s" % e)
                     deleted = None
+            if not GIT_IGNORE_PKGS:
+                Packages.makecatalogs(request.user)
         deleted_packages.append(pkg_location)
-        Packages.makecatalogs(request.user)
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
