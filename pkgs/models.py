@@ -86,6 +86,7 @@ class MunkiPkgGit:
     def gitPull(self, aPath):
         """Does a git pull!"""
         self.__chdirToMatchPath(aPath)
+        self.checkoutProductionBranch()
         self.runGit(['pull'])
 
     def getCurrentBranch(self, aPath):
