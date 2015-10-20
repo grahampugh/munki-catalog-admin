@@ -270,8 +270,7 @@ class Packages(object):
             for root, dirs, files in os.walk(MUNKI_PKG_ROOT, topdown=False):
                 for name in files:
                     pkg_fullpath = os.path.join(os.path.join(root, name))
-                    pkg_location = pkg_fullpath.lstrip(MUNKI_PKG_ROOT)
-                    #pkg_location.lstrip('/')
+                    pkg_location = pkg_fullpath[(len(MUNKI_PKG_ROOT)+1):]
                     if pkg_fullpath not in all_pkgs:
                         orphaned_pkgs.append(pkg_location)
                         logger.info("Orphaned pkg found: %s" % (pkg_location))
