@@ -16,6 +16,7 @@ APPNAME = settings.APPNAME
 DEFAULT_MAKECATALOGS = settings.DEFAULT_MAKECATALOGS
 REPO_DIR = settings.MUNKI_REPO_DIR
 GIT_BRANCHING = settings.GIT_BRANCHING
+GIT_IGNORE_PKGS = settings.GIT_IGNORE_PKGS
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 def fail(message):
@@ -327,7 +328,7 @@ class Packages(object):
     @classmethod
     def delete_pkgs(self, pkg_name, pkg_version, committer):
         '''Deletes a package and its associated pkginfo file, then induces makecatalogs'''
-        logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
+#        logger.info("pkg_name: %s; pkg_version: %s" % (pkg_name, pkg_version))
         done_delete = False
         for root, dirs, files in os.walk(os.path.join(REPO_DIR,'pkgsinfo'), topdown=False):
             for name in files:
@@ -339,7 +340,7 @@ class Packages(object):
                     pass
                 if plist and plist['name'] == pkg_name and plist['version'] == pkg_version:
                     pkg_to_delete = plist['installer_item_location']
-                    logger.info("name: %s; pkg_to_delete: %s" % (name, pkg_to_delete))
+                    logger.info("name: %s; pkg_to_delete: %s; root: %s" % (name, pkg_to_delete, root))
                     if not GIT:
                         try:
                             os.remove(os.path.join(root, name))
@@ -355,11 +356,12 @@ class Packages(object):
                         git = MunkiPkgGit()
                         git.deleteFileAtPathForCommitter(
                                 os.path.join(root, name), committer)
-                        if settings.GIT_IGNORE_PKGS:
+                        if GIT_IGNORE_PKGS:
                             try:
                                 os.remove(os.path.join(REPO_DIR,'pkgs',pkg_to_delete))
                             except OSError as e:
                                 logger.info("This failed to delete: %s" % (name))
+                                logger.info("The error message was: %s" % (e))
                         else:
                             git.deleteFileAtPathForCommitter(
                                     os.path.join(REPO_DIR,'pkgs',pkg_to_delete), committer)

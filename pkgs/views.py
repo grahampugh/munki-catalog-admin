@@ -65,11 +65,11 @@ def index(request):
     return render_to_response('pkgs/index.html', c)
 
 @login_required
-@permission_required('manifests.can_view_manifests', login_url='/login/') 
+@permission_required('pkgs.can_view_pkgs', login_url='/login/') 
 def gitpull(request, pkgsinfo_name=None):
     if request.method == 'GET':
         Packages.gitPull()
-    return HttpResponseRedirect('/manifest/')
+    return HttpResponseRedirect('/pkgs/')
 
 @login_required
 def confirm(request):
