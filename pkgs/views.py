@@ -217,6 +217,11 @@ def deleted(request):
 
 @login_required
 def orphaned(request):
+    can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
+    can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
+    can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
+    change_pkgs = request.user.has_perm('pkgs.change_pkgs')
+    delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     orphaned_pkgs = Packages.orphaned()
     c = RequestContext(request, {'user': request.user,
                                  'orphaned_pkgs': orphaned_pkgs,
