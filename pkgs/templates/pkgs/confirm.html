@@ -38,8 +38,10 @@
 		<input class='btn' type='submit' name='confirm_add' value='Confirm Add' />
 	{% elif confirm_remove %}
 		<input class='btn' type='submit' name='confirm_remove' value='Confirm Remove' />
+	{% elif confirm_delete_pkgs %}
+		<input class='btn' type='submit' name='confirm_delete_pkgs' value='Confirm Delete' />
 	{% else %}
-		<input class='btn' type='submit' value='Confirm Delete' />
+		<input class='btn' type='submit' name='confirm_delete' value='Confirm Delete' />
 	{% endif %}
 	</div>
 	<p/>
