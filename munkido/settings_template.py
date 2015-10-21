@@ -26,12 +26,11 @@ GIT_PATH = ''
 GIT_IGNORE_PKGS = 'yes'
 # If GIT_BRANCHING is enabled, users create a new branch when making a commit
 # (if that branch doesn't already exist) rather than committing to the 
-# current branch. Set to 'yes' (or anything) to enable.
+# current branch)
 GIT_BRANCHING = ''
 # If Git branching is available, you should set the default branch here.
 # This is the branch which people logging into Munki-Dp will see.
 # This may be master, or something else if you have a different workflow.
-# This does nothing if GIT_BRANCHING isn't set.
 PRODUCTION_BRANCH = 'master'
 ## END OF GIT STUFF ##
 
@@ -48,35 +47,11 @@ MANIFEST_USERNAME_IS_EDITABLE = False
 #DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
 DEFAULT_MAKECATALOGS = "/munki-tools/code/client/makecatalogs"
 
-# enable WARRANTY to show warranty information on the detail machine report
-WARRANTY_LOOKUP_ENABLED = True
-
-# managed updates visible in manifests
-MANAGED_UPDATES_ENABLED = False
-
-# display SSH-Button in detal view
-SSH_BUTTON_ENABLED = False
-
-# display VNC-Button in detal view
-VNC_BUTTON_ENABLED = False
-
 #if true all software packages are shown in autocompletion not only the one in included catalogs
-ALL_ITEMS = False
-
-#user serial_number or hostname for client manifest
-CLIENT_MANIFEST = 'serial_number'
-
-# enable MODEL_LOOKUP_ENABLED to show a human readable version of the machines model
-MODEL_LOOKUP_ENABLED = True
+ALL_ITEMS = True
 
 # enable Business units
 BUSINESS_UNITS_ENABLED = False
-
-# if MunkiWebAdmin is behind a proxy, and WARRANTY_LOOKUP_ENABLED or
-# MODEL_LOOKUP_ENABLED are enabled, enter the details for the proxy server in
-# the format user:password@example.com:port (user:password@ and :port are 
-# optional), otherwise leave blank
-PROXY_ADDRESS = ""
 
 # needed for productive mode
 ALLOWED_HOSTS = ['*']
