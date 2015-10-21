@@ -88,7 +88,7 @@ manual intervention by a superuser, or a cron job).
 
 # Git Branching
 
-Git branching is now available for the Manifests section. This is enabled in 
+Git branching is now available. This is enabled in 
 `settings.py` by setting `GIT_BRANCHING` to 'yes'.
 
 With Git branching enabled, any commit made by a user creates a new branch 
@@ -106,6 +106,24 @@ branch into the master branch.
 A button is made available for users to update their view (this issues a 'git pull' 
 command).
 
+The `GIT_IGNORE_PKGS` key in `settings.py` allows you to ignore the `pkgs` directory, 
+in the case that you have set git to ignore this folder. This is a common scenario due to 
+the large file sizes stored in the pkgs folder.
+
+If `GIT_IGNORE_PKGS` is enabled, Munki-Do will simply delete the files in the `pkgs` 
+folder, rather than using `git rm` and committing the changes to a git repository.
+
+If both `GIT_IGNORE_PKGS` and `GIT_BRANCHING` are enabled, then since changes are made 
+to a new git branch and are not "live" on the production branch, 
+it is important that the contents of the `pkgs` folder are not 
+deleted at the time of commit. The act of deleting contents 
+from the `pkgs` folder then becomes manual, to be 
+done by the administrator performing git merges.  To facilitate this, use the 
+_"Manage Orphaned Packages"_ link, which lists all files in the `pkgs` folder which are 
+not referenced in a `pkginfo` file (and which are therefore irrelevant to the munki 
+repository). These packages can then be selected and deleted using the UI. At present 
+this link is only available to users that are marked as "Staff" in the admin panel.
+
 To Do
 ----
 
@@ -118,3 +136,4 @@ Possible new features:
   * Reskin to MunkiWebAdmin 2 UI when it's released. 
   * (or, alternatively, reskin the Packages section to take advantage of SteveKueng's UI)
   * Inline XML editor for editing pkginfo files, e.g. CKEditor
+  * Icon handling (deleting orphaned icons)

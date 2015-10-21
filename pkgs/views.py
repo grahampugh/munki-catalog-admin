@@ -222,6 +222,7 @@ def deleted(request):
         return HttpResponse("No form submitted.\n")
 
 @login_required
+@permission_required('user.is_staff', login_url='/login/') 
 def orphaned(request):
     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
     can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
