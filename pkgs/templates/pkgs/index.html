@@ -9,7 +9,7 @@
 	<div class="btn" style="margin-left:45px;">
 		<a id='git-pull' onclick="location.href='{% url "pkgs.views.gitpull" %}';">Update view (git pull)</a>
 	</div>
-	{% if user.is_staff %}
+	{% if user.is_staff or user.is_superuser%}
 	<div class="btn" style="margin-left:10px;">
 		<a id='git-pull' onclick="location.href='{% url "pkgs.views.orphaned" %}';">Manage Orphaned Packages</a>
 	</div>
