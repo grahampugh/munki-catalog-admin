@@ -1,3 +1,7 @@
+# This is a standalone Dockerfile for Docker Hub. The Munki-Do git repository
+# has a Dockerfile in the root directory which does away with the need to clone the
+# docker-munki-do repository. So you normally won't need this one.
+
 # Use phusion/passenger-full as base image. To make your builds reproducible, make
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/passenger-docker/blob/master/Changelog.md for
@@ -23,12 +27,12 @@ RUN apt-get update && apt-get install -y \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR #force6!!
+RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR
 ADD django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt
 RUN touch /root/tmp.txt
 ADD django/ $APP_DIR/munkido/
-RUN mkdir -p /var/log/django && touch /var/log/django/error.log
+RUN mkdir -p /var/log/django
 ADD nginx/munkido.conf /etc/nginx/sites-enabled/munkido.conf
 ADD run.sh /etc/my_init.d/run.sh
 RUN rm -f /etc/service/nginx/down
