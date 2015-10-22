@@ -42,13 +42,19 @@ from Munki-Trello by Graham Gilbert: https://github.com/grahamgilbert/munki-trel
 I encourage the use of Munki-Do as a Docker container. I have personally never 
 attempted to install it natively.
 
-A Docker container for Munki-Do is available here: 
+This git repository contains all the necessary files to run a Docker container.
+You will most likely wish to edit the following files after cloning:
 
-* https://github.com/grahampugh/docker-munki-do
+  * `docker/django/settings.py` - contains settings specific to your installation, 
+    e.g. git settings, LDAP settings.
+  * `docker-machine-munki-do-start.sh` - this is a single shell script designed to get 
+    Munki-Do running. You need to have Docker Toolbox installed to use this, and you 
+    will need to edit the paths to your `munki_repo` and `munki-do-db` directories.
+    
+You must set up a directory on your local host for the Django database. Then point 
+`$MUNKI_DO_DB` to this directory in `docker-machine-munki-do-start.sh` or in your `docker
+run` command.
 
-I've also made a Docker container for Steve Kueng's fork of MunkiWebAdmin, available here:
-
-* https://github.com/grahampugh/docker-munkiwebadmin
 
 #User permissions
 

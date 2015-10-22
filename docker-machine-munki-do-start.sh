@@ -26,10 +26,6 @@ docker ps | sed "s/\ \{2,\}/$(printf '\t')/g" | \
 	awk -F"\t" '/munki|munki-do/{print $1}' | \
 	xargs docker rm -f
 
-# Run
-IP=`docker-machine ip munkido`
-echo "IP = $IP"
-
 docker run -d --restart=always --name="munki" -v $MUNKI_REPO:/munki_repo \
 	-p 80:80 -h munki groob/docker-munki
 
@@ -45,4 +41,12 @@ docker run -d --restart=always --name munki-do \
 	-v $MUNKI_DO_DB:/munki-do-db \
 	-e ADMIN_PASS=pass \
 	grahampugh/munki-do
+
+# Run
+IP=`docker-machine ip munkido`
+echo
+echo "### Your Docker Machine IP is: $IP ###"
+echo "### Your Munki-Do URL is: http://$IP:8000"
+echo
+
 
