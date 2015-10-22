@@ -27,6 +27,7 @@ GIT_IGNORE_PKGS = 'yes'
 # If GIT_BRANCHING is enabled, users create a new branch when making a commit
 # (if that branch doesn't already exist) rather than committing to the 
 # current branch)
+#GIT_BRANCHING = 'yes'
 GIT_BRANCHING = ''
 # If Git branching is available, you should set the default branch here.
 # This is the branch which people logging into Munki-Dp will see.
@@ -41,7 +42,7 @@ MUNKI_PKG_ROOT = os.path.join(MUNKI_REPO_DIR, PKGS_DIR)
 # name of the key in a manifest file that names the user or dept
 MANIFEST_USERNAME_KEY = 'user'
 # set MANIFEST_USERNAME_IS_EDITABLE to allow edits to the displayed username
-MANIFEST_USERNAME_IS_EDITABLE = False
+MANIFEST_USERNAME_IS_EDITABLE = True
 
 # path to makecatalogs - required for packages section
 #DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
@@ -101,7 +102,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_DIR, 'munkiwebadmin.db'),                      # Or path to database file if using sqlite3.
+        'NAME': '/munki-do-db/munki-do.db',                      # Path to database file if using sqlite3.
         'USER': '',     # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
