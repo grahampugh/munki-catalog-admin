@@ -21,11 +21,13 @@ fi
 
 # Clean up
 # This checks whether munki munki-do postgres-munkiwebadmin are running and stops them
-# if so:
+# if so (thanks to Pepijn Bruienne):
 docker ps | sed "s/\ \{2,\}/$(printf '\t')/g" | \
 	awk -F"\t" '/munki|munki-do/{print $1}' | \
 	xargs docker rm -f
 
+# This isn't needed for Munki-Do to operate, but is needed if you want a working
+# Munki server
 docker run -d --restart=always --name="munki" -v $MUNKI_REPO:/munki_repo \
 	-p 80:80 -h munki groob/docker-munki
 
