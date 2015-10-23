@@ -16,8 +16,11 @@ New functionality has been added:
 1. Add multiple packages to a new or existing catalog
 2. Remove multiple packages from a catalog
 3. Move packages to a new or existing catalog
-4. Delete packages and their associated pkginfo files
-5. Download packages directly from the Munki Repo for ad-hoc installation
+4. Delete packages and their associated `pkginfo` files
+5. Delete orphaned packages (those without corresponding `pkginfo` files)
+6. Download packages directly from the Munki Repo for ad-hoc installation
+7. Works with git-enabled Munki repositories
+8. Can be set to create new git branches for each update, based on logged in user.
 
 Some of the original functionality of MunkiWebAdmin has been removed from Munki-Do,
 such as reporting tools. For reporting tools, I recommend: 
