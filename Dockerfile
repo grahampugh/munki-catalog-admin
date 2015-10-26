@@ -56,7 +56,7 @@ EXPOSE 8000
 ADD docker/id_rsa /root/.ssh/id_rsa
 RUN touch /root/.ssh/known_hosts
 RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
-RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
+RUN echo "[192.168.168.134]:10022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLz8ILw5mJJZtF7M+HjaGx6jWUDBhKv5sJu0OrS6VBNj598g+iSWzXNZCgS/FtGHcPDnMFIEBDsJgDSLWEbE52Y= " >> /root/.ssh/known_hosts
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

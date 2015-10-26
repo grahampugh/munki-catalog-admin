@@ -111,11 +111,10 @@ class MunkiGit:
 #            self.runGit(['push', '--set-upstream' 'origin', branch_name])
             logger.info("Checked out branch %s" % branch_name)
 
-    def commitFileAtPathForCommitter(self, aPath, committer):
+    def commitFileAtPathForCommitter(self, aPath, branch_name, committer):
         """Commits the file at 'aPath'. This method will also automatically
         generate the commit log appropriate for the status of aPath where status
         would be 'modified', 'new file', or 'deleted'"""
-        branch_name = None
         self.__chdirToMatchPath(aPath)
         # get the author information
         author_name = committer.first_name + ' ' + committer.last_name
@@ -197,6 +196,8 @@ class MunkiGit:
                     del manifest['new_manifest']
             else:
                 branch_name = self.checkoutUserBranch(aCommitter)
+        else:
+            branch_name = None
         try:
             plistlib.writePlist(manifest, aPath)
             logger.info("Wrote plist at %s" % (aPath))
@@ -208,7 +209,7 @@ class MunkiGit:
         if not 'new_manifest' in manifest:
             self.runGit(['add', aPath])
             if self.results['returncode'] == 0:
-                self.commitFileAtPathForCommitter(aPath, aCommitter)
+                self.commitFileAtPathForCommitter(aPath, branch_name, aCommitter)
         return 0
 
 
@@ -219,10 +220,12 @@ class MunkiGit:
         # If Git branching is enabled, create a new branch
         if GIT_BRANCHING:
             branch_name = self.checkoutUserBranch(aCommitter)
+        else:
+            branch_name = None
 
         self.runGit(['rm', aPath])
         if self.results['returncode'] == 0:
-            self.commitFileAtPathForCommitter(aPath, aCommitter)
+            self.commitFileAtPathForCommitter(aPath, branch_name, aCommitter)
         return 0
 
 
