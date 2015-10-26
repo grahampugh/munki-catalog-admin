@@ -115,6 +115,12 @@ branch into the master branch.
 A button is made available for users to update their view (this issues a 'git pull' 
 command).
 
+When a new manifest is created, pushing to git is delayed until a change is made to 
+that manifest. This avoids the Munki-Do user's view returning to the master branch,
+which doesn't yet contain the new manifest. The active branch in the server remains 
+set to the newly created branch until the new manifest is edited and saved, at which time 
+it is committed to the new branch and the master branch is checked out.
+
 The `GIT_IGNORE_PKGS` key in `settings.py` allows you to ignore the `pkgs` directory, 
 in the case that you have set git to ignore this folder. This is a common scenario due to 
 the large file sizes stored in the pkgs folder.
