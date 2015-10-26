@@ -187,6 +187,10 @@ def detail(request, manifest_name):
         })
         manifest_user = manifest.get(MANIFEST_USERNAME_KEY, '')
         
+        git_branching_enabled = None
+        if GIT_BRANCHING:
+            git_branching_enabled = GIT_BRANCHING
+
         c = RequestContext(request, 
             {'manifest_name': manifest_name.replace(':', '/'),
             'manifest_user': manifest_user,
@@ -197,6 +201,7 @@ def detail(request, manifest_name):
             'valid_catalogs': valid_catalogs,
             'valid_manifest_names': valid_manifest_names,
             'autocomplete_data': autocomplete_data,
+            'git_branching_enabled': git_branching_enabled,
             'user': request.user,
             'page': 'manifests'})
         c.update(csrf(request))

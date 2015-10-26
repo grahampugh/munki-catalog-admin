@@ -11,6 +11,32 @@
 	  	</div>
 	</h3>
 	<div id="manifest_detail" style="height: 100%; overflow-y: scroll; padding-top:10px;">
+		{% if user %}
+		  <div class='manifest_section'>
+		  <div class="section_label">User</div>
+			<ul id='_user_name' class='section unstyled'>
+				<li id='{{ manifest_user }}' class='nameitem'>
+				{%  if manifest_user_is_editable %}
+					<div class='editable user_name_field'>{{ manifest_user }}</div>
+				{% else %}
+					{{ manifest_user }}
+				{% endif %}
+				</li>
+			</ul>
+			</div>
+		{% endif %}
+		
+<!-- 
+		<div class='manifest_section'>
+		<div class="section_label">User restrictions</div>
+		<ul id='restriction' class='section unstyled'>
+			<li id='{{ manifest.restriction }}' class='nameitem'>
+				<div class='editable'>{{ manifest.restriction }}</div>
+			</li>
+		</ul>
+		</div>
+		
+ -->
 		<div class='manifest_section'>
 		<div class="section_label">Catalogs</div>
 		<ul id='catalogs' class='catalogs_section list-group unstyled'>
@@ -34,7 +60,7 @@
 			
 		</ul>
 		</div>
-		
+
 		{% if manifest.conditional_items %}
 		<div class='manifest_section'>
 		<div class="section_label">Conditional Items</div>
@@ -122,6 +148,11 @@
 	</div>
 	<div id="data_storage" data-autocomplete_data='{{ autocomplete_data }}' />
 	<div id="csrf_token" style='display:none'>{% csrf_token %}</div>
+{% elif git_branching_enabled %}
+	<div id="item_name">Git branching enabled. Please refresh your view or click below:</div>
+	<div class="btn">
+		<a id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
+	</div>
 {% else %}
-    <div id="item_name">Manifest is empty</div>
+	<div id="item_name">Manifest is empty</div>
 {% endif %}

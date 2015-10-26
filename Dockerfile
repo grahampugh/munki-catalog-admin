@@ -44,8 +44,8 @@ EXPOSE 8000
 
 #     Uncomment the following lines to copy an ssh key to the Docker image 
 # in order to allow passwordless `git push`
-# This is necessary in Bitbucket and should also work in Github
-# if you change the ssh-keyscan to `github.com`, so that you 
+# This is necessary in Bitbucket, Github, Gitlab etc.
+# if you change the ssh-keyscan to the domain you are connecting to, so that you 
 # don't have to pass passwords in plain text
 #     You will need to add an `id_rsa` file to the same path as the Dockerfile,
 # as Docker cannot operate on files outside the current working directory.
@@ -56,7 +56,9 @@ EXPOSE 8000
 ADD docker/id_rsa /root/.ssh/id_rsa
 RUN touch /root/.ssh/known_hosts
 RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
-RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
+# This dodgy line necessary for docker-gitlab, since ssh-keyscan doesn't generate the
+# correct syntax:
+RUN echo "[192.168.168.134]:10022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLz8ILw5mJJZtF7M+HjaGx6jWUDBhKv5sJu0OrS6VBNj598g+iSWzXNZCgS/FtGHcPDnMFIEBDsJgDSLWEbE52Y= " >> /root/.ssh/known_hosts
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
