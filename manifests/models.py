@@ -100,6 +100,17 @@ class MunkiGit:
 #            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
             logger.info("Checked out branch %s" % PRODUCTION_BRANCH)
 
+    def checkoutCustomBranch(self, branch_name):
+        """Checkout an existing branch - used for new manifests"""
+        self.runGit(['checkout', branch_name])
+        if self.results['returncode'] != 0:
+            logger.info("Failed to change branches to %s" % branch_name)
+            logger.info("This was the error: %s" % self.results['output'])
+        else:
+            self.runGit(['pull'])
+#            self.runGit(['push', '--set-upstream' 'origin', branch_name])
+            logger.info("Checked out branch %s" % branch_name)
+
     def commitFileAtPathForCommitter(self, aPath, committer):
         """Commits the file at 'aPath'. This method will also automatically
         generate the commit log appropriate for the status of aPath where status
@@ -134,10 +145,6 @@ class MunkiGit:
         if aPath.startswith(manifests_path):
             itempath = aPath[len(manifests_path):]
 
-        # If Git branching is enabled, create a new branch
-        if GIT_BRANCHING:
-            branch_name = self.checkoutUserBranch(committer)
-
         # generate the log message
         log_msg = ('%s %s manifest \'%s\' via %s'
                   % (author_name, action, itempath, APPNAME))
@@ -161,6 +168,7 @@ class MunkiGit:
                 return -1
             else:
                 logger.info("Pushed changes to %s" % aPath)
+                logger.info("This was the output: %s" % self.results['output'])
 
         # If Git branching is enabled, return to master branch
         if GIT_BRANCHING:
@@ -168,17 +176,50 @@ class MunkiGit:
         return 0
         
 
-    def addFileAtPathForCommitter(self, aPath, aCommitter):
-        """Commits a file to the Git repo."""
+    def addFileAtPathForCommitter(self, manifest, aPath, aCommitter):
+        """Adds a file to the Git repo, then commits it."""
         self.__chdirToMatchPath(aPath)
-        self.runGit(['add', aPath])
-        if self.results['returncode'] == 0:
-            self.commitFileAtPathForCommitter(aPath, aCommitter)
+        
+        # temporary list of valid manifest restrictions
+        # this should be generated from Django groups eventually
+        manifest_restrictions = ['new', 'staff', 'superuser']
+
+        # If Git branching is enabled, create a new branch, or 
+        # if a new manifest already set, checkout the branch already defined
+        if GIT_BRANCHING:
+            if 'new_manifest' in manifest:
+                if manifest['new_manifest'] == 'new':
+                    branch_name = self.checkoutUserBranch(aCommitter)
+                    manifest['new_manifest'] = branch_name
+                else:
+                    branch_name = manifest['new_manifest']
+                    self.checkoutCustomBranch(branch_name)
+                    del manifest['new_manifest']
+            else:
+                branch_name = self.checkoutUserBranch(aCommitter)
+        try:
+            plistlib.writePlist(manifest, aPath)
+            logger.info("Wrote plist at %s" % (aPath))
+        except Exception, errmsg:
+            logger.info("Failed to write plist at %s" % (aPath))
+            logger.info("manifest contents: %s" % (manifest))
+            pass
+        # don't commit if a new manifest has just been created and git branching is enabled
+        if not 'new_manifest' in manifest:
+            self.runGit(['add', aPath])
+            if self.results['returncode'] == 0:
+                self.commitFileAtPathForCommitter(aPath, aCommitter)
         return 0
+
 
     def deleteFileAtPathForCommitter(self, aPath, aCommitter):
         """Deletes a file from the filesystem and Git repo."""
         self.__chdirToMatchPath(aPath)
+
+        # If Git branching is enabled, create a new branch
+        if GIT_BRANCHING:
+            branch_name = self.checkoutUserBranch(aCommitter)
+
         self.runGit(['rm', aPath])
         if self.results['returncode'] == 0:
             self.commitFileAtPathForCommitter(aPath, aCommitter)
@@ -236,6 +277,8 @@ class Manifest(object):
                         'managed_uninstalls', 'managed_updates',
                         'optional_installs']:
             manifest[section] = []
+        manifest['new_manifest'] = 'new'
+        logger.info("New manifest: %s" % manifest)
         return manifest
 
     @classmethod
@@ -260,17 +303,14 @@ class Manifest(object):
                 manifest[USERNAME_KEY] = user_list[0]
             del manifest['_user_name']
         manifest_path = cls.__pathForManifestNamed(manifest_name)
-        #try:
-        #    prev_manifest = plistlib.readPlist(manifest_path)
-        #except Exception:
-        #    pass
-        try:
-            plistlib.writePlist(manifest, manifest_path)
-            if GIT:
+        if not GIT:
+            try:
+                plistlib.writePlist(manifest, manifest_path)
+            except Exception, errmsg:
+                pass
+        elif GIT:
                 git = MunkiGit()
-                git.addFileAtPathForCommitter(manifest_path, committer)
-        except Exception, errmsg:
-            pass
+                git.addFileAtPathForCommitter(manifest, manifest_path, committer)
             # need to deal with errors
 
     @classmethod
@@ -280,7 +320,6 @@ class Manifest(object):
         if not os.path.exists(manifest_path):
             print "Unable to find manifest to delete '%s'" % manifest_path
             return -1
-
         if not GIT:
             os.remove(manifest_path)
         else:
