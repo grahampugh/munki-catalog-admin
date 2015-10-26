@@ -148,6 +148,11 @@
 	</div>
 	<div id="data_storage" data-autocomplete_data='{{ autocomplete_data }}' />
 	<div id="csrf_token" style='display:none'>{% csrf_token %}</div>
+{% elif git_branching_enabled %}
+	<div id="item_name">Git branching enabled. Please refresh your view or click below:</div>
+	<div class="btn">
+		<a id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
+	</div>
 {% else %}
-    <div id="item_name">Manifest is empty</div>
+	<div id="item_name">Manifest is empty</div>
 {% endif %}

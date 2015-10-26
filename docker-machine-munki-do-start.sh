@@ -4,6 +4,9 @@
 MUNKI_REPO="/Users/glgrp/src/munki_repo"
 MUNKI_DO_DB="/Users/glgrp/src/munki-do-db"
 
+# Gitlab
+GITLAB_DATA="/Users/glgrp/src/gitlab-data"
+
 #Check that Docker Machine exists
 if [ -z "$(docker-machine ls | grep munkido)" ]; then
 	docker-machine create -d vmwarefusion munkido --vmwarefusion-disk-size=10000000
@@ -23,8 +26,29 @@ fi
 # This checks whether munki munki-do postgres-munkiwebadmin are running and stops them
 # if so (thanks to Pepijn Bruienne):
 docker ps | sed "s/\ \{2,\}/$(printf '\t')/g" | \
-	awk -F"\t" '/munki|munki-do/{print $1}' | \
+	awk -F"\t" '/munki|munki-do|gitlab|gitlab-postgresql|gitlab-redis/{print $1}' | \
 	xargs docker rm -f
+	
+# Gitlab-postgres database
+docker run --name gitlab-postgresql -d \
+    --env 'DB_NAME=gitlabhq_production' \
+    --env 'DB_USER=gitlab' --env 'DB_PASS=password' \
+    --volume GITLAB_DATA/postgresql:/var/lib/postgresql \
+    quay.io/sameersbn/postgresql:9.4-5
+
+# Gitlab Redis instance
+    docker run --name gitlab-redis -d \
+    --volume GITLAB_DATA/redis:/var/lib/redis \
+    quay.io/sameersbn/redis:latest
+
+# Gitlab
+docker run --name gitlab -d \
+    --link gitlab-postgresql:postgresql --link gitlab-redis:redisio \
+    --publish 10022:22 --publish 10080:80 \
+    --env 'GITLAB_PORT=10080' --env 'GITLAB_SSH_PORT=10022' \
+    --env 'GITLAB_SECRETS_DB_KEY_BASE=sxRfjpqHCfwMBHfrP8NXp5V6gS2wxBLXgv57pdvGKQMQSLTfDzBFfTf2vhQLvrxK' \
+    --volume GITLAB_DATA/gitlab:/home/git/data \
+    quay.io/sameersbn/gitlab:8.1.0-2
 
 # This isn't needed for Munki-Do to operate, but is needed if you want a working
 # Munki server
