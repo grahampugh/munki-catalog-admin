@@ -7,6 +7,7 @@ import time
 
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User, Group
 
 from catalogs.models import Catalog
 
@@ -382,6 +383,16 @@ class Manifest(object):
         '''returns a username for a given manifest name'''
         if USERNAME_KEY:
             return cls.read(manifest_name).get(USERNAME_KEY, '')
+            
+    @classmethod
+    def can_edit_restricted_manifest(self, user, allowed_group):
+        '''returns True if the user is in a django group listed in allowed_group'''
+        usr = User.objects.get(username=user)
+        if user.groups.filter(name=allowed_group).exists():
+            groups = [ x.name for x in usr.groups.all()]
+            if allowed_group in groups:
+                return True
+        return False
 
     @classmethod
     def getGitBranch(self):

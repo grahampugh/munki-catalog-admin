@@ -8,7 +8,7 @@ from django.http import Http404
 #from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Permission
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django import forms
 
@@ -189,18 +189,18 @@ def detail(request, manifest_name):
         })
         manifest_user = manifest.get(MANIFEST_USERNAME_KEY, '')
         manifest_restriction = manifest.get(MANIFEST_RESTRICTION_KEY, '')
-        
-        # temporary list of valid manifest restrictions
-        # this should be generated from Django groups eventually
-        manifest_restriction_groups = settings.MANIFEST_RESTRICTION_GROUPS
+        user_groups = Group.objects.values_list('name', flat=True)
         
         if manifest_restriction:
+            manifest_restriction_is_editable = None
             if request.user.is_superuser:
                 manifest_restriction_is_editable = 'yes'
-            elif request.user.is_staff and 'staff' in manifest_restriction_groups and 'staff' in manifest[manifest_restriction].lower:
+            elif request.user.is_staff and 'staff' in manifest_restriction:
                 manifest_restriction_is_editable = 'yes'
             else:
-                manifest_restriction_is_editable = None
+                for item in manifest_restriction:
+                    if Manifest.can_edit_restricted_manifest(request.user, item):
+                        manifest_restriction_is_editable = 'yes'
         else:
             manifest_restriction_is_editable = 'unrestricted'
  
@@ -222,7 +222,7 @@ def detail(request, manifest_name):
             'restriction_key': MANIFEST_RESTRICTION_KEY,
             'manifest_restriction': manifest_restriction,
             'manifest_restriction_is_editable': manifest_restriction_is_editable,
-            'manifest_restriction_groups': manifest_restriction_groups,
+            'user_groups': user_groups,
             'user': request.user,
             'page': 'manifests'})
         c.update(csrf(request))

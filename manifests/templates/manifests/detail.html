@@ -13,10 +13,11 @@
 	</h3>
 	<div id="manifest_detail" style="height: 100%; overflow-y: scroll; padding-top:10px;">
 		{% if user %}
+<!-- 
 		<div class='manifest_section'>
 			<div class="section_label">User</div>
 			<ul id='_user_name' class='section list-group unstyled'>
-				<li id='{{ manifest_user }}' class='nameitem'>
+				<li id='{{ manifest_user }}' class='section list-group unstyled'>
 				{% if manifest_user_is_editable %}
 					<div class='editable user_name_field'>{{ manifest_user }}</div>
 				{% else %}
@@ -25,6 +26,7 @@
 				</li>
 			</ul>
 			</div>
+ -->
 		{% endif %}
 		
 		{% if restriction_key %}
@@ -33,10 +35,10 @@
 				<ul id='{{ restriction_key }}' class='section list-group unstyled'>
 				{% for item in manifest_restriction %}
 					<li id='{{ item }}' class='list-group-item entrys 
-					{% if item not in manifest_restriction_groups %}
-						list-group-item-danger'>
-					{% else %}
+					{% if item in user_groups or item == 'staff' or item == 'superuser' %}
 						list-group-item-info'>
+					{% else %}
+						list-group-item-danger'>
 					{% endif %}
 						<div class='editable'>{{ item }}</div>
 					</li>
@@ -159,6 +161,7 @@
 	<div class="btn">
 		<a id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
 	</div>
+	
 {% else %}
 	<div id="item_name">Manifest is empty</div>
 {% endif %}
