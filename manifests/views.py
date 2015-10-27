@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 MANIFEST_USERNAME_IS_EDITABLE = settings.MANIFEST_USERNAME_IS_EDITABLE
 MANIFEST_USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
+MANIFEST_RESTRICTION_KEY = settings.MANIFEST_RESTRICTION_KEY
 
 GIT_BRANCHING = settings.GIT_BRANCHING
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
@@ -168,14 +169,15 @@ def detail(request, manifest_name):
                 Manifest.write(manifest_name, manifest_detail,
                                request.user)
             return HttpResponse(json.dumps('success'))
+    
     if request.method == 'GET':
         if not request.user.has_perm('manifests.can_view_manifests'):
             return HttpResponse(json.dumps('error'))
         manifest = Manifest.read(manifest_name)
         #valid_install_items = Manifest.getValidInstallItems(manifest_name)
         install_items = Manifest.getInstallItemNames(manifest_name)
-        valid_install_items = (install_items['suggested'] + 
-                               install_items['updates'] +
+        valid_install_items =  (install_items['suggested'] + 
+                                install_items['updates'] +
                                 install_items['with_version'])
         suggested_install_items = install_items['suggested']
         valid_catalogs = Catalog.list()
@@ -186,7 +188,22 @@ def detail(request, manifest_name):
             'manifests': valid_manifest_names
         })
         manifest_user = manifest.get(MANIFEST_USERNAME_KEY, '')
+        manifest_restriction = manifest.get(MANIFEST_RESTRICTION_KEY, '')
         
+        # temporary list of valid manifest restrictions
+        # this should be generated from Django groups eventually
+        manifest_restriction_groups = settings.MANIFEST_RESTRICTION_GROUPS
+        
+        if manifest_restriction:
+            if request.user.is_superuser:
+                manifest_restriction_is_editable = 'yes'
+            elif request.user.is_staff and 'staff' in manifest_restriction_groups and 'staff' in manifest[manifest_restriction].lower:
+                manifest_restriction_is_editable = 'yes'
+            else:
+                manifest_restriction_is_editable = None
+        else:
+            manifest_restriction_is_editable = 'unrestricted'
+ 
         git_branching_enabled = None
         if GIT_BRANCHING:
             git_branching_enabled = GIT_BRANCHING
@@ -202,6 +219,10 @@ def detail(request, manifest_name):
             'valid_manifest_names': valid_manifest_names,
             'autocomplete_data': autocomplete_data,
             'git_branching_enabled': git_branching_enabled,
+            'restriction_key': MANIFEST_RESTRICTION_KEY,
+            'manifest_restriction': manifest_restriction,
+            'manifest_restriction_is_editable': manifest_restriction_is_editable,
+            'manifest_restriction_groups': manifest_restriction_groups,
             'user': request.user,
             'page': 'manifests'})
         c.update(csrf(request))

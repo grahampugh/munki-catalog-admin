@@ -18,6 +18,8 @@ REPO_DIR = settings.MUNKI_REPO_DIR
 ALL_ITEMS = settings.ALL_ITEMS
 GIT_BRANCHING = settings.GIT_BRANCHING
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
+MANIFEST_RESTRICTION_KEY = settings.MANIFEST_RESTRICTION_KEY
+
 
 try:
     GIT = settings.GIT_PATH
@@ -179,10 +181,6 @@ class MunkiGit:
         """Adds a file to the Git repo, then commits it."""
         self.__chdirToMatchPath(aPath)
         
-        # temporary list of valid manifest restrictions
-        # this should be generated from Django groups eventually
-        manifest_restrictions = ['new', 'staff', 'superuser']
-
         # If Git branching is enabled, create a new branch, or 
         # if a new manifest already set, checkout the branch already defined
         if GIT_BRANCHING:
@@ -280,6 +278,8 @@ class Manifest(object):
                         'managed_uninstalls', 'managed_updates',
                         'optional_installs']:
             manifest[section] = []
+        if MANIFEST_RESTRICTION_KEY:
+            manifest[MANIFEST_RESTRICTION_KEY] = []
         manifest['new_manifest'] = 'new'
         logger.info("New manifest: %s" % manifest)
         return manifest
@@ -305,6 +305,7 @@ class Manifest(object):
             if user_list:
                 manifest[USERNAME_KEY] = user_list[0]
             del manifest['_user_name']
+        # attempt to prevent Manifest.write turning the restriction key into a list
         manifest_path = cls.__pathForManifestNamed(manifest_name)
         if not GIT:
             try:
