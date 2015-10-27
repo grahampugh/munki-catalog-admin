@@ -1,22 +1,24 @@
 {% if manifest %}
 	<h3 class="manifest_name" id="{{ manifest_name }}" style="margin-top:-50px;">
-	  	{{ manifest_name }}
-	  	<div class='pull-right btn-group' id='save_and_cancel'>
-	  	{% if perms.manifests.delete_manifests %}
-  			<a class='btn btn-danger pull-left' data-toggle="modal" href="/manifest/delete/{{ manifest_name }}" data-target="#myModal"><span class="glyphicon glyphicon-trash"></span></a>
-  		{% endif %}
-  		{% if perms.manifests.change_manifests %}
-  			<input type='button' class='edit btn btn-primary' value='Edit'></input>
-	  	{% endif %}
-	  	</div>
+		{{ manifest_name }}
+		{% if manifest_restriction %} (restricted) {% endif %}
+		<div class='pull-right btn-group' id='save_and_cancel'>
+		{% if perms.manifests.delete_manifests and manifest_restriction_is_editable %}
+			<a class='btn btn-danger pull-left' data-toggle="modal" href="/manifest/delete/{{ manifest_name }}" data-target="#myModal"><span class="glyphicon glyphicon-trash"></span></a>
+		{% endif %}
+		{% if perms.manifests.change_manifests and manifest_restriction_is_editable %}
+			<input type='button' class='edit btn btn-primary' value='Edit'></input>
+		{% endif %}
+		</div>
 	</h3>
 	<div id="manifest_detail" style="height: 100%; overflow-y: scroll; padding-top:10px;">
 		{% if user %}
-		  <div class='manifest_section'>
-		  <div class="section_label">User</div>
-			<ul id='_user_name' class='section unstyled'>
-				<li id='{{ manifest_user }}' class='nameitem'>
-				{%  if manifest_user_is_editable %}
+<!-- 
+		<div class='manifest_section'>
+			<div class="section_label">User</div>
+			<ul id='_user_name' class='section list-group unstyled'>
+				<li id='{{ manifest_user }}' class='section list-group unstyled'>
+				{% if manifest_user_is_editable %}
 					<div class='editable user_name_field'>{{ manifest_user }}</div>
 				{% else %}
 					{{ manifest_user }}
@@ -24,126 +26,132 @@
 				</li>
 			</ul>
 			</div>
+ -->
 		{% endif %}
 		
-<!-- 
-		<div class='manifest_section'>
-		<div class="section_label">User restrictions</div>
-		<ul id='restriction' class='section unstyled'>
-			<li id='{{ manifest.restriction }}' class='nameitem'>
-				<div class='editable'>{{ manifest.restriction }}</div>
-			</li>
-		</ul>
-		</div>
-		
- -->
+		{% if restriction_key %}
+			<div class='manifest_section'>
+				<div class="section_label">User restrictions</div>
+				<ul id='{{ restriction_key }}' class='section list-group unstyled'>
+				{% for item in manifest_restriction %}
+					<li id='{{ item }}' class='list-group-item entrys 
+					{% if item in user_groups or item == 'staff' or item == 'superuser' %}
+						list-group-item-info'>
+					{% else %}
+						list-group-item-danger'>
+					{% endif %}
+						<div class='editable'>{{ item }}</div>
+					</li>
+				{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+
 		<div class='manifest_section'>
 		<div class="section_label">Catalogs</div>
 		<ul id='catalogs' class='catalogs_section list-group unstyled'>
 			{% for item in manifest.catalogs %}
-			    <li id='{{ item }}' class='list-group-item entrys 
-			    {% if item not in valid_catalogs %}
-			    list-group-item-danger'>
-			        <div class='editable'>{{ item }}</div>
-			    {% else %}
-			    list-group-item-info'>
-			      {% if perms.catalogs.can_view_catalogs %}
-			      <a href='/catalog/{{ item }}/'>
-			      {% endif %}
-			          <div class='editable'>{{ item }}</div>
-			      {% if perms.catalogs.can_view_catalogs %}
-			      </a>
-			      {% endif %}
-			    {% endif %}
-			    </li>
+				<li id='{{ item }}' class='list-group-item entrys 
+				{% if item not in valid_catalogs %}
+					list-group-item-danger'>
+				{% else %}
+					list-group-item-info'>
+				{% endif %}
+				{% if perms.catalogs.can_view_catalogs %}
+					<a href='/catalog/{{ item }}/'>
+				{% endif %}
+					<div class='editable'>{{ item }}</div>
+				{% if perms.catalogs.can_view_catalogs %}
+					</a>
+				{% endif %}
+				</li>
 			{% endfor %}
-			
 		</ul>
 		</div>
 
 		{% if manifest.conditional_items %}
 		<div class='manifest_section'>
 		<div class="section_label">Conditional Items</div>
-		  <span class="muted">viewing/editing conditional_items not currently supported</span>
-		  <p/>
+			<span class="muted">viewing/editing conditional_items not currently supported</span>
+			<p/>
 		</div>
 		{% endif %}
 		
 		<div class='manifest_section'>
-		<div class="section_label">Included Manifests</div>
-		<ul id='included_manifests' class='included_manifests_section list-group unstyled'>
-			{% for i_manifest in manifest.included_manifests %}
-			  <li id='{{ i_manifest }}'class='list-group-item entrys 
-			  {% if i_manifest not in valid_manifest_names %}
-			    list-group-item-danger'>
-			        <div class='editable'>{{ i_manifest }}</div>
-			  {% else %}
-			    list-group-item-info'>
-				  <a href='#{{ i_manifest }}' onClick="getManifestDetail('{{ i_manifest }}')">
-				      <div class='editable'>{{ i_manifest }}</div>
-				  </a>
-				{% endif %}
-				</li>
-			{% endfor %}
-		</ul>
+			<div class="section_label">Included Manifests</div>
+			<ul id='included_manifests' class='included_manifests_section list-group unstyled'>
+				{% for i_manifest in manifest.included_manifests %}
+					<li id='{{ i_manifest }}'class='list-group-item entrys 
+					{% if i_manifest not in valid_manifest_names %}
+						list-group-item-danger'>
+						<div class='editable'>{{ i_manifest }}</div>
+					{% else %}
+						list-group-item-info'>
+						<a href='#{{ i_manifest }}' onClick="getManifestDetail('{{ i_manifest }}')">
+							<div class='editable'>{{ i_manifest }}</div>
+						</a>
+					{% endif %}
+					</li>
+				{% endfor %}
+			</ul>
 		</div>
 		
 		<div class='manifest_section'>
-		<div class="section_label">Managed Installs</div>
-		<ul id='managed_installs' class='section list-group unstyled'>
-			{% for item in manifest.managed_installs %}
-			    <li id='{{ item }}' class='list-group-item entrys 
-			    {% if manifest.catalogs and item not in valid_install_items %}
-			    list-group-item-danger
-			    {% endif %}'>
-				<div class='editable'>{{ item }}</div>
-				</li>
-			{% endfor %}
-		</ul>
+			<div class="section_label">Managed Installs</div>
+			<ul id='managed_installs' class='section list-group unstyled'>
+				{% for item in manifest.managed_installs %}
+					<li id='{{ item }}' class='list-group-item entrys 
+					{% if manifest.catalogs and item not in valid_install_items %}
+						list-group-item-danger
+					{% endif %}'>
+					<div class='editable'>{{ item }}</div>
+					</li>
+				{% endfor %}
+			</ul>
 		</div>
 		
 		<div class='manifest_section'>
-		<div class="section_label">Managed Uninstalls</div>
-		<ul id='managed_uninstalls' class='section list-group unstyled'>
-			{% for item in manifest.managed_uninstalls %}
-			    <li id='{{ item }}' class='list-group-item entrys 
-			    {% if manifest.catalogs and item not in valid_install_items %}
-			    list-group-item-danger
-			    {% endif %}'>
-				<div class='editable'>{{ item }}</div>
-				</li>
-			{% endfor %}
-		</ul>
+			<div class="section_label">Managed Uninstalls</div>
+			<ul id='managed_uninstalls' class='section list-group unstyled'>
+				{% for item in manifest.managed_uninstalls %}
+					<li id='{{ item }}' class='list-group-item entrys 
+					{% if manifest.catalogs and item not in valid_install_items %}
+						list-group-item-danger
+					{% endif %}'>
+					<div class='editable'>{{ item }}</div>
+					</li>
+				{% endfor %}
+			</ul>
 		</div>
 
 		{% if MANAGED_UPDATES_ENABLED %}
 		<div class='manifest_section'>
-		<div class="section_label">Managed Updates</div>
-		<ul id='managed_updates' class='section list-group unstyled'>
-			{% for item in manifest.managed_updates %}
-			    <li id='{{ item }}' class='list-group-item entrys 
-			    {% if manifest.catalogs and item not in valid_install_items %}
-			    list-group-item-danger
-			    {% endif %}'>
-				<div class='editable'>{{ item }}</div>
-				</li>
-			{% endfor %}
-		</ul>
+			<div class="section_label">Managed Updates</div>
+			<ul id='managed_updates' class='section list-group unstyled'>
+				{% for item in manifest.managed_updates %}
+					<li id='{{ item }}' class='list-group-item entrys 
+					{% if manifest.catalogs and item not in valid_install_items %}
+						list-group-item-danger
+					{% endif %}'>
+					<div class='editable'>{{ item }}</div>
+					</li>
+				{% endfor %}
+			</ul>
 		</div>
 		{% endif %}
 		
 		<div class='manifest_section'>
-		<div class="section_label">Optional Installs</div>
-		<ul id='optional_installs' class='section list-group unstyled'>
-			{% for item in manifest.optional_installs %}
-			    <li id='{{ item }}' class='list-group-item entrys 
-			    {% if manifest.catalogs and item not in valid_install_items %}
-			    list-group-item-danger
-			    {% endif %}'>
-				<div class='editable'>{{ item }}</div>
-				</li>
-			{% endfor %}
-		</ul>
+			<div class="section_label">Optional Installs</div>
+			<ul id='optional_installs' class='section list-group unstyled'>
+				{% for item in manifest.optional_installs %}
+					<li id='{{ item }}' class='list-group-item entrys 
+					{% if manifest.catalogs and item not in valid_install_items %}
+						list-group-item-danger
+					{% endif %}'>
+					<div class='editable'>{{ item }}</div>
+					</li>
+				{% endfor %}
+			</ul>
 		</div>
 	</div>
 	<div id="data_storage" data-autocomplete_data='{{ autocomplete_data }}' />
@@ -153,6 +161,7 @@
 	<div class="btn">
 		<a id='git-pull' onclick="location.href='{% url "manifests.views.gitpull" %}';">Update view (git pull)</a>
 	</div>
+	
 {% else %}
 	<div id="item_name">Manifest is empty</div>
 {% endif %}

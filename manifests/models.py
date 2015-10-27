@@ -7,6 +7,7 @@ import time
 
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User, Group
 
 from catalogs.models import Catalog
 
@@ -18,6 +19,8 @@ REPO_DIR = settings.MUNKI_REPO_DIR
 ALL_ITEMS = settings.ALL_ITEMS
 GIT_BRANCHING = settings.GIT_BRANCHING
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
+MANIFEST_RESTRICTION_KEY = settings.MANIFEST_RESTRICTION_KEY
+
 
 try:
     GIT = settings.GIT_PATH
@@ -179,10 +182,6 @@ class MunkiGit:
         """Adds a file to the Git repo, then commits it."""
         self.__chdirToMatchPath(aPath)
         
-        # temporary list of valid manifest restrictions
-        # this should be generated from Django groups eventually
-        manifest_restrictions = ['new', 'staff', 'superuser']
-
         # If Git branching is enabled, create a new branch, or 
         # if a new manifest already set, checkout the branch already defined
         if GIT_BRANCHING:
@@ -280,6 +279,8 @@ class Manifest(object):
                         'managed_uninstalls', 'managed_updates',
                         'optional_installs']:
             manifest[section] = []
+        if MANIFEST_RESTRICTION_KEY:
+            manifest[MANIFEST_RESTRICTION_KEY] = []
         manifest['new_manifest'] = 'new'
         logger.info("New manifest: %s" % manifest)
         return manifest
@@ -305,6 +306,7 @@ class Manifest(object):
             if user_list:
                 manifest[USERNAME_KEY] = user_list[0]
             del manifest['_user_name']
+        # attempt to prevent Manifest.write turning the restriction key into a list
         manifest_path = cls.__pathForManifestNamed(manifest_name)
         if not GIT:
             try:
@@ -381,6 +383,16 @@ class Manifest(object):
         '''returns a username for a given manifest name'''
         if USERNAME_KEY:
             return cls.read(manifest_name).get(USERNAME_KEY, '')
+            
+    @classmethod
+    def can_edit_restricted_manifest(self, user, allowed_group):
+        '''returns True if the user is in a django group listed in allowed_group'''
+        usr = User.objects.get(username=user)
+        if user.groups.filter(name=allowed_group).exists():
+            groups = [ x.name for x in usr.groups.all()]
+            if allowed_group in groups:
+                return True
+        return False
 
     @classmethod
     def getGitBranch(self):
