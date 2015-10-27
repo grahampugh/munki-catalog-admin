@@ -78,6 +78,21 @@ Catalogs and Manifests sections. The relevant permissions are:
 Superusers automatically have all permissions. 
 Users given 'staff' rights can access the admin console.
 
+#Restricting manifest editing rights
+
+You may wish to restrict the right to edit certain manifests to certain users in your organisation.
+For example, you may wish to allow the editing of individual client manifests, but prevent
+editing of certain "core" manifests that affect a large number of machines. Alternatively,
+you may have different manifests for different organisational units, and may wish to 
+only allow members of those units to edit their own manifests.
+
+Munki-Do can be configured to restrict manifest editing based on Django group membership.
+To enable this feature, set `MANIFEST_RESTRICTION_KEY` in `settings.py`.
+
+Any group created in Munki-Do's Django admin interface can be used, as can 'staff' and 
+'superuser'. If you enter a group name which doesn't exist, only superusers will be able to
+edit that manifest. Superusers can edit any manifest.
+
 #Munki-with-Git
 
 Munki-Do is now enabled for Git. If you set the `GIT_PATH` path in `settings.py`, 
