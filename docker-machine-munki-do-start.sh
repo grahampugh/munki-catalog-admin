@@ -3,6 +3,10 @@
 # Munki container
 MUNKI_REPO="/Users/glgrp/src/munki_repo"
 MUNKI_DO_DB="/Users/glgrp/src/munki-do-db"
+GIT_PATH='/usr/bin/git'
+GIT_BRANCHING='yes'
+GIT_IGNORE_PKGS='yes'
+MANIFEST_RESTRICTION_KEY='restriction'
 
 # Gitlab
 GITLAB_DATA="/Users/glgrp/src/gitlab-data"
@@ -65,6 +69,10 @@ docker run -d --restart=always --name munki-do \
 	-p 8000:8000 \
 	-v $MUNKI_REPO:/munki_repo \
 	-v $MUNKI_DO_DB:/munki-do-db \
+	-e DOCKER_MUNKIDO_GIT_PATH=GIT_PATH \
+	-e DOCKER_MUNKIDO_GIT_BRANCHING=GIT_BRANCHING \
+	-e DOCKER_MUNKIDO_GIT_IGNORE_PKGS=GIT_IGNORE_PKGS \
+	-e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY=MANIFEST_RESTRICTION_KEY \
 	-e ADMIN_PASS=pass \
 	grahampugh/munki-do
 
