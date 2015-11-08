@@ -3,9 +3,13 @@ import socket
 import logging
 from django.conf import global_settings
 
-##############################
-# Munki-Do-specific settings #
-##############################
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+ADMINS = (
+    # ('Your Name', 'your_email@example.com'),
+)
+MANAGERS = ADMINS
 
 # APPNAME is user-visable web app name
 APPNAME = 'Munki-Do'
@@ -30,30 +34,6 @@ ALLOWED_HOSTS = ['*']
 TOKEN_TIMEOUT_DAYS = 1
 
 ANONYMOUS_USER_ID = -1
-
-# -------------------------
-
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-     ('Admin', 'admin@mydomain.com'),
-)
-
-MANAGERS = ADMINS
-
-# mysql example
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql', 
-#        'NAME': 'munkiweb',
-#        'USER': 'munkiwebuser',
-#        'PASSWORD': 'munkiwebuserpasswd',
-#        'HOST': 'munkiwebdb.example.org',
-#        'PORT': '',
-#    }
-#}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -120,18 +100,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
-
-if USE_LDAP:
-    AUTHENTICATION_BACKENDS = (
-        'django_auth_ldap.backend.LDAPBackend',
-        'django.contrib.auth.backends.ModelBackend',
-        'tokenapi.backends.TokenBackend',
-    )
-else:
-    AUTHENTICATION_BACKENDS = (
-        'django.contrib.auth.backends.ModelBackend',
-        'tokenapi.backends.TokenBackend',
-    )
 
 LOGIN_URL='/login/'
 
