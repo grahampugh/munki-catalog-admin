@@ -112,7 +112,8 @@ choose to do this, you must set up the `munki_repo` repository in the Gitlab UI:
   * If you aren't on master branch: `git checkout -b origin master`
   * Push the branch you are on: `git push --set-upstream origin master`
 
-
+for more information on using the Docker-Gitlab container, see 
+https://github.com/sameersbn/docker-gitlab
 
 #User permissions
 
