@@ -40,7 +40,9 @@ permissions is recommended.
 The code which enables movement of packages between catalogs is a derivation of code 
 from Munki-Trello by Graham Gilbert: https://github.com/grahamgilbert/munki-trello
 
-#Docker
+
+Docker
+--------------
 
 I encourage the use of Munki-Do as a Docker container. I have personally never 
 attempted to install it natively.
@@ -81,7 +83,9 @@ You must set up a directory on your local host for the Django database. This is
 specified in your `docker run` command as in the above example.
 
 
-#Quick setup
+Quick setup
+--------------
+
 `docker-machine-munki-do-start.sh` is a single shell script designed to get 
 Munki-Do running in a test environment. You need to have Docker Toolbox installed to 
 use this, and you will need to edit the paths to your `munki_repo` and 
@@ -115,7 +119,9 @@ choose to do this, you must set up the `munki_repo` repository in the Gitlab UI:
 for more information on using the Docker-Gitlab container, see 
 https://github.com/sameersbn/docker-gitlab
 
-#User permissions
+
+User permissions
+--------------
 
 The Admin console can be used to set users with discrete permissions on the Packages,
 Catalogs and Manifests sections. The relevant permissions are:
@@ -134,7 +140,9 @@ Catalogs and Manifests sections. The relevant permissions are:
 Superusers automatically have all permissions. 
 Users given 'staff' rights can access the admin console.
 
-#Restricting manifest editing rights
+
+Restricting manifest editing rights
+--------------
 
 You may wish to restrict the right to edit certain manifests to certain users in your organisation.
 For example, you may wish to allow the editing of individual client manifests, but prevent
@@ -151,7 +159,9 @@ Any group created in Munki-Do's Django admin interface can be used, as can 'staf
 'superuser'. If you enter a group name which doesn't exist, only superusers will be able to
 edit that manifest. Superusers can edit any manifest.
 
-#Munki-with-Git
+
+Munki-with-Git
+--------------
 
 Munki-Do is now enabled for Git. If you set the `GIT_PATH` path in `settings.py` or with
 the `DOCKER_MUNKIDO_GIT_PATH` Docker environment variable, 
@@ -173,7 +183,9 @@ the large file sizes stored in the pkgs folder.
 If `GIT_IGNORE_PKGS` is enabled, Munki-Do will simply delete the files in the `pkgs` 
 folder, rather than using `git rm` and committing the changes to a git repository.
 
-# Git Branching
+
+Git Branching
+--------------
 
 Git branching is now available. This is enabled in 
 `settings.py` by setting `GIT_BRANCHING` to 'yes' (or with the 
@@ -215,8 +227,9 @@ not referenced in a `pkginfo` file (and which are therefore irrelevant to the mu
 repository). These packages can then be selected and deleted using the UI. At present 
 this link is only available to users that are marked as "Staff" in the admin panel.
 
+
 To Do
-----
+--------------
 
 Munki-Do is still a work in progress, so use in production at your own risk. 
 I welcome the raising of issues, and pull requests...
