@@ -106,6 +106,7 @@ choose to do this, you must set up the `munki_repo` repository in the Gitlab UI:
   * If you haven't already created an ssh key, do so using the hints at 
     http://IP-address:10080/help/ssh/README
   * In Terminal on your host Mac system, enter the command `pbcopy < ~/.ssh/id_rsa.pub`
+  * Paste the value into a new Key in the Gitlab UI. 
   * If recreating a destroyed docker-machine, you need to remove the existing entry from
     `~/.ssh/known_hosts`
   * If you aren't on master branch: `git checkout -b origin master`
