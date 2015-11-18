@@ -68,11 +68,8 @@ EXPOSE 8000
 # The id_rsa file will then be found at ~/.ssh
 
 ADD docker/id_rsa /root/.ssh/id_rsa
-RUN touch /root/.ssh/known_hosts
 RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
-# This dodgy line necessary for docker-gitlab, since ssh-keyscan doesn't generate the
-# correct syntax:
-RUN echo "[192.168.168.134]:10022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLz8ILw5mJJZtF7M+HjaGx6jWUDBhKv5sJu0OrS6VBNj598g+iSWzXNZCgS/FtGHcPDnMFIEBDsJgDSLWEbE52Y= " >> /root/.ssh/known_hosts
+ADD docker/known_hosts /root/.ssh/known_hosts
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

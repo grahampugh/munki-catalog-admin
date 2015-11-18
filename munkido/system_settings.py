@@ -3,7 +3,8 @@ import socket
 import logging
 from django.conf import global_settings
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+#PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 ADMINS = (
@@ -14,7 +15,7 @@ MANAGERS = ADMINS
 # APPNAME is user-visable web app name
 APPNAME = 'Munki-Do'
 # MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
-MUNKI_REPO_DIR = '/var/www/html/munki_repo'
+MUNKI_REPO_DIR = '/munki_repo'
 ICONS_DIR = 'icons'
 PKGS_DIR = 'pkgs'
 

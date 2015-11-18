@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     
     # for compatibility with MunkiReport scripts    
     url(r'^$', include('catalogs.urls')),
-    (r'', include('tokenapi.urls')),
+    url(r'', include('tokenapi.urls')),
     
     # for access to the munki repo directly:
     url(r'^munki_repo/(?P<path>.*)$',

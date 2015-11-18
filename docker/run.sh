@@ -13,3 +13,4 @@ export DJANGO_SETTINGS_MODULE='munkido.settings'
 python manage.py collectstatic --noinput
 
 python manage.py runserver 0.0.0.0:8000
+
