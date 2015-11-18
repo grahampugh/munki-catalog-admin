@@ -92,7 +92,25 @@ Set `$MUNKI_DO_DB` to a directory on your host system in
 
 If you set the `GITLAB_DATA` variable in `docker-machine-munki-do-start.sh`, 
 Gitlab is setup on the resulting Docker Machine,
-so you can test Munki-Do's Git capabilities on a local git repository.
+so you can test Munki-Do's Git capabilities on a local git repository. Note that if you
+choose to do this, you must set up the `munki_repo` repository in the Gitlab UI:
+
+  * Log in via a browser (http://IP-address:10080) 
+  * Default username (root) and password (5iveL!fe)
+  * Change the password
+  * Log in again with the new password
+  * Click "+New Project"
+  * Setting the project path to "munki_repo"
+  * Select Visibility Level as Public
+  * Click Create Project
+  * If you haven't already created an ssh key, do so using the hints at 
+    http://IP-address:10080/help/ssh/README
+  * In Terminal on your host Mac system, enter the command `pbcopy < ~/.ssh/id_rsa.pub`
+  * If recreating a destroyed docker-machine, you need to remove the existing entry from
+    `~/.ssh/known_hosts`
+  * If you aren't on master branch: `git checkout -b origin master`
+  * Push the branch you are on: `git push --set-upstream origin master`
+
 
 
 #User permissions
