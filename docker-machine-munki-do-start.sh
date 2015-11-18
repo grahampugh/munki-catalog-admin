@@ -3,9 +3,12 @@
 # Munki container variables
 MUNKI_REPO="/Users/glgrp/src/munki_repo"
 MUNKI_DO_DB="/Users/glgrp/src/munki-do-db"
-GIT_PATH='/usr/bin/git'
-GIT_BRANCHING='yes'
-GIT_IGNORE_PKGS='yes'
+# Comment this out to disable git
+#GIT_PATH='/usr/bin/git'
+# Comment this out to disable git branching (so all commits are done to master branch)
+#GIT_BRANCHING='yes'
+# Comment this out to enable git to track the 'pkgs' directory
+#GIT_IGNORE_PKGS='yes'
 MANIFEST_RESTRICTION_KEY='restriction'
 
 # Gitlab
@@ -13,7 +16,7 @@ MANIFEST_RESTRICTION_KEY='restriction'
 # so needs to be linked to a folder in the boot2docker host. You may wish to back
 # this up in case you decide to destroy the docker-machine.
 # Comment this out or set as '' if you don't want to build a Gitlab server
-GITLAB_DATA="/home/docker/gitlab-data"
+#GITLAB_DATA="/home/docker/gitlab-data"
 
 # Check that Docker Machine exists
 if [ -z "$(docker-machine ls | grep munkido)" ]; then
