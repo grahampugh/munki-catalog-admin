@@ -46,17 +46,53 @@ I encourage the use of Munki-Do as a Docker container. I have personally never
 attempted to install it natively.
 
 This git repository contains all the necessary files to run a Docker container.
-You will most likely wish to edit the following files after cloning:
+The following environment variables can be set in a `docker run` command:
 
-  * `docker/django/settings.py` - contains settings specific to your installation, 
-    e.g. git settings, LDAP settings.
-  * `docker-machine-munki-do-start.sh` - this is a single shell script designed to get 
-    Munki-Do running. You need to have Docker Toolbox installed to use this, and you 
-    will need to edit the paths to your `munki_repo` and `munki-do-db` directories.
-    
-You must set up a directory on your local host for the Django database. Then point 
-`$MUNKI_DO_DB` to this directory in `docker-machine-munki-do-start.sh` or in your `docker
-run` command.
+  * `DOCKER_MUNKIDO_TZ` - timezone - `America/New_York` by default
+  * `DOCKER_MUNKIDO_LOGIN_REDIRECT_URL` - determines the first page shown after login.
+     Default is `/catalog`. Valid options are `/catalog`, `/manifest`, `/pkg`. You may
+     wish to change this if disabling access to some features for certain users.
+  * `ADMIN_PASS` - default admin user password.
+  * `DOCKER_MUNKIDO_ALL_ITEMS` - if `True`, when editing manifests, all software packages 
+     are shown in autocompletion, not only the one in included catalogs. Default is 
+     `False`
+  * `DOCKER_MUNKIDO_PRODUCTION_BRANCH` - the default Git branch -  default is "master"
+  * `DOCKER_MUNKIDO_GIT_PATH` - See "Munki-with-Git" below
+  * `DOCKER_MUNKIDO_GIT_BRANCHING` - See "Git Branching" below
+  * `DOCKER_MUNKIDO_GIT_IGNORE_PKGS` - See "Munki-with-Git" below
+  * `DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY` - See "Restricting manifest editing rights" 
+     below.
+
+Example:
+```bash
+docker run -d --restart=always --name munki-do \
+    -p 8000:8000 \
+    -v /var/www/html/munki_repo:/munki_repo \
+    -v /home/myhome/munki-do-db:/munki-do-db \
+    -e DOCKER_MUNKIDO_GIT_PATH="/usr/bin/git" \
+    -e DOCKER_MUNKIDO_GIT_BRANCHING="yes" \
+    -e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="yes" \
+    -e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY="restriction" \
+    -e ADMIN_PASS="pass" \
+    grahampugh/munki-do
+```
+
+You must set up a directory on your local host for the Django database. This is 
+specified in your `docker run` command as in the above example.
+
+
+#Quick setup
+`docker-machine-munki-do-start.sh` is a single shell script designed to get 
+Munki-Do running in a test environment. You need to have Docker Toolbox installed to 
+use this, and you will need to edit the paths to your `munki_repo` and 
+`munki-do-db` directories. 
+
+Set `$MUNKI_DO_DB` to a directory on your host system in 
+`docker-machine-munki-do-start.sh` for the Django database.
+
+If you set the `GITLAB_DATA` variable in `docker-machine-munki-do-start.sh`, 
+Gitlab is setup on the resulting Docker Machine,
+so you can test Munki-Do's Git capabilities on a local git repository.
 
 
 #User permissions
@@ -87,7 +123,9 @@ you may have different manifests for different organisational units, and may wis
 only allow members of those units to edit their own manifests.
 
 Munki-Do can be configured to restrict manifest editing based on Django group membership.
-To enable this feature, set `MANIFEST_RESTRICTION_KEY` in `settings.py`.
+To enable this feature, set `MANIFEST_RESTRICTION_KEY` in `settings.py` or with the Docker
+`DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY` environment variable. Normally, "restriction"
+will suffice.
 
 Any group created in Munki-Do's Django admin interface can be used, as can 'staff' and 
 'superuser'. If you enter a group name which doesn't exist, only superusers will be able to
@@ -95,7 +133,8 @@ edit that manifest. Superusers can edit any manifest.
 
 #Munki-with-Git
 
-Munki-Do is now enabled for Git. If you set the `GIT_PATH` path in `settings.py`, 
+Munki-Do is now enabled for Git. If you set the `GIT_PATH` path in `settings.py` or with
+the `DOCKER_MUNKIDO_GIT_PATH` Docker environment variable, 
 any changes made to the manifests or pkginfo files will attempt to be committed to 
 the git repository.  By default, these are committed to the current branch, which is not 
 determined by Munki-Do. See Git Branching below to change this behaviour.
@@ -106,18 +145,27 @@ https://github.com/munki/munki/wiki/Munki-With-Git
 You can put the `pkgs` folder in `.gitignore`, but you must allow the `catalogs`, 
 `manifests` and `pkgsinfo` folders to be updated.
 
-Munki-Do does not determine the branch of your repository, so you could choose to 
-work on an "unstable" branch and use another means to push to a master branch (e.g. 
-manual intervention by a superuser, or a cron job).
+The `GIT_IGNORE_PKGS` key in `settings.py` or the `DOCKER_MUNKIDO_GIT_IGNORE_PKGS` Docker 
+environment variable allows you to ignore the `pkgs` directory, 
+in the case that you have set git to ignore this folder. This is a common scenario due to 
+the large file sizes stored in the pkgs folder.
+
+If `GIT_IGNORE_PKGS` is enabled, Munki-Do will simply delete the files in the `pkgs` 
+folder, rather than using `git rm` and committing the changes to a git repository.
 
 # Git Branching
 
 Git branching is now available. This is enabled in 
-`settings.py` by setting `GIT_BRANCHING` to 'yes'.
+`settings.py` by setting `GIT_BRANCHING` to 'yes' (or with the 
+`DOCKER_MUNKIDO_GIT_BRANCHING` Docker environment variable.
+
+By default, Munki-Do does not determine the branch of your repository. You could choose to 
+work on an "unstable" branch and use another means to push to a master branch (e.g. 
+manual intervention by a superuser, or a cron job).
 
 With Git branching enabled, any commit made by a user creates a new branch 
 in the repo named `username_DDMMYYhhmmss` and pushes the changes to that branch. 
-The server then checks out the default branch to maintain a consistent view for 
+The server then checks out the default branch (normally 'master') to maintain a consistent view for 
 all users and avoid checkout competition.
 
 Note: no commit notification is built into Munki-Do. You should configure your Git 
@@ -135,13 +183,6 @@ that manifest. This avoids the Munki-Do user's view returning to the master bran
 which doesn't yet contain the new manifest. The active branch in the server remains 
 set to the newly created branch until the new manifest is edited and saved, at which time 
 it is committed to the new branch and the master branch is checked out.
-
-The `GIT_IGNORE_PKGS` key in `settings.py` allows you to ignore the `pkgs` directory, 
-in the case that you have set git to ignore this folder. This is a common scenario due to 
-the large file sizes stored in the pkgs folder.
-
-If `GIT_IGNORE_PKGS` is enabled, Munki-Do will simply delete the files in the `pkgs` 
-folder, rather than using `git rm` and committing the changes to a git repository.
 
 If both `GIT_IGNORE_PKGS` and `GIT_BRANCHING` are enabled, then since changes are made 
 to a new git branch and are not "live" on the production branch, 
