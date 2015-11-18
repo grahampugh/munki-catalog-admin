@@ -151,7 +151,8 @@ def done(request):
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
                 if new_dest_catalog:
-                    pkg_catalog = new_dest_catalog
+#                    pkg_catalog = new_dest_catalog
+                    Packages.move(pkg_name, pkg_version, new_dest_catalog, request.user)
                 elif pkg_catalog != 'set-new':
                     Packages.move(pkg_name, pkg_version, pkg_catalog, request.user)
         Packages.makecatalogs(request.user)
