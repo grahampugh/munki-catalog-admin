@@ -1,14 +1,16 @@
 #!/bin/bash
 
 # Munki container variables
+# Edit this line to point to your munki_repo. It must be within /Users somewhere
 MUNKI_REPO="/Users/glgrp/src/munki_repo"
+# Create a new folder to house the Django database and point to it here:
 MUNKI_DO_DB="/Users/glgrp/src/munki-do-db"
 # Comment this out to disable git
-#GIT_PATH='/usr/bin/git'
+GIT_PATH='/usr/bin/git'
 # Comment this out to disable git branching (so all commits are done to master branch)
-#GIT_BRANCHING='yes'
+GIT_BRANCHING='yes'
 # Comment this out to enable git to track the 'pkgs' directory
-#GIT_IGNORE_PKGS='yes'
+GIT_IGNORE_PKGS='yes'
 MANIFEST_RESTRICTION_KEY='restriction'
 
 # Gitlab
@@ -16,11 +18,11 @@ MANIFEST_RESTRICTION_KEY='restriction'
 # so needs to be linked to a folder in the boot2docker host. You may wish to back
 # this up in case you decide to destroy the docker-machine.
 # Comment this out or set as '' if you don't want to build a Gitlab server
-#GITLAB_DATA="/home/docker/gitlab-data"
+GITLAB_DATA="/home/docker/gitlab-data"
 
 # Check that Docker Machine exists
 if [ -z "$(docker-machine ls | grep munkido)" ]; then
-	docker-machine create -d vmwarefusion munkido --vmwarefusion-disk-size=10000000
+	docker-machine create -d vmwarefusion --vmwarefusion-disk-size=10000 munkido
 	docker-machine env munkido
 	eval "$(docker-machine env munkido)"
 fi
