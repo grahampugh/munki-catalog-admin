@@ -76,7 +76,7 @@ docker run -d --restart=always --name munki-do \
     -e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="yes" \
     -e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY="restriction" \
     -e ADMIN_PASS="pass" \
-    grahampugh/munki-do
+    grahamrpugh/munki-do
 ```
 
 You must set up a directory on your local host for the Django database. This is 
