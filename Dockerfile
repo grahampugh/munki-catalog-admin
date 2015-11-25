@@ -1,6 +1,4 @@
 # This Dockerfile is specifically for placement in the Munki-Do git repo.
-# A separate Dockerfile in the Docker-Munki-Do repo achieves the same build by cloning
-# this repository.
 
 # Use phusion/passenger-full as base image. To make your builds reproducible, make
 # sure you lock down to a specific version, not to `latest`!

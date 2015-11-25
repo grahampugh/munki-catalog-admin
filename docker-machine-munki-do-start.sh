@@ -102,7 +102,7 @@ docker run -d --restart=always --name="munki" -v $MUNKI_REPO:/munki_repo \
 	-p 80:80 -h munki groob/docker-munki
 
 # This is optional for complicated builds. It's essential if you're using gitlab in the docker-machine. 
-docker build -t="grahampugh/munki-do" .
+docker build -t="grahamrpugh/munki-do" .
 
 
 # munki-do container
@@ -115,10 +115,11 @@ docker run -d --restart=always --name munki-do \
 	-e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="$GIT_IGNORE_PKGS" \
 	-e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY="$MANIFEST_RESTRICTION_KEY" \
 	-e ADMIN_PASS="pass" \
-	grahampugh/munki-do
+	grahamrpugh/munki-do
 
 
-# Bitbucket / Github - use the following two lines to set up the entry in known_hosts:
+# Bitbucket / Github - use the following two lines to set up the entry in known_hosts
+# (edit the domain if looking up github.com):
 # docker exec -it munki-do ssh-keygen -R bitbucket.org
 # docker exec -it munki-do ssh-keyscan bitbucket.org > /root/.ssh/known_hosts
 
