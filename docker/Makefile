@@ -1,15 +1,13 @@
 DOCKER_USER=grahamrpugh
-ADMIN_PASS=pass
-MUNKI_REPO="/Users/glgrp/src/munki_repo"
+NAME=munki-do
+MUNKI_REPO="/Users/Shared/munki_repo"
 MWA_PORT=8000
-DB_NAME=munkiwebadmin
-DB_PASS=password
-DB_USER=admin
-DB_CONTAINER_NAME:=postgres-munkiwebadmin
-NAME:=munki-do
-DOCKER_RUN_COMMON=--name="$(NAME)" -p ${MWA_PORT}:8000 --link $(DB_CONTAINER_NAME):db -v ${MUNKI_REPO}:/munki_repo -e ADMIN_PASS=${ADMIN_PASS} -e DB_NAME=$(DB_NAME) -e DB_USER=$(DB_USER) -e DB_PASS=$(DB_PASS) ${DOCKER_USER}/${NAME}
-#DOCKER_RUN_COMMON=--name="$(NAME)" -p ${MWA_PORT}:8000 --link $(DB_CONTAINER_NAME):db -e ADMIN_PASS=${ADMIN_PASS} -e DB_NAME=$(DB_NAME) -e DB_USER=$(DB_USER) -e DB_PASS=$(DB_PASS) ${DOCKER_USER}/${NAME}
-
+DB_CONTAINER_NAME="/Users/Shared/munki-do-db"
+GIT_PATH=''
+GIT_IGNORE_PKGS=''
+GIT_BRANCHING=''
+MANIFEST_RESTRICTION_KEY=''
+DOCKER_RUN_COMMON=--name munki-do -p ${MWA_PORT}:8000 -v ${MUNKI_REPO{:/munki_repo -v ${DB_CONTAINER_NAME}:/munki-do-db -e DOCKER_MUNKIDO_GIT_PATH="${GIT_PATH}" -e DOCKER_MUNKIDO_GIT_BRANCHING="${GIT_BRANCHING}" -e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="${GIT_IGNORE_PKGS}" -e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY="{$MANIFEST_RESTRICTION_KEY}" ${DOCKER_USER}/${NAME}
 
 all: build
 
@@ -18,7 +16,7 @@ build:
 
 run:
 #	mkdir -p ${MUNKI_REPO_DIR}
-	docker run -d ${DOCKER_RUN_COMMON}
+	docker run -d --restart=always ${DOCKER_RUN_COMMON}
 
 clean:
 	docker stop $(NAME)

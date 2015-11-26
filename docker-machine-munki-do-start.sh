@@ -114,7 +114,6 @@ docker run -d --restart=always --name munki-do \
 	-e DOCKER_MUNKIDO_GIT_BRANCHING="$GIT_BRANCHING" \
 	-e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="$GIT_IGNORE_PKGS" \
 	-e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY="$MANIFEST_RESTRICTION_KEY" \
-	-e ADMIN_PASS="pass" \
 	grahamrpugh/munki-do
 
 
