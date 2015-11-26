@@ -54,7 +54,6 @@ The following environment variables can be set in a `docker run` command:
   * `DOCKER_MUNKIDO_LOGIN_REDIRECT_URL` - determines the first page shown after login.
      Default is `/catalog`. Valid options are `/catalog`, `/manifest`, `/pkg`. You may
      wish to change this if disabling access to some features for certain users.
-  * `ADMIN_PASS` - default password for the "admin" user, which is precreated. "pass" is the default.
   * `DOCKER_MUNKIDO_ALL_ITEMS` - if `True`, when editing manifests, all software packages 
      are shown in autocompletion, not only the one in included catalogs. Default is 
      `False`
@@ -75,29 +74,32 @@ docker run -d --restart=always --name munki-do \
     -e DOCKER_MUNKIDO_GIT_BRANCHING="yes" \
     -e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="yes" \
     -e DOCKER_MUNKIDO_MANIFEST_RESTRICTION_KEY="restriction" \
-    -e ADMIN_PASS="pass" \
     grahamrpugh/munki-do
 ```
 
-You must set up a directory on your local host for the Django database. This is 
+You must set up a directory on your local host for the Django database, which stores user information. This is 
 specified in your `docker run` command as in the above example.
 
 
-Quick setup
+Quick setup for testing
 --------------
 
 `docker-machine-munki-do-start.sh` is a single shell script designed to get 
 Munki-Do running in a test environment. You need to have Docker Toolbox installed to 
-use this, and you will need to edit the paths to your `munki_repo` and 
-`munki-do-db` directories. 
+use this, and you will need to edit the paths to your `munki_repo` directory:
 
-Set `$MUNKI_DO_DB` to a directory on your host system in 
-`docker-machine-munki-do-start.sh` for the Django database.
+   * Edit `docker-machine-munki-do-start.sh`
+   * Set `$MUNKI_REPO` to the directory on your host system where your Munki repo is stored. This *must* be somewhere in the `Users` directory.
+   * Set `$MUNKI_DO_DB` to a directory on your host system where the Django database will be stored. This *must* be somewhere in the `Users` directory.
+   * Save `docker-machine-munki-do-start.sh`
+   * Run `./docker-machine-munki-do-start.sh` and wait until all is completed.
+   * Login via a browser (http://IP-address:8000)
+   * Defaults are username ("admin") and password ("password")
 
 If you set the `GITLAB_DATA` variable in `docker-machine-munki-do-start.sh`, 
 Gitlab is setup on the resulting Docker Machine,
 so you can test Munki-Do's Git capabilities on a local git repository. Note that if you
-choose to do this, you must set up the `munki_repo` repository in the Gitlab UI:
+choose to do this, you must set up the `munki_repo` repository in the Gitlab UI as follows:
 
   * Log in via a browser (http://IP-address:10080) 
   * Default username (root) and password (5iveL!fe)
@@ -116,12 +118,14 @@ choose to do this, you must set up the `munki_repo` repository in the Gitlab UI:
   * If you aren't on master branch: `git checkout -b origin master`
   * Push the branch you are on: `git push --set-upstream origin master`
 
-for more information on using the Docker-Gitlab container, see 
+For more information on using the Docker-Gitlab container, see 
 https://github.com/sameersbn/docker-gitlab
 
 
 User permissions
 --------------
+
+The default admin account has username ("admin") and password ("password").
 
 The Admin console can be used to set users with discrete permissions on the Packages,
 Catalogs and Manifests sections. The relevant permissions are:
@@ -137,7 +141,7 @@ Catalogs and Manifests sections. The relevant permissions are:
 | pkgs \| pkgs \| Can change pkgs | Edit pkginfo files - i.e. add/remove catalog array entries |
 | pkgs \| pkgs \| Can delete pkgs | Delete pkginfo files and packages from the repository |
 
-Superusers automatically have all permissions. 
+Superusers (including the 'admin' account) automatically have all permissions. 
 Users given 'staff' rights can access the admin console.
 
 
@@ -240,4 +244,3 @@ Possible new features:
   * (or, alternatively, reskin the Packages section to take advantage of SteveKueng's UI)
   * Inline XML editor for editing pkginfo files, e.g. CKEditor
   * Icon handling (deleting orphaned icons)
-  * Sort out docker environment variables so Munki-Do can be run straight from Dockerhub
