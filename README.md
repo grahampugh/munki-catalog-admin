@@ -54,7 +54,7 @@ The following environment variables can be set in a `docker run` command:
   * `DOCKER_MUNKIDO_LOGIN_REDIRECT_URL` - determines the first page shown after login.
      Default is `/catalog`. Valid options are `/catalog`, `/manifest`, `/pkg`. You may
      wish to change this if disabling access to some features for certain users.
-  * `ADMIN_PASS` - default admin user password.
+  * `ADMIN_PASS` - default password for the "admin" user, which is precreated. "pass" is the default.
   * `DOCKER_MUNKIDO_ALL_ITEMS` - if `True`, when editing manifests, all software packages 
      are shown in autocompletion, not only the one in included catalogs. Default is 
      `False`
