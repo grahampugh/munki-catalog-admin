@@ -5,15 +5,17 @@
 MUNKI_REPO="/Users/glgrp/src/munki_repo"
 # Create a new folder to house the Django database and point to it here:
 MUNKI_DO_DB="/Users/glgrp/src/munki-do-db"
-# Comment this out to disable git
+# Comment this out or set to '' to disable git
 GIT_PATH='/usr/bin/git'
-# Comment this out to disable git branching (so all commits are done to master branch)
-GIT_BRANCHING='yes'
+# Comment this out to disable git branching (so all commits are done to master branch).
+# Or set to any value, e.g.'yes', 'no', 'fred', in order to enable git branching.
+GIT_BRANCHING=''
 # Comment this out to enable git to track the 'pkgs' directory
+# Or set to any value, e.g.'yes', 'no', 'fred', in order to ignore the pkgs directory.
 GIT_IGNORE_PKGS='yes'
 MANIFEST_RESTRICTION_KEY='restriction'
 
-# Gitlab
+### Gitlab
 # Note: volume linking to /Users won't work in OS X due to a permissions issue, 
 # so needs to be linked to a folder in the boot2docker host. You may wish to back
 # this up in case you decide to destroy the docker-machine.

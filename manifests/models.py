@@ -86,7 +86,7 @@ class MunkiGit:
         self.runGit(['checkout', '-b', branch_name])
         if self.results['returncode'] != 0:
             logger.info("Failed to checkout to branch %s" % (time_stamp, branch_name))
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
         else:
 #            self.runGit(['push', '--set-upstream', 'origin', branch_name])
             logger.info("Checked out branch %s" % branch_name)
@@ -97,7 +97,7 @@ class MunkiGit:
         self.runGit(['checkout', PRODUCTION_BRANCH])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
         else:
             self.runGit(['pull'])
 #            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
@@ -108,7 +108,7 @@ class MunkiGit:
         self.runGit(['checkout', branch_name])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % branch_name)
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
         else:
             self.runGit(['pull'])
 #            self.runGit(['push', '--set-upstream' 'origin', branch_name])
@@ -155,7 +155,7 @@ class MunkiGit:
         self.runGit(['commit', '-m', log_msg, '--author', author_info])
         if self.results['returncode'] != 0:
             logger.info("Failed to commit changes to %s" % aPath)
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
             return -1
         else:
             logger.info("Committed changes to %s" % aPath)
@@ -166,11 +166,11 @@ class MunkiGit:
                 self.runGit(['push'])
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
-                logger.info("This was the error: %s" % self.results['output'])
+                logger.info("This was the error: %s" % self.results['error'])
                 return -1
             else:
                 logger.info("Pushed changes to %s" % aPath)
-                logger.info("This was the output: %s" % self.results['output'])
+                logger.info("This was the output: %s" % self.results['error'])
 
         # If Git branching is enabled, return to master branch
         if GIT_BRANCHING:
@@ -207,6 +207,7 @@ class MunkiGit:
         # don't commit if a new manifest has just been created and git branching is enabled
         if not 'new_manifest' in manifest:
             self.runGit(['add', aPath])
+            logger.info("Performed git add %s" % (aPath))
             if self.results['returncode'] == 0:
                 self.commitFileAtPathForCommitter(aPath, branch_name, aCommitter)
         return 0
@@ -311,11 +312,14 @@ class Manifest(object):
         if not GIT:
             try:
                 plistlib.writePlist(manifest, manifest_path)
+                logger.info("Git disabled. Wrote changes to %s" % manifest_path)
             except Exception, errmsg:
+                logger.info("Git disabled. Failed to write changes to %s. Error was: %s" % (manifest_path, errmsg))
                 pass
-        elif GIT:
-                git = MunkiGit()
-                git.addFileAtPathForCommitter(manifest, manifest_path, committer)
+        else:
+            git = MunkiGit()
+            logger.info("Git enabled.")
+            git.addFileAtPathForCommitter(manifest, manifest_path, committer)
             # need to deal with errors
 
     @classmethod
