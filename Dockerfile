@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y \
   python-dev \
   libpq-dev
 
-RUN git clone https://github.com/munki/munki.git /munki-tools
+RUN git clone https://github.com/munki/munki.git /munki-tools  # force4
 ADD / $APP_DIR
 ADD docker/django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt
@@ -68,6 +68,9 @@ EXPOSE 8000
 ADD docker/id_rsa /root/.ssh/id_rsa
 RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
 ADD docker/known_hosts /root/.ssh/known_hosts
+
+# link django logs to stdout:
+RUN ln -sf /dev/stdout /var/log/django/info.log
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

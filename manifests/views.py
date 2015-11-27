@@ -25,6 +25,10 @@ logger = logging.getLogger(__name__)
 MANIFEST_USERNAME_IS_EDITABLE = settings.MANIFEST_USERNAME_IS_EDITABLE
 MANIFEST_USERNAME_KEY = settings.MANIFEST_USERNAME_KEY
 MANIFEST_RESTRICTION_KEY = settings.MANIFEST_RESTRICTION_KEY
+try:
+    GIT = settings.GIT_PATH
+except:
+    GIT = None
 
 GIT_BRANCHING = settings.GIT_BRANCHING
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
@@ -111,6 +115,12 @@ def index(request, manifest_name=None):
         username = None
         manifest = None
         
+        git_enabled = None
+        if GIT:
+            git_enabled = GIT
+            # option to show the actual branch. It takes a toll on loading speed though
+            # git_branch = Manifest.getGitBranch()
+
         git_branching_enabled = None
         if GIT_BRANCHING:
             git_branching_enabled = GIT_BRANCHING
@@ -135,6 +145,7 @@ def index(request, manifest_name=None):
              'manifest_name': manifest_name,
              'manifest_user': username,
              'manifest': manifest,
+             'git_enabled': git_enabled,
              'git_branching_enabled': git_branching_enabled,
              'user': request.user,
              'page': 'manifests'})
@@ -168,6 +179,7 @@ def detail(request, manifest_name):
                     manifest_detail[key] = json_data[key]
                 Manifest.write(manifest_name, manifest_detail,
                                request.user)
+            logger.info("ManifestWrite instigated.")
             return HttpResponse(json.dumps('success'))
     
     if request.method == 'GET':
