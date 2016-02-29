@@ -15,6 +15,11 @@ MUNKI_DO_PORT=8000
 SAL_DB="/Users/Shared/sal-db"
 # Set the public port on which you wish to access Sal 
 SAL_PORT=8081
+# Create a new folder to house the MWA2 Django database and point to it here:
+# If using Docker-Machine, it must be within /Users somewhere:
+MWA2_DB="/Users/glgrp/src/mwa2-db"
+# Set the public port on which you wish to access MWA2 
+MWA_PORT=8082
 
 # Comment this out or set to '' to disable git
 #	GIT_PATH='/usr/bin/git'
@@ -47,13 +52,14 @@ if [ "$(docker-machine status munkido)" != "Running" ]; then
 	# VBoxManage controlvm "munkido" poweroff
     VBoxManage modifyvm "munkido" --natpf1 delete munki-do
     VBoxManage modifyvm "munkido" --natpf1 delete munki
+    VBoxManage modifyvm "munkido" --natpf1 delete mwa2
     VBoxManage modifyvm "munkido" --natpf1 delete sal
     VBoxManage modifyvm "munkido" --natpf1 delete sal-udp
     # setup the required port forwarding on the VM
     VBoxManage modifyvm "munkido" --natpf1 "munki-do,tcp,,$MUNKI_DO_PORT,,$MUNKI_DO_PORT"
     VBoxManage modifyvm "munkido" --natpf1 "munki,tcp,,$MUNKI_PORT,,$MUNKI_PORT"
+    VBoxManage modifyvm "munkido" --natpf1 "mwa2,tcp,,$MWA_PORT,,$MWA_PORT"
     VBoxManage modifyvm "munkido" --natpf1 "sal,tcp,,$SAL_PORT,,$SAL_PORT"
-    VBoxManage modifyvm "munkido" --natpf1 "sal-udp,udp,,$SAL_PORT,,$SAL_PORT"
     # start the machine
 	docker-machine start munkido
 	docker-machine env munkido
@@ -155,6 +161,14 @@ docker run -d --restart=always --name munki-do \
 # (edit the domain if looking up github.com):
 # docker exec -it munki-do ssh-keygen -R bitbucket.org
 # docker exec -it munki-do ssh-keyscan bitbucket.org > /root/.ssh/known_hosts
+
+# munki-do container
+docker run -d --restart=always --name mwa2 \
+	-p $MWA_PORT:8000 \
+	-v $MUNKI_REPO:/munki_repo \
+	-v $MWA2_DB:/mwa2-db \
+	grahamrpugh/mwa2
+
 
 #sal-server container - runs on port 8081
 docker run -d --name="sal" \
