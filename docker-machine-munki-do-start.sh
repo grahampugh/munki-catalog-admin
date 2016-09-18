@@ -10,6 +10,8 @@ MUNKI_PORT=8080
 MUNKI_DO_DB="/Users/Shared/munki-do-db"
 # Set the public port on which you wish to access Munki-Do
 MUNKI_DO_PORT=8000
+# Set Munki-Do manifest item search to all items rather than just in current catalog:
+DOCKER_MUNKIDO_ALL_ITEMS=true
 # Create a new folder to house the Sal Django database and point to it here.
 # If using Docker-Machine, it must be within /Users somewhere:
 SAL_DB="/Users/Shared/sal-db"
