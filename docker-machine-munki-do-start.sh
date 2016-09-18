@@ -10,8 +10,6 @@ MUNKI_PORT=8080
 MUNKI_DO_DB="/Users/Shared/munki-do-db"
 # Set the public port on which you wish to access Munki-Do
 MUNKI_DO_PORT=8000
-# Set Munki-Do manifest item search to all items rather than just in current catalog:
-DOCKER_MUNKIDO_ALL_ITEMS=true
 # Create a new folder to house the Sal Django database and point to it here.
 # If using Docker-Machine, it must be within /Users somewhere:
 SAL_DB="/Users/Shared/sal-db"
@@ -23,8 +21,18 @@ MWA2_DB="/Users/Shared/mwa2-db"
 # Set the public port on which you wish to access MWA2 
 MWA2_PORT=8082
 
+## These are MUNKI-DO specific options:
+
+# Set Munki-Do manifest item search to all items rather than just in current catalog:
+ALL_ITEMS=true
+# Munki-Do opens on the 'catalog' pages by default. Set to "pkgs" or "manifest" if you 
+# wish to change this behaviour:
+LOGIN_REDIRECT_URL="pkgs"
+# Munki-Do timezone is 'Europe/Zurich' by default, but you can change to whatever you 
+# wish using the codes listed at http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+TIME_ZONE = 'Europe/Zurich'
 # Comment this out or set to '' to disable git
-#	GIT_PATH='/usr/bin/git'
+#GIT_PATH='/usr/bin/git'
 # Comment this out or leave blank to disable git branching 
 # (so all commits are done to master branch).
 # Or set to any value, e.g.'yes', 'no', 'fred', in order to enable git branching.
@@ -151,6 +159,9 @@ docker run -d --restart=always --name munki-do \
 	-p $MUNKI_DO_PORT:8000 \
 	-v $MUNKI_REPO:/munki_repo \
 	-v $MUNKI_DO_DB:/munki-do-db \
+	-e DOCKER_MUNKIDO_TIME_ZONE="$TIME_ZONE" \
+	-e DOCKER_MUNKIDO_LOGIN_REDIRECT_URL="$LOGIN_REDIRECT_URL" \
+	-e DOCKER_MUNKIDO_ALL_ITEMS="$ALL_ITEMS" \
 	-e DOCKER_MUNKIDO_GIT_PATH="$GIT_PATH" \
 	-e DOCKER_MUNKIDO_GIT_BRANCHING="$GIT_BRANCHING" \
 	-e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="$GIT_IGNORE_PKGS" \
