@@ -16,6 +16,31 @@
 	{% endif %}
 </div>
 {% endif %}
+
+<!-- filter by catalog -->
+<span class='dropdown' style="margin-left:45px;">
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" onblur="removeWrapperMargin()" onfocus="addWrapperMargin($('#catalogdropdown').height())">
+	{% if catalog_name == 'all' %}
+		All items
+	{% else %}
+		{{ catalog_name }}
+	{% endif %}
+	<b class="caret"></b>
+  </a>
+  <ul class="dropdown-menu" id="catalogdropdown">
+	{% for item in catalog_list %}
+	  <li>
+	  	<a href="/pkgs/{{ item }}">
+	  	{% if item == 'all' %}
+			All items
+		{% else %}
+			{{ item }}
+		{% endif %}
+	  	</a>
+	  </li>
+	{% endfor %}
+  </ul>
+</span>
 {% endblock %}
 
 {% block content %}

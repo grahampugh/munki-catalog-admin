@@ -31,12 +31,15 @@ PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
 
 @ensure_csrf_cookie
 @login_required
-def index(request):
+def index(request, catalog_filter=None):
     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
     can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
     can_view_catalogs = request.user.has_perm('catalogs.can_view_catalogs')
     change_pkgs = request.user.has_perm('pkgs.change_pkgs')
     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
+
+    if not catalog_filter:
+        catalog_filter = "all"
     
     git_enabled = None
     if GIT:
@@ -50,9 +53,9 @@ def index(request):
 
     if request.method == 'GET':
         findtext = request.GET.get('findtext')
-        all_catalog_items = Packages.detail(findtext)
     else:
-        all_catalog_items = Packages.detail()
+        findtext = ""
+    all_catalog_items = Packages.detail(catalog_filter, findtext)
     catalog_list = Catalog.list()
     catalog_name = 'none'
     if PROD_CATALOG in catalog_list:
@@ -61,6 +64,7 @@ def index(request):
         catalog_name = 'testing'
     c = RequestContext(request, {'user': request.user,
                                'all_catalog_items': all_catalog_items,
+                               'catalog_filter': catalog_filter,
                                'catalog_list': catalog_list,
                                'catalog_name': catalog_name,
                                'findtext': findtext,

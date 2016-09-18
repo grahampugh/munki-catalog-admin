@@ -7,5 +7,6 @@ urlpatterns = patterns('pkgs.views',
     url(r'^done/*$', 'done'),
     url(r'^deleted/*$', 'deleted'),
     url(r'^gitpull$', 'gitpull'),
+    url(r'^(?P<catalog_filter>[^/]+)/$', 'index'),
     url(r'^$', 'index'),
 )
