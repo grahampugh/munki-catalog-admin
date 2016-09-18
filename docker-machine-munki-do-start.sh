@@ -25,9 +25,9 @@ MWA2_PORT=8082
 
 # Set Munki-Do manifest item search to all items rather than just in current catalog:
 ALL_ITEMS=true
-# Munki-Do opens on the 'catalog' pages by default. Set to "pkgs" or "manifest" if you 
+# Munki-Do opens on the '/catalog' pages by default. Set to "/pkgs" or "/manifest" if you 
 # wish to change this behaviour:
-LOGIN_REDIRECT_URL="pkgs"
+LOGIN_REDIRECT_URL="/pkgs"
 # Munki-Do timezone is 'Europe/Zurich' by default, but you can change to whatever you 
 # wish using the codes listed at http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE='Europe/Zurich'
