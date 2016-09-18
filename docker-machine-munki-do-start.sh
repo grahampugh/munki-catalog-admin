@@ -54,7 +54,6 @@ if [ "$(docker-machine status munkido)" != "Running" ]; then
     VBoxManage modifyvm "munkido" --natpf1 delete munki
     VBoxManage modifyvm "munkido" --natpf1 delete mwa2
     VBoxManage modifyvm "munkido" --natpf1 delete sal
-    VBoxManage modifyvm "munkido" --natpf1 delete sal-udp
     # setup the required port forwarding on the VM
     VBoxManage modifyvm "munkido" --natpf1 "munki-do,tcp,,$MUNKI_DO_PORT,,$MUNKI_DO_PORT"
     VBoxManage modifyvm "munkido" --natpf1 "munki,tcp,,$MUNKI_PORT,,$MUNKI_PORT"
@@ -73,7 +72,7 @@ IP=`docker-machine ip munkido`
 # This checks whether munki munki-do etc are running and stops them
 # if so (thanks to Pepijn Bruienne):
 docker ps -a | sed "s/\ \{2,\}/$(printf '\t')/g" | \
-	awk -F"\t" '/munki|munki-do|sal|postgres-sal|gitlab|gitlab-postgresql|gitlab-redis/{print $1}' | \
+	awk -F"\t" '/munki|munki-do|mwa2|sal|postgres-sal|gitlab|gitlab-postgresql|gitlab-redis/{print $1}' | \
 	xargs docker rm -f
 	
 ## GITLAB settings
