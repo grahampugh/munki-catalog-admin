@@ -4,7 +4,7 @@
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
 {% block navbar-default_extensions %}
-{% if git_branching_enabled %}
+{% if git_enabled %}
 <div class='form-horizontal'>
 	<div class="btn" style="margin-left:45px;">
 		<a id='git-pull' onclick="location.href='{% url "pkgs.views.gitpull" %}';">Update view (git pull)</a>

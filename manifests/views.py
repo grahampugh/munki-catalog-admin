@@ -118,8 +118,6 @@ def index(request, manifest_name=None):
         git_enabled = None
         if GIT:
             git_enabled = GIT
-            # option to show the actual branch. It takes a toll on loading speed though
-            # git_branch = Manifest.getGitBranch()
 
         git_branching_enabled = None
         if GIT_BRANCHING:

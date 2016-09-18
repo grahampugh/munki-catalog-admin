@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y \
   python-dev \
   libpq-dev
 
-RUN git clone https://github.com/munki/munki.git /munki-tools  # force4
+RUN git clone https://github.com/munki/munki.git /munki-tools  # force5
 ADD / $APP_DIR
 ADD docker/django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt

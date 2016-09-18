@@ -170,7 +170,7 @@ class MunkiGit:
                 return -1
             else:
                 logger.info("Pushed changes to %s" % aPath)
-                logger.info("This was the output: %s" % self.results['error'])
+                logger.info("This was the output: %s" % self.results['output'])
 
         # If Git branching is enabled, return to master branch
         if GIT_BRANCHING:

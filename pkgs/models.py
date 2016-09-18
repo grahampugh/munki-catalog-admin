@@ -107,7 +107,7 @@ class MunkiPkgGit:
         self.runGit(['checkout', '-b', branch_name])
         if self.results['returncode'] != 0:
             logger.info("Failed to checkout to branch %s" % (time_stamp, branch_name))
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
         else:
 #            self.runGit(['push', '--set-upstream', 'origin', branch_name])
             logger.info("Checked out branch %s" % branch_name)
@@ -118,7 +118,7 @@ class MunkiPkgGit:
         self.runGit(['checkout', PRODUCTION_BRANCH])
         if self.results['returncode'] != 0:
             logger.info("Failed to change branches to %s" % PRODUCTION_BRANCH)
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
         else:
             self.runGit(['pull'])
 #            self.runGit(['push', '--set-upstream' 'origin', PRODUCTION_BRANCH])
@@ -173,7 +173,7 @@ class MunkiPkgGit:
         self.runGit(['commit', '-m', log_msg, '--author', author_info])
         if self.results['returncode'] != 0:
             logger.info("Failed to commit changes to %s" % aPath)
-            logger.info("This was the error: %s" % self.results['output'])
+            logger.info("This was the error: %s" % self.results['error'])
         else:
             logger.info("Committed changes to %s" % aPath)
             # if git branching enabled, we need to push to the correct branch
@@ -183,7 +183,7 @@ class MunkiPkgGit:
                 self.runGit(['push'])
             if self.results['returncode'] != 0:
                 logger.info("Failed to push changes to %s" % aPath)
-                logger.info("This was the error: %s" % self.results['output'])
+                logger.info("This was the error: %s" % self.results['error'])
             else:
                 logger.info("Pushed changes to %s" % aPath)
 
@@ -324,7 +324,9 @@ class Packages(object):
                     if pkg_catalog not in plist['catalogs']:
                         plist['catalogs'].append(pkg_catalog)
                         plistlib.writePlist(plist, os.path.join(root, name))
+                        logger.info("Wrote changes to %s" % os.path.join(root, name))
                         if GIT:
+                            logger.info("Git enabled.")
                             git = MunkiPkgGit()
                             git.addFileAtPathForCommitter(os.path.join(root, name), committer)
                     done = True
@@ -352,7 +354,9 @@ class Packages(object):
                     except:
                         pass
                     plistlib.writePlist(plist, os.path.join(root, name))
+                    logger.info("Wrote changes to %s" % os.path.join(root, name))
                     if GIT:
+                        logger.info("Git enabled.")
                         git = MunkiPkgGit()
                         git.addFileAtPathForCommitter(os.path.join(root, name), committer)
                     done = True
@@ -388,6 +392,7 @@ class Packages(object):
                             logger.info("This failed to delete: %s" % (name))
                             logger.info("The error message was: %s" % (e))
                     else:
+                        logger.info("Git enabled.")
                         git = MunkiPkgGit()
                         git.deleteFileAtPathForCommitter(os.path.join(root, name), committer)
                         if not GIT_IGNORE_PKGS:

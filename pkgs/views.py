@@ -21,6 +21,10 @@ import json
 import os
 
 PROD_CATALOG = "production" # change this if your production catalog is different
+try:
+    GIT = settings.GIT_PATH
+except:
+    GIT = None
 GIT_BRANCHING = settings.GIT_BRANCHING
 GIT_IGNORE_PKGS = settings.GIT_IGNORE_PKGS
 PRODUCTION_BRANCH = settings.PRODUCTION_BRANCH
@@ -34,6 +38,10 @@ def index(request):
     change_pkgs = request.user.has_perm('pkgs.change_pkgs')
     delete_pkgs = request.user.has_perm('pkgs.delete_pkgs')
     
+    git_enabled = None
+    if GIT:
+        git_enabled = GIT
+
     git_branching_enabled = None
     if GIT_BRANCHING:
         git_branching_enabled = GIT_BRANCHING
@@ -61,6 +69,7 @@ def index(request):
                                'can_view_catalogs': can_view_catalogs,
                                'change_pkgs': change_pkgs,
                                'delete_pkgs': delete_pkgs,
+                               'git_enabled': git_enabled,
                                'git_branching_enabled': git_branching_enabled,
                                'page': 'pkgs'})
     return render_to_response('pkgs/index.html', c)
