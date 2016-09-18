@@ -176,15 +176,17 @@ docker run -d --name="sal" \
   -p $SAL_PORT:8000 \
   -v $SAL_DB:/home/docker/sal/db \
   -e ADMIN_PASS=pass \
-  -e DOCKER_SAL_TZ="America/New_York" \
+  -e DOCKER_SAL_TZ="Europe/Berlin" \
   macadmins/sal
 
 echo
 echo "### Your Docker Machine IP is: $IP"
-echo "### Your Munki-Do URL is: http://$IP:8000"
-echo "### Your Sal URL is: http://$IP:8081"
-echo "### Test your Munki URL with: http://$IP:8080/repo/catalogs/all"
-echo "### Your Gitlab URL is: http://$IP:10080"
+echo "### Your Munki-Do URL is: http://$IP:MUNKI_DO_PORT"
+echo "### Your Sal URL is: http://$IP:SAL_PORT"
+echo "### Test your Munki URL with: http://$IP:MUNKI_PORT/repo/catalogs/all"
+if [ $GITLAB_DATA ]; then
+	echo "### Your Gitlab URL is: http://$IP:10080"
+fi
 echo
 
 
