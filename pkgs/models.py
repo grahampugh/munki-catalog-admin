@@ -10,6 +10,7 @@ import time
 
 from django.conf import settings
 from django.db import models
+from distutils.version import LooseVersion
 
 logger = logging.getLogger(__name__)
 
@@ -233,7 +234,7 @@ class Packages(object):
         if os.path.exists(all_catalog_path):
             try:
                 all_catalog_items = plistlib.readPlist(all_catalog_path)
-                all_catalog_items = sorted(all_catalog_items, key=lambda x: (x['name'].lower(), list(map(int, x.split('.')))))
+                all_catalog_items = sorted(sorted(all_catalog_items, key=lambda x: x['name'].lower()), key=LooseVersion: LooseVersion['version'], reverse = True)
                 index = 0
                 for item in all_catalog_items:
                     item['index'] = index
