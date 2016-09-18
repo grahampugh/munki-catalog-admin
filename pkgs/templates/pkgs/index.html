@@ -20,10 +20,10 @@
 <!-- filter by catalog -->
 <span class='dropdown' style="margin-left:45px;">
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" onblur="removeWrapperMargin()" onfocus="addWrapperMargin($('#catalogdropdown').height())">
-	{% if catalog_name == 'all' %}
+	{% if catalog_filter == 'all' %}
 		All items
 	{% else %}
-		{{ catalog_name }}
+		{{ catalog_filter|default_if_none:"All items" }}
 	{% endif %}
 	<b class="caret"></b>
   </a>
