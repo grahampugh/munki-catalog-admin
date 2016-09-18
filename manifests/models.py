@@ -366,21 +366,21 @@ class Manifest(object):
                 catalog_items = Catalog.detail(catalog)
                 if catalog_items:
                     suggested_names = list(set(
-                        [item['name'] for item in catalog_items.order_by('item')
+                        [item['name'] for item in catalog_items
                          if not item.get('update_for')]))
                     suggested_set.update(suggested_names)
                     update_names = list(set(
-                        [item['name'] for item in catalog_items.order_by('item')
+                        [item['name'] for item in catalog_items
                          if item.get('update_for')]))
                     update_set.update(update_names)
                     item_names_with_versions = list(set(
                         [item['name'] + '-' + 
                         trimVersionString(item['version'])
-                        for item in catalog_items.order_by('item')]))
+                        for item in catalog_items]))
                     versioned_set.update(item_names_with_versions)
-        return {'suggested': list(suggested_set),
-                'updates': list(update_set),
-                'with_version': list(versioned_set)}
+        return {'suggested': sorted(list(suggested_set)),
+                'updates': sorted(list(update_set)),
+                'with_version': sorted(list(versioned_set))}
 
     @classmethod
     def findUserForManifest(cls, manifest_name):
