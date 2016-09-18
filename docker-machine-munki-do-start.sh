@@ -19,7 +19,7 @@ SAL_PORT=8081
 # If using Docker-Machine, it must be within /Users somewhere:
 MWA2_DB="/Users/Shared/mwa2-db"
 # Set the public port on which you wish to access MWA2 
-MWA_PORT=8082
+MWA2_PORT=8082
 
 # Comment this out or set to '' to disable git
 #	GIT_PATH='/usr/bin/git'
@@ -163,7 +163,7 @@ docker run -d --restart=always --name munki-do \
 
 # munki-do container
 docker run -d --restart=always --name mwa2 \
-	-p $MWA_PORT:8000 \
+	-p $MWA2_PORT:8000 \
 	-v $MUNKI_REPO:/munki_repo \
 	-v $MWA2_DB:/mwa2-db \
 	grahamrpugh/mwa2
@@ -180,6 +180,7 @@ docker run -d --name="sal" \
 
 echo
 echo "### Your Docker Machine IP is: $IP"
+echo "### Your MunkiWebAdmin2 URL is: http://$IP:$MWA2_PORT"
 echo "### Your Munki-Do URL is: http://$IP:$MUNKI_DO_PORT"
 echo "### Your Sal URL is: http://$IP:$SAL_PORT"
 echo "### Test your Munki URL with: http://$IP:$MUNKI_PORT/repo/catalogs/all"
