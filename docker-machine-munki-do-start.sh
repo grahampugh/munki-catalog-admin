@@ -126,12 +126,12 @@ fi
 
 # ensuring the Munki-Do DB folder exists with the correct permissions
 if [ ! -d "$MUNKI_DO_DB" ]; then
-    mkdir -p $MUNKI_DO_DB
+    mkdir -p "$MUNKI_DO_DB"
     # chmod and chown if you need to!
 fi
 
 if [ ! -d "$SAL_DB" ]; then
-    mkdir -p $SAL_DB
+    mkdir -p "$SAL_DB"
     # chmod and chown if you need to!
 fi
 
@@ -180,9 +180,9 @@ docker run -d --name="sal" \
 
 echo
 echo "### Your Docker Machine IP is: $IP"
-echo "### Your Munki-Do URL is: http://$IP:MUNKI_DO_PORT"
-echo "### Your Sal URL is: http://$IP:SAL_PORT"
-echo "### Test your Munki URL with: http://$IP:MUNKI_PORT/repo/catalogs/all"
+echo "### Your Munki-Do URL is: http://$IP:$MUNKI_DO_PORT"
+echo "### Your Sal URL is: http://$IP:$SAL_PORT"
+echo "### Test your Munki URL with: http://$IP:$MUNKI_PORT/repo/catalogs/all"
 if [ $GITLAB_DATA ]; then
 	echo "### Your Gitlab URL is: http://$IP:10080"
 fi
