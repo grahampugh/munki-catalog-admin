@@ -30,7 +30,7 @@ ALL_ITEMS=true
 LOGIN_REDIRECT_URL="pkgs"
 # Munki-Do timezone is 'Europe/Zurich' by default, but you can change to whatever you 
 # wish using the codes listed at http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-TIME_ZONE = 'Europe/Zurich'
+TIME_ZONE='Europe/Zurich'
 # Comment this out or set to '' to disable git
 #GIT_PATH='/usr/bin/git'
 # Comment this out or leave blank to disable git branching 
