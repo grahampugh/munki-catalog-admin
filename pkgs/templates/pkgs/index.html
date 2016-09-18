@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block java_script %}
+{% load static %}
+<script type='text/javascript' src='{% get_static_prefix %}js/pkgs.js'></script>
+{% endblock java_script %}
+
 <!-- page title -->
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
