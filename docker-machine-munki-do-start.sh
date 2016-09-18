@@ -17,7 +17,7 @@ SAL_DB="/Users/Shared/sal-db"
 SAL_PORT=8081
 # Create a new folder to house the MWA2 Django database and point to it here:
 # If using Docker-Machine, it must be within /Users somewhere:
-MWA2_DB="/Users/glgrp/src/mwa2-db"
+MWA2_DB="/Users/Shared/mwa2-db"
 # Set the public port on which you wish to access MWA2 
 MWA_PORT=8082
 
