@@ -156,7 +156,7 @@ function makeEditableItems(manifest_name) {
     });
     $('.section_label').append("<a class='btn-xs btn-success btn-mini add_item pull-right' href='#'>+</a>");
     $('.add_item').click(function() {
-        var list_item = $("<li class='list-group-item entrys'><span class='btn-xs btn-danger btn-mini lineitem_delete pull-right' style='margin-top:4px;'>-</span><div class='editable'>-</div></li>");
+        var list_item = $("<li class='list-group-item entrys'><span class='btn-xs btn-danger btn-mini lineitem_delete pull-right' style='margin-top:4px;'>-</span><div class='editable'></div></li>");
         $(this).parent().siblings($('ul')).append(list_item);
         makeEditableItem(
             manifest_name, autocomplete_data, list_item.children(".editable"));
