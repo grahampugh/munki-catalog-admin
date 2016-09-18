@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block java_script %}
+{% load static %}
+<script type='text/javascript' src='{% get_static_prefix %}js/pkgs.js'></script>
+{% endblock java_script %}
+
 <!-- page title -->
 {% block page_title %}<a href="{% url 'pkgs.views.index' %}" class="navbar-brand" >Packages</a>{% endblock %}
 
@@ -98,7 +103,7 @@
 				<th>Catalog(s)</th>
 				<th>Package location</th>
 	{% if change_pkgs or delete_pkgs %}
-				<th class='td-right'>Check to select</th>
+				<th class='td-right'>Toggle All <input type="checkbox" onClick="toggle(this)" /></th>
 	{% endif %}
 			</tr>
 		</thead>
