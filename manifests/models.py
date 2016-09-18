@@ -378,9 +378,9 @@ class Manifest(object):
                         trimVersionString(item['version'])
                         for item in catalog_items]))
                     versioned_set.update(item_names_with_versions)
-        return {'suggested': list(suggested_set),
-                'updates': list(update_set),
-                'with_version': list(versioned_set)}
+        return {'suggested': sorted(list(suggested_set)),
+                'updates': sorted(list(update_set)),
+                'with_version': sorted(list(versioned_set))}
 
     @classmethod
     def findUserForManifest(cls, manifest_name):

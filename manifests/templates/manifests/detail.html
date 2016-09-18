@@ -99,7 +99,7 @@
 		<div class='manifest_section'>
 			<div class="section_label">Managed Installs</div>
 			<ul id='managed_installs' class='section list-group unstyled'>
-				{% for item in manifest.managed_installs %}
+				{% for item in manifest.managed_installs|dictsort:"lstrip" %}
 					<li id='{{ item }}' class='list-group-item entrys 
 					{% if manifest.catalogs and item not in valid_install_items %}
 						list-group-item-danger
@@ -113,7 +113,7 @@
 		<div class='manifest_section'>
 			<div class="section_label">Managed Uninstalls</div>
 			<ul id='managed_uninstalls' class='section list-group unstyled'>
-				{% for item in manifest.managed_uninstalls %}
+				{% for item in manifest.managed_uninstalls|dictsort:"lstrip" %}
 					<li id='{{ item }}' class='list-group-item entrys 
 					{% if manifest.catalogs and item not in valid_install_items %}
 						list-group-item-danger
@@ -128,7 +128,7 @@
 		<div class='manifest_section'>
 			<div class="section_label">Managed Updates</div>
 			<ul id='managed_updates' class='section list-group unstyled'>
-				{% for item in manifest.managed_updates %}
+				{% for item in manifest.managed_updates|dictsort:"lstrip" %}
 					<li id='{{ item }}' class='list-group-item entrys 
 					{% if manifest.catalogs and item not in valid_install_items %}
 						list-group-item-danger
@@ -143,7 +143,7 @@
 		<div class='manifest_section'>
 			<div class="section_label">Optional Installs</div>
 			<ul id='optional_installs' class='section list-group unstyled'>
-				{% for item in manifest.optional_installs %}
+				{% for item in manifest.optional_installs|dictsort:"lstrip" %}
 					<li id='{{ item }}' class='list-group-item entrys 
 					{% if manifest.catalogs and item not in valid_install_items %}
 						list-group-item-danger

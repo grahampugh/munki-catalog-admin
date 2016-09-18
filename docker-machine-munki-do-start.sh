@@ -17,12 +17,22 @@ SAL_DB="/Users/Shared/sal-db"
 SAL_PORT=8081
 # Create a new folder to house the MWA2 Django database and point to it here:
 # If using Docker-Machine, it must be within /Users somewhere:
-MWA2_DB="/Users/glgrp/src/mwa2-db"
+MWA2_DB="/Users/Shared/mwa2-db"
 # Set the public port on which you wish to access MWA2 
-MWA_PORT=8082
+MWA2_PORT=8082
 
+## These are MUNKI-DO specific options:
+
+# Set Munki-Do manifest item search to all items rather than just in current catalog:
+ALL_ITEMS=true
+# Munki-Do opens on the '/catalog' pages by default. Set to "/pkgs" or "/manifest" if you 
+# wish to change this behaviour:
+LOGIN_REDIRECT_URL="/pkgs"
+# Munki-Do timezone is 'Europe/Zurich' by default, but you can change to whatever you 
+# wish using the codes listed at http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+TIME_ZONE='Europe/Zurich'
 # Comment this out or set to '' to disable git
-#	GIT_PATH='/usr/bin/git'
+#GIT_PATH='/usr/bin/git'
 # Comment this out or leave blank to disable git branching 
 # (so all commits are done to master branch).
 # Or set to any value, e.g.'yes', 'no', 'fred', in order to enable git branching.
@@ -54,7 +64,6 @@ if [ "$(docker-machine status munkido)" != "Running" ]; then
     VBoxManage modifyvm "munkido" --natpf1 delete munki
     VBoxManage modifyvm "munkido" --natpf1 delete mwa2
     VBoxManage modifyvm "munkido" --natpf1 delete sal
-    VBoxManage modifyvm "munkido" --natpf1 delete sal-udp
     # setup the required port forwarding on the VM
     VBoxManage modifyvm "munkido" --natpf1 "munki-do,tcp,,$MUNKI_DO_PORT,,$MUNKI_DO_PORT"
     VBoxManage modifyvm "munkido" --natpf1 "munki,tcp,,$MUNKI_PORT,,$MUNKI_PORT"
@@ -73,7 +82,7 @@ IP=`docker-machine ip munkido`
 # This checks whether munki munki-do etc are running and stops them
 # if so (thanks to Pepijn Bruienne):
 docker ps -a | sed "s/\ \{2,\}/$(printf '\t')/g" | \
-	awk -F"\t" '/munki|munki-do|sal|postgres-sal|gitlab|gitlab-postgresql|gitlab-redis/{print $1}' | \
+	awk -F"\t" '/munki|munki-do|mwa2|sal|postgres-sal|gitlab|gitlab-postgresql|gitlab-redis/{print $1}' | \
 	xargs docker rm -f
 	
 ## GITLAB settings
@@ -127,12 +136,12 @@ fi
 
 # ensuring the Munki-Do DB folder exists with the correct permissions
 if [ ! -d "$MUNKI_DO_DB" ]; then
-    mkdir -p $MUNKI_DO_DB
+    mkdir -p "$MUNKI_DO_DB"
     # chmod and chown if you need to!
 fi
 
 if [ ! -d "$SAL_DB" ]; then
-    mkdir -p $SAL_DB
+    mkdir -p "$SAL_DB"
     # chmod and chown if you need to!
 fi
 
@@ -150,6 +159,9 @@ docker run -d --restart=always --name munki-do \
 	-p $MUNKI_DO_PORT:8000 \
 	-v $MUNKI_REPO:/munki_repo \
 	-v $MUNKI_DO_DB:/munki-do-db \
+	-e DOCKER_MUNKIDO_TIME_ZONE="$TIME_ZONE" \
+	-e DOCKER_MUNKIDO_LOGIN_REDIRECT_URL="$LOGIN_REDIRECT_URL" \
+	-e DOCKER_MUNKIDO_ALL_ITEMS="$ALL_ITEMS" \
 	-e DOCKER_MUNKIDO_GIT_PATH="$GIT_PATH" \
 	-e DOCKER_MUNKIDO_GIT_BRANCHING="$GIT_BRANCHING" \
 	-e DOCKER_MUNKIDO_GIT_IGNORE_PKGS="$GIT_IGNORE_PKGS" \
@@ -164,7 +176,7 @@ docker run -d --restart=always --name munki-do \
 
 # munki-do container
 docker run -d --restart=always --name mwa2 \
-	-p $MWA_PORT:8000 \
+	-p $MWA2_PORT:8000 \
 	-v $MUNKI_REPO:/munki_repo \
 	-v $MWA2_DB:/mwa2-db \
 	grahamrpugh/mwa2
@@ -176,15 +188,18 @@ docker run -d --name="sal" \
   -p $SAL_PORT:8000 \
   -v $SAL_DB:/home/docker/sal/db \
   -e ADMIN_PASS=pass \
-  -e DOCKER_SAL_TZ="America/New_York" \
+  -e DOCKER_SAL_TZ="Europe/Berlin" \
   macadmins/sal
 
 echo
 echo "### Your Docker Machine IP is: $IP"
-echo "### Your Munki-Do URL is: http://$IP:8000"
-echo "### Your Sal URL is: http://$IP:8081"
-echo "### Test your Munki URL with: http://$IP:8080/repo/catalogs/all"
-echo "### Your Gitlab URL is: http://$IP:10080"
+echo "### Your MunkiWebAdmin2 URL is: http://$IP:$MWA2_PORT"
+echo "### Your Munki-Do URL is: http://$IP:$MUNKI_DO_PORT"
+echo "### Your Sal URL is: http://$IP:$SAL_PORT"
+echo "### Test your Munki URL with: http://$IP:$MUNKI_PORT/repo/catalogs/all"
+if [ $GITLAB_DATA ]; then
+	echo "### Your Gitlab URL is: http://$IP:10080"
+fi
 echo
 
 
