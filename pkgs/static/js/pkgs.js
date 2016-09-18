@@ -42,7 +42,7 @@ $(document).ready(function() {
 });
 
 function toggle(source) {
-  checkboxes = document.getElementsByName('foo');
+  checkboxes = document.getElementsByName('items_to_move[]');
   for each(var checkbox in checkboxes)
     checkbox.checked = source.checked;
 }
