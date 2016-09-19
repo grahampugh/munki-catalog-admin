@@ -55,6 +55,11 @@ if [ -z "$(docker-machine ls | grep munkido)" ]; then
  	docker-machine create -d virtualbox --virtualbox-disk-size=10000 munkido
 fi
 
+# Check that the machine will restart after a reboot
+if [ -f "$HOME/Library/LaunchAgents/com.docker.machine.munkido.plist" ]; then
+	cp "com.docker.machine.munkido.plist" "$HOME/Library/LaunchAgents/"
+	launchctl load ~/Library/LaunchAgents/com.docker.machine.default.plist
+fi
 
 # Check that Docker Machine is running
 if [ "$(docker-machine status munkido)" != "Running" ]; then
