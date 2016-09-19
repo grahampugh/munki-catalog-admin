@@ -227,10 +227,13 @@ class MunkiPkgGit:
 
 class Packages(object):
     @classmethod
-    def detail(self, findtext):
+    def detail(self, catalog_filter, findtext):
         '''Returns a list of available pkgs, which is a list
         of pkg names (strings)'''
-        all_catalog_path = os.path.join(REPO_DIR, 'catalogs/all')
+        if catalog_filter:
+            all_catalog_path = os.path.join(REPO_DIR, 'catalogs/', catalog_filter)
+        else:
+            all_catalog_path = os.path.join(REPO_DIR, 'catalogs/all')
         if os.path.exists(all_catalog_path):
             try:
                 all_catalog_items = plistlib.readPlist(all_catalog_path)
