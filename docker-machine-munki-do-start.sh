@@ -49,10 +49,30 @@ MANIFEST_RESTRICTION_KEY='restriction'
 # Comment this out or set as '' if you don't want to build a Gitlab server
 # GITLAB_DATA="/home/docker/gitlab-data"
 
+# set -x #echo on
+
 # Check that Docker Machine exists
 if [ -z "$(docker-machine ls | grep munkido)" ]; then
-# 	docker-machine create -d vmwarefusion --vmwarefusion-disk-size=10000 munkido
+    echo
+	echo "### WELCOME TO THE MUNKI-DO ALL-IN-ONE INSTALLER"
+	echo "### Note that Docker-Machine is a development environment."
+	echo "### Think carefully before using this in Production."
+	echo
+
+	# docker-machine create -d vmwarefusion --vmwarefusion-disk-size=10000 munkido
  	docker-machine create -d virtualbox --virtualbox-disk-size=10000 munkido
+	docker-machine env munkido
+ 	eval $(docker-machine env munkido)  # this doesn't seem to work from a script.
+ 	# we need to modify the ports before we carry on
+ 	
+ 	echo
+	echo "### You need to now run the following command in your terminal "
+	echo "### and then re-run this script, sit back and wait for the magic."
+	echo "### (try as I might, I cannot get it to work from within the script!)"
+	echo "eval \$(docker-machine env munkido)"
+	echo 
+	touch "$HOME/.munki-do-is-new"
+	exit 0
 fi
 
 # Check that the machine will restart after a reboot
@@ -62,9 +82,9 @@ if [ -f "$HOME/Library/LaunchAgents/com.docker.machine.munkido.plist" ]; then
 fi
 
 # Check that Docker Machine is running
-if [ "$(docker-machine status munkido)" != "Running" ]; then
+if [[ "$(docker-machine status munkido)" != "Running" || -f "$HOME/.munki-do-is-new" ]]; then
 	# delete port forwarding assignments, in case we've changed them
-	# VBoxManage controlvm "munkido" poweroff
+	docker-machine stop munkido
     VBoxManage modifyvm "munkido" --natpf1 delete munki-do
     VBoxManage modifyvm "munkido" --natpf1 delete munki
     VBoxManage modifyvm "munkido" --natpf1 delete mwa2
@@ -72,12 +92,11 @@ if [ "$(docker-machine status munkido)" != "Running" ]; then
     # setup the required port forwarding on the VM
     VBoxManage modifyvm "munkido" --natpf1 "munki-do,tcp,,$MUNKI_DO_PORT,,$MUNKI_DO_PORT"
     VBoxManage modifyvm "munkido" --natpf1 "munki,tcp,,$MUNKI_PORT,,$MUNKI_PORT"
-    VBoxManage modifyvm "munkido" --natpf1 "mwa2,tcp,,$MWA_PORT,,$MWA_PORT"
+    VBoxManage modifyvm "munkido" --natpf1 "mwa2,tcp,,$MWA2_PORT,,$MWA2_PORT"
     VBoxManage modifyvm "munkido" --natpf1 "sal,tcp,,$SAL_PORT,,$SAL_PORT"
     # start the machine
-	docker-machine start munkido
-	docker-machine env munkido
-	eval "$(docker-machine env munkido)"
+	docker-machine restart munkido
+	rm "$HOME/.munki-do-is-new"
 fi
 
 # Get the IP address of the machine
@@ -180,7 +199,7 @@ docker run -d --restart=always --name munki-do \
 # docker exec -it munki-do ssh-keyscan bitbucket.org > /root/.ssh/known_hosts
 
 # munki-do container
-docker run -d --restart=always --name mwa2 \
+docker run -d --restart=always --name "mwa2" \
 	-p $MWA2_PORT:8000 \
 	-v $MUNKI_REPO:/munki_repo \
 	-v $MWA2_DB:/mwa2-db \
