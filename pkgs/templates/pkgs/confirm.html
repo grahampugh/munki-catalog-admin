@@ -105,16 +105,14 @@
 			{% elif confirm_remove %}
 			<tr>
 				<td>
-					<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}' />
-					{{ package }}</td>
+					<input type='hidden' name='final_items_to_move[]' value='{{ package }}___{{ version }}___{{ orig_catalog }}' />{{ package }}</td>
 				<td>{{ version }}</td>
 				<td>{{ orig_catalog }}</td>
 			</tr>
 			{% else %}
 			<tr>
 				<td class='item-name'>
-				<input type='hidden' name='final_items_to_delete[]' value='{{ package }}___{{ version }}___{{ pkg_location }}' />
-				{{ package }}</td>
+				<input type='hidden' name='final_items_to_delete[]' value='{{ package }}___{{ version }}___{{ pkg_location }}' />{{ package }}</td>
 				<td>{{ version }}</td>
 				<td>{{ pkg_location }}</td>
 			</tr>

@@ -40,7 +40,7 @@ def index(request, catalog_filter=None):
 
     if not catalog_filter:
         catalog_filter = "all"
-    
+
     git_enabled = None
     if GIT:
         git_enabled = GIT
@@ -79,7 +79,7 @@ def index(request, catalog_filter=None):
     return render_to_response('pkgs/index.html', c)
 
 @login_required
-@permission_required('pkgs.can_view_pkgs', login_url='/login/') 
+@permission_required('pkgs.can_view_pkgs', login_url='/login/')
 def gitpull(request, pkgsinfo_name=None):
     if request.method == 'GET':
         Packages.gitPull()
@@ -150,16 +150,16 @@ def done(request):
             for pkg_name, pkg_version, pkg_orig, pkg_catalog in final_items_to_move:
                 if pkg_orig == 'no-catalog':
                     if pkg_catalog == 'set-new' and new_dest_catalog:
-                        Packages.move(pkg_name, pkg_version, new_dest_catalog, 
+                        Packages.move(pkg_name, pkg_version, new_dest_catalog,
                                       request.user)
                     elif pkg_catalog != 'set-new':
                         Packages.move(pkg_name, pkg_version, pkg_catalog, request.user)
                 else:
                     if pkg_catalog == 'set-new' and new_dest_catalog:
-                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog, 
+                        Packages.add(pkg_name, pkg_version, pkg_orig, new_dest_catalog,
                                      request.user)
                     elif pkg_catalog != 'set-new':
-                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog, 
+                        Packages.add(pkg_name, pkg_version, pkg_orig, pkg_catalog,
                                      request.user)
         else:
             for pkg_name, pkg_version, pkg_catalog in final_items_to_move:
@@ -206,6 +206,7 @@ def deleted(request):
                 try:
                     Packages.delete_pkgs(pkg_name, pkg_version, request.user)
                     deleted = 'deleted'
+                    deleted_packages.append(pkg_location)
                 except OSError as e:
                     logger.info("The error was %s" % e)
                     deleted = None
@@ -215,12 +216,12 @@ def deleted(request):
                 try:
                     Packages.delete_orphaned_pkg(pkg_location, request.user)
                     deleted = 'deleted'
+                    deleted_packages.append(pkg_location)
                 except OSError as e:
                     logger.info("The error was %s" % e)
                     deleted = None
             if not GIT_IGNORE_PKGS:
                 Packages.makecatalogs(request.user)
-        deleted_packages.append(pkg_location)
         c = RequestContext(request, {'user': request.user,
                    'final_items_to_delete': final_items_to_delete,
                    'deleted_packages': deleted_packages,
@@ -236,7 +237,7 @@ def deleted(request):
         return HttpResponse("No form submitted.\n")
 
 @login_required
-@permission_required('user.is_staff', login_url='/login/') 
+@permission_required('user.is_staff', login_url='/login/')
 def orphaned(request):
     can_view_pkgs = request.user.has_perm('pkgs.can_view_pkgs')
     can_view_manifests = request.user.has_perm('manifests.can_view_manifests')
