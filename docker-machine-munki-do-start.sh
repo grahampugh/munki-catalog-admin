@@ -178,7 +178,7 @@ docker run -d --restart=always --name="munki" -v $MUNKI_REPO:/munki_repo \
 docker build -t="grahamrpugh/munki-do" .
 
 
-# munki-do container - runs on port 8000
+# munki-do container
 docker run -d --restart=always --name munki-do \
 	-p $MUNKI_DO_PORT:8000 \
 	-v $MUNKI_REPO:/munki_repo \
